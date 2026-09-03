@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Effect, Clock } from "effect"
 import { Journal } from "../../core/journal"
 import { Subagent, SubagentCap } from "../../core/caps"
@@ -268,18 +267,18 @@ export const runKernelsToCode = (
     if (inventory.stubs.length === 0) {
       yield* journalAppend(runId, "k2c-journal", "verdict", "FAIL", "k2c.journal", "FAIL", `${runId}:empty-inventory`)
       const journal: any = yield* Journal as any
-      const chainValid = (yield* (journal.verify(runId) as any).pipe(Effect.catchAll(() => Effect.succeed(false as boolean))) as unknown) as boolean
+      const chainValid = (yield* ((journal.verify(runId) as any).pipe(Effect.catchAll(() => Effect.succeed(false as boolean))) as any) as any) as boolean
       return { pass: 0, fail: 0, inconclusive: 0, rows: [], runId, inventory, chainValid } as KernelsToCodeReport
     }
     const concurrency = opts?.concurrency ?? 1
-    const results = (yield* Effect.forEach(inventory.stubs, (stub) => processStub(stub, registry, runId), { concurrency }) as any) as ReadonlyArray<StubResult>
+    const results = (yield* Effect.forEach(inventory.stubs as ReadonlyArray<CodeStub>, (stub) => processStub(stub, registry, runId), { concurrency }) as any) as ReadonlyArray<StubResult>
     const pass = results.filter(r => r.verdict === "PASS").length
     const fail = results.filter(r => r.verdict === "FAIL").length
     const inconclusive = results.filter(r => r.verdict === "INCONCLUSIVE").length
     const overallVerdict = fail === 0 && inconclusive === 0 ? "PASS" : fail > 0 ? "FAIL" : "INCONCLUSIVE"
     yield* journalAppend(runId, "k2c-journal", "verdict", overallVerdict, "k2c.journal", overallVerdict, `${runId}:journal:${pass}/${fail}/${inconclusive}`)
     const journal: any = yield* Journal as any
-    const chainValid = (yield* (journal.verify(runId) as any).pipe(Effect.catchAll(() => Effect.succeed(false as boolean))) as unknown) as boolean
+    const chainValid = (yield* ((journal.verify(runId) as any).pipe(Effect.catchAll(() => Effect.succeed(false as boolean))) as any) as any) as boolean
     return { pass, fail, inconclusive, rows: results, runId, inventory, chainValid } as KernelsToCodeReport
   }) as any)
 

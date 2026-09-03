@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Effect, Clock } from "effect"
 import { Journal } from "../../core/journal"
 

@@ -1,5 +1,3 @@
-// @ts-nocheck
-// @ts-nocheck
 import { Effect, Clock, Context, Layer } from "effect"
 import { Journal, simpleHashExport, canonicalSerializeExport } from "../../core/journal"
 import { decodeDoc, validateDoc } from "../../core/schema"
@@ -39,7 +37,7 @@ const isKnownKind = (k: string) => knownKindSet.has(k)
 const journalAppend = (run: string, node: string, kind: string, evidence: { pattern: string; state: string; anchor: string }, verdict?: string) =>
   Effect.gen(function* () {
     const ts = yield* Clock.currentTimeMillis
-    const maybeJournal: any = yield* Effect.serviceOption(Journal).pipe(Effect.catchAll((e: unknown) => Effect.succeed({ _tag: "None" } as const)) as any)
+    const maybeJournal: any = yield* (Effect.serviceOption(Journal) as any).pipe(Effect.catchAll((e: unknown) => Effect.succeed({ _tag: "None" } as const)) as any) as any
     if ((maybeJournal as any)._tag === "Some") {
       const svc = (maybeJournal as any).value
       yield* svc.append({ run, node, kind: kind as any, verdict: verdict as any, evidence, source: `workflow/bible-to-spec/${node}`, ts } as any).pipe(Effect.catchAll((e: unknown) => Effect.void))
@@ -93,14 +91,14 @@ export const digestBible = (bible: unknown, runId = "bible-to-spec"): Effect.Eff
     void start
     void end
     return { hash, inventory }
-  })
+  }) as unknown as Effect.Effect<DigestResult, JeslError, Journal>
 
 export const extractFRs = (bible: WorkflowDoc, digest: DigestResult, runId = "bible-to-spec"): Effect.Effect<ReadonlyArray<FR>, JeslError, Journal | Llm> =>
   Effect.gen(function* () {
     const start = yield* Clock.currentTimeMillis
     yield* journalAppend(runId, "fr-extract", "invoke", { pattern: "bible.fr-extract", state: "INVOKE", anchor: `fr-extract:${digest.hash.slice(0, 6)}` })
     const nodes: ReadonlyArray<any> = (bible as any).nodes ?? []
-    const tryLlm: Effect.Effect<ReadonlyArray<FR>, unknown, Llm> = Effect.gen(function* () {
+    const tryLlm: Effect.Effect<ReadonlyArray<FR>, unknown, Llm> = Effect.gen(function* (): any {
       const llm: any = yield* Llm
       const prompt = `Extract FRs from bible nodes: ${JSON.stringify(nodes.map((n: any) => ({ id: n.id, type: n.type, config: n.config })))}`
       const res: any = yield* llm.callModel({ system: "You are FR extractor. Return JSON array of FRs with id,title,sourceNode,description,kind.", prompt, maxTokens: 512 })
@@ -121,7 +119,7 @@ export const extractFRs = (bible: WorkflowDoc, digest: DigestResult, runId = "bi
         void e
       }
       return yield* Effect.fail(new Error("llm parse failed") as any)
-    })
+    }) as unknown as Effect.Effect<ReadonlyArray<FR>, unknown, Llm>
     const maybeFrs: any = yield* Effect.either(tryLlm).pipe(
       Effect.catchAll((e: unknown) => Effect.succeed({ _tag: "Left", left: new Error("no llm") } as any))
     )
@@ -145,7 +143,7 @@ export const extractFRs = (bible: WorkflowDoc, digest: DigestResult, runId = "bi
     void start
     void end
     return frs
-  })
+  }) as unknown as Effect.Effect<ReadonlyArray<FR>, JeslError, Journal | Llm>
 
 export const lintMathContracts = (bible: WorkflowDoc, runId = "bible-to-spec"): Effect.Effect<void, JeslError, Journal> =>
   Effect.gen(function* () {
@@ -188,7 +186,7 @@ export const lintMathContracts = (bible: WorkflowDoc, runId = "bible-to-spec"): 
     yield* journalAppend(runId, "math-lint", "verdict", { pattern: "bible.math-lint", state: "PASS", anchor: `math-lint:${checked}` }, "PASS")
     void start
     void end
-  })
+  }) as unknown as Effect.Effect<void, JeslError, Journal>
 
 export const gateDPL1Spec = (candidate: unknown, runId = "bible-to-spec"): Effect.Effect<WorkflowDoc, JeslError, Journal> =>
   Effect.gen(function* () {
@@ -205,7 +203,7 @@ export const gateDPL1Spec = (candidate: unknown, runId = "bible-to-spec"): Effec
     void start
     void end
     return decoded as WorkflowDoc
-  })
+  }) as unknown as Effect.Effect<WorkflowDoc, JeslError, Journal>
 
 const buildSpecCandidate = (bible: WorkflowDoc, frs: ReadonlyArray<FR>, digest: DigestResult): unknown => {
   const baseName = String((bible as any).meta?.name ?? "bible")
@@ -231,11 +229,11 @@ export const runBibleToSpecSimple = (bible: unknown): Effect.Effect<WorkflowDoc,
     const runId = simpleHashExport(canonicalSerializeExport(bible as any) ?? String(bible)).slice(0, 16)
     yield* journal.append({ run: runId, node: "__run", kind: "invoke" as any, source: "workflow/bible-to-spec/__run", evidence: { pattern: "bible-to-spec.run", state: "INVOKE", anchor: runId }, ts: yield* Clock.currentTimeMillis } as any).pipe(Effect.catchAll((e: unknown) => Effect.void))
     const digest = yield* digestBible(bible, runId)
-    const decodedBible: any = yield* decodeDoc(bible).pipe(Effect.mapError((e: any) => e as JeslError)) as WorkflowDoc
+    const decodedBible: any = yield* (decodeDoc(bible).pipe(Effect.mapError((e: any) => e as JeslError)) as any)
     yield* journal.append({ run: runId, node: "fr-extract", kind: "invoke" as any, source: "workflow/bible-to-spec/fr-extract", evidence: { pattern: "bible.fr-extract", state: "INVOKE", anchor: `fr-extract:${digest.hash.slice(0,6)}` }, ts: yield* Clock.currentTimeMillis } as any).pipe(Effect.catchAll((e: unknown) => Effect.void))
-    const frs: ReadonlyArray<FR> = yield* Effect.gen(function* () {
+    const frs: ReadonlyArray<FR> = yield* (Effect.gen(function* () {
       const nodes: any[] = (decodedBible as any).nodes ?? []
-      const maybeLlm: any = yield* Effect.serviceOption(Llm).pipe(Effect.catchAll((e: unknown) => Effect.succeed({ _tag: "None" } as const)) as any)
+      const maybeLlm: any = yield* (Effect.serviceOption(Llm) as any).pipe(Effect.catchAll((e: unknown) => Effect.succeed({ _tag: "None" } as const)) as any) as any
       if ((maybeLlm as any)._tag === "Some") {
         const llm: any = (maybeLlm as any).value
         const prompt = `Extract FRs from bible nodes: ${JSON.stringify(nodes.map((n: any) => ({ id: n.id, type: n.type })))}`
@@ -258,22 +256,22 @@ export const runBibleToSpecSimple = (bible: unknown): Effect.Effect<WorkflowDoc,
           }
         }
       }
-      return nodes.map((n: any, idx: number) => ({
+      return (nodes as any[]).map((n: any, idx: number) => ({
         id: `FR-${idx + 1}`,
         title: String(n.config?.title ?? `${n.type} requirement for ${n.id}`),
         sourceNode: String(n.id),
         description: String(n.config?.description ?? `FR from ${n.id}`),
         kind: String(n.type)
       })) as FR[]
-    }).pipe(Effect.catchAll((e: unknown) => Effect.succeed([] as FR[]))) as ReadonlyArray<FR>
+    }).pipe(Effect.catchAll((e: unknown) => Effect.succeed([] as FR[]))) as any)
     yield* journal.append({ run: runId, node: "fr-extract", kind: "verdict" as any, verdict: "PASS" as any, source: "workflow/bible-to-spec/fr-extract", evidence: { pattern: "bible.fr-extract", state: "PASS", anchor: `fr-extract:${frs.length}` }, ts: yield* Clock.currentTimeMillis } as any).pipe(Effect.catchAll((e: unknown) => Effect.void))
-    const frs2 = frs.length > 0 ? frs : [{ id: "FR-1", title: "bible coverage", sourceNode: digest.inventory.nodeIds[0] ?? "bible", description: `Cover ${digest.inventory.name}`, kind: "gate" } as FR]
+    const frs2 = (frs.length > 0 ? frs : [{ id: "FR-1", title: "bible coverage", sourceNode: digest.inventory.nodeIds[0] ?? "bible", description: `Cover ${digest.inventory.name}`, kind: "gate" } as FR]) as ReadonlyArray<FR>
     yield* lintMathContracts(decodedBible, runId)
-    const candidate = buildSpecCandidate(decodedBible, frs2, digest)
-    const spec: any = yield* gateDPL1Spec(candidate, runId)
+    const candidate: unknown = buildSpecCandidate(decodedBible, frs2, digest)
+    const spec: any = yield* (gateDPL1Spec(candidate, runId) as any)
     yield* journal.append({ run: runId, node: "__run", kind: "verdict" as any, verdict: "PASS" as any, source: "workflow/bible-to-spec/__run", evidence: { pattern: "bible-to-spec.run", state: "PASS", anchor: `${spec.meta.name}:${frs2.length}` }, ts: yield* Clock.currentTimeMillis } as any).pipe(Effect.catchAll((e: unknown) => Effect.void))
     return spec as WorkflowDoc
-  })
+  }) as unknown as Effect.Effect<WorkflowDoc, JeslError, Journal>
 
 export const activities = {
   digestBible,

@@ -1,0 +1,57 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "oracle",
+    "tier": 1,
+    "description": "Oracle pattern: math-eval computes a deterministic value, gate asserts it against the expected bound. Fully CLI-castable (no extra caps).",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "gate",
+        "instruction": "[WORK SLOT] Replace the math-eval expr and the gate's expected value with your domain oracle rule. For registry-backed oracle verification, swap the gate for an oracle-discharge node (config: {ruleId, expected}) and run under a driver that binds the oracle:read cap (tier 2) — the CLI driver binds only Shell/Fs/Http."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "calc",
+      "type": "math-eval",
+      "config": {
+        "expr": {
+          "_tag": "literal",
+          "value": 42
+        }
+      }
+    },
+    {
+      "id": "check",
+      "type": "gate",
+      "config": {
+        "asserts": [
+          {
+            "path": "$.result",
+            "op": "eq",
+            "value": 42
+          }
+        ]
+      }
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "calc",
+      "to": "check",
+      "via": "result"
+    },
+    {
+      "from": "check",
+      "to": "sink",
+      "via": "oracleOut"
+    }
+  ],
+  "vars": {}
+}

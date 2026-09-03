@@ -1,0 +1,58 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "verify",
+    "tier": 1,
+    "description": "Verify pattern: parallel runs scenario branches, gate asserts passToken. Adopter replaces parallel items with real scenario checks.",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "parallel",
+        "instruction": "[WORK SLOT] Replace parallel items with your scenario branches (each producing a passToken). Gate asserts count >= scenarios."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "scenarios",
+      "type": "parallel",
+      "config": {
+        "items": [
+          "scenario-pass",
+          "scenario-pass",
+          "scenario-pass"
+        ]
+      }
+    },
+    {
+      "id": "gate",
+      "type": "gate",
+      "config": {
+        "asserts": [
+          {
+            "path": "$.count",
+            "op": "ge",
+            "value": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "scenarios",
+      "to": "gate",
+      "via": "count"
+    },
+    {
+      "from": "gate",
+      "to": "sink",
+      "via": "verifyGateOut"
+    }
+  ],
+  "vars": {}
+}

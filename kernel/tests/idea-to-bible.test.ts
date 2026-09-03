@@ -1,4 +1,5 @@
-import { describe, it, expect } from "@effect/vitest"
+import { describe, it as itOrig, expect } from "@effect/vitest"
+const it: any = itOrig
 import { Effect, Layer, Context } from "effect"
 import { makeJournal, Journal, verifyChain } from "../core/journal"
 import { decodeDoc, validateDoc } from "../core/schema"
@@ -124,7 +125,7 @@ describe("idea-to-bible kernel", () => {
       const journal = yield* makeJournal
       const runId = "test-workflow-exec-006"
       const idea = sampleIdea
-      const doc = yield* decodeDoc(workflowRaw as unknown) as WorkflowDoc
+      const doc: WorkflowDoc = yield* (decodeDoc(workflowRaw as unknown) as any)
       const handles = buildNodeHandles(idea, runId)
       const layer = Layer.merge(Layer.succeed(Journal, journal), makeStubLlmLayer())
       const ctx: any = {
@@ -138,7 +139,7 @@ describe("idea-to-bible kernel", () => {
         boundCaps: new Set<string>(),
         capsRequirements: {}
       }
-      const summary: any = yield* runProgram(doc as any, ctx).pipe(Effect.provide(layer) as any)
+      const summary: any = yield* (runProgram(doc as any, ctx).pipe(Effect.provide(layer) as any) as any)
       expect(summary.results["validate-idea"].verdict).toBe("PASS")
       expect(summary.batches.length).toBeGreaterThanOrEqual(1)
       expect(Object.keys(summary.results).length).toBeGreaterThanOrEqual(5)

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { describe, it as itOrig } from "@effect/vitest"
 const it: any = itOrig
 import { Effect, Ref, Clock, Context, Layer } from "effect"
@@ -51,13 +50,13 @@ describe("battery F23-F25", () => {
       if (!Object.prototype.hasOwnProperty.call(r, "verdict")) throw new Error("bad")
     }
   })
-  it.effect("t3 determinism", () => Effect.gen(function* () {
+  it.effect("t3 determinism", () => Effect.gen(function* (): any {
     const journal: any = yield* makeJournal
     const layer = Layer.succeed(Journal, journal)
     const docRaw = JSON.parse(Fs.readFileSync(Path.join(fixturesDir, "mech-gate.json"), "utf-8"))
     const docHash = simpleHashExport(JSON.stringify(docRaw)).slice(0, 16)
     const seed = { in: "determinism-check" }
-    const makeH = (counter: any): any => ({ invoke: () => Effect.gen(function* () { yield* Ref.update(counter, (n: number) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: PASS_TOK as const, evidence: { pattern: "det", state: PASS_TOK, anchor: "mech:1" }, timing: { startMs: s, endMs: s }, outputs: { seed: { ok: 1 }, triplet: { state: PASS_TOK }, data: { ok: 1 } } } as any }) } as any)
+    const makeH = (counter: any): any => ({ invoke: () => Effect.gen(function* (): any { yield* Ref.update(counter, (n: number) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: PASS_TOK as any, evidence: { pattern: "det", state: PASS_TOK, anchor: "mech:1" }, timing: { startMs: s, endMs: s }, outputs: { seed: { ok: 1 }, triplet: { state: PASS_TOK }, data: { ok: 1 } } } as any }) } as any)
     const c1 = yield* Ref.make(0)
     const base1: any = { doc: docRaw, caps: Context.empty() as any, clock: Clock as any, budget: { startedAt: Date.now(), deadlineMs: 600000, maxNodesFiring: 15 }, vars: { seed: { ok: 1 } }, nodeHandles: { gateA: makeH(c1), triplet: makeH(c1), gateB: makeH(c1), sink: makeH(c1) }, boundCaps: new Set() as any }
     const first: any = yield* runJeslWorkflow(docHash, seed, docRaw as any, base1).pipe(Effect.provide(layer) as any)
@@ -75,13 +74,13 @@ describe("battery F23-F25", () => {
     const tsExcluded = canonical(a) === canonical(b)
     if (!tsExcluded) { if (identical) throw new Error("ts leak not caught") } else { if (!identical) throw new Error("not identical"); if (second.invoked !== 0) throw new Error("not 0") }
   }))
-  it.effect("t4 kill-resume", () => Effect.gen(function* () {
+  it.effect("t4 kill-resume", () => Effect.gen(function* (): any {
     const killDocRaw = JSON.parse(Fs.readFileSync(Path.join(testsDir, "fixtures-kill-resume.json"), "utf-8"))
     const killDocHash = simpleHashExport(JSON.stringify(killDocRaw)).slice(0, 16)
     const killSeed = "kill-resume-unit"
     const journal: any = yield* makeJournal
     const layer = Layer.succeed(Journal, journal)
-    const fastHandle: any = { invoke: () => Effect.gen(function* () { const s = yield* Clock.currentTimeMillis; return { verdict: PASS_TOK as const, evidence: { pattern: "kill", state: PASS_TOK, anchor: "k:1" }, timing: { startMs: s, endMs: s }, outputs: { ch1: { ok: 1 }, ch2: { ok: 1 }, ch3: { ok: 1 } } } as any }) } as any
+    const fastHandle: any = { invoke: () => Effect.gen(function* (): any { const s = yield* Clock.currentTimeMillis; return { verdict: PASS_TOK as any, evidence: { pattern: "kill", state: PASS_TOK, anchor: "k:1" }, timing: { startMs: s, endMs: s }, outputs: { ch1: { ok: 1 }, ch2: { ok: 1 }, ch3: { ok: 1 } } } as any }) } as any
     const base: any = { doc: killDocRaw, caps: Context.empty() as any, clock: Clock as any, budget: { startedAt: Date.now(), deadlineMs: 600000, maxNodesFiring: 1 }, vars: {}, nodeHandles: { A: fastHandle, B: fastHandle, C: fastHandle, D: fastHandle }, boundCaps: new Set() as any }
     const first: any = yield* runJeslWorkflow(killDocHash, killSeed, killDocRaw as any, base).pipe(Effect.provide(layer) as any)
     if (first.invoked <= 0) throw new Error("bad first.invoked="+first.invoked)
@@ -92,13 +91,13 @@ describe("battery F23-F25", () => {
     if (second.invoked !== 0) throw new Error("bad second.invoked="+second.invoked)
     if (second.receipt.verdict !== first.receipt.verdict) throw new Error("bad verdict")
   }))
-  it.effect("t5 replay zero", () => Effect.gen(function* () {
+  it.effect("t5 replay zero", () => Effect.gen(function* (): any {
     const journal: any = yield* makeJournal
     const layer = Layer.succeed(Journal, journal)
     const docHash = "hash-s9-unit-009"
     const seed = "seed-s9-unit"
     const counter = yield* Ref.make(0)
-    const makeH = (): any => ({ invoke: () => Effect.gen(function* () { yield* Ref.update(counter, (n: number) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: PASS_TOK as const, evidence: { pattern: "s9", state: PASS_TOK, anchor: "s9:1" }, timing: { startMs: s, endMs: s }, outputs: { ch: { ok: 1 } } } as any }) } as any)
+    const makeH = (): any => ({ invoke: () => Effect.gen(function* (): any { yield* Ref.update(counter, (n: number) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: PASS_TOK as any, evidence: { pattern: "s9", state: PASS_TOK, anchor: "s9:1" }, timing: { startMs: s, endMs: s }, outputs: { ch: { ok: 1 } } } as any }) } as any)
     const doc: any = { $schema: "trident-workflow-v1", meta: { name: "s9wf", tier: 1 }, nodes: [{ id: "A", type: "gate" }, { id: "B", type: "gate" }], edges: [{ from: "A", to: "B", via: "ch" }] }
     const base: any = { doc, caps: Context.empty() as any, clock: Clock as any, budget: { startedAt: Date.now(), deadlineMs: 600000, maxNodesFiring: 15 }, vars: {}, nodeHandles: { A: makeH(), B: makeH() }, boundCaps: new Set() as any }
     const first: any = yield* runJeslWorkflow(docHash, seed, doc as any, base).pipe(Effect.provide(layer) as any)

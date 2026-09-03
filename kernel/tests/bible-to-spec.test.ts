@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { describe, it as itOrig, expect } from "@effect/vitest"
 const it: any = itOrig
 import { Effect, Layer, Clock } from "effect"
@@ -22,7 +21,7 @@ describe("bible-to-spec kernel — F19 #2", () => {
       const decoded = yield* decodeDoc(spec as any).pipe(Effect.provide(layer))
       expect(decoded.meta.name).toBe(spec.meta.name)
       // journal chain intact
-      const rows: any[] = yield* journal.allRows().pipe(Effect.provide(layer))
+      const rows: readonly any[] = yield* journal.allRows().pipe(Effect.provide(layer))
       expect(rows.length).toBeGreaterThan(0)
       const ok = yield* journal.verify().pipe(Effect.provide(layer))
       expect(ok).toBe(true)
@@ -51,7 +50,7 @@ describe("bible-to-spec kernel — F19 #2", () => {
       expect(err.code).toBe("[JESL CHANNEL-UNSET]")
       expect(err.node).toBe("digest")
       expect(err.field).toBe("bible")
-      const rows: any[] = yield* journal.allRows().pipe(Effect.provide(layer))
+      const rows: readonly any[] = yield* journal.allRows().pipe(Effect.provide(layer))
       // at least one invoke row before fail
       expect(rows.length).toBeGreaterThan(0)
     }))
@@ -67,7 +66,7 @@ describe("bible-to-spec kernel — F19 #2", () => {
       expect(err.field).toBe("config.math")
       expect(err.node).toBe("broken")
       expect(String(err.actual)).toBe("@@@invalid math ((")
-      const rows: any[] = yield* journal.allRows().pipe(Effect.provide(layer))
+      const rows: readonly any[] = yield* journal.allRows().pipe(Effect.provide(layer))
       const failRow = rows.find((r: any) => r.node === "math-lint" && r.verdict === "FAIL")
       expect(failRow).toBeDefined()
     }))
@@ -78,7 +77,7 @@ describe("bible-to-spec kernel — F19 #2", () => {
       const layer = Layer.succeed(Journal, journal)
       const spec = yield* runBibleToSpecSimple(bibleMinimal as any).pipe(Effect.provide(layer))
       expect(spec.$schema).toBe("trident-workflow-v1")
-      const rows: any[] = yield* journal.allRows().pipe(Effect.provide(layer))
+      const rows: readonly any[] = yield* journal.allRows().pipe(Effect.provide(layer))
       expect(rows.length).toBeGreaterThanOrEqual(6)
       const ok = yield* journal.verify().pipe(Effect.provide(layer))
       expect(ok).toBe(true)

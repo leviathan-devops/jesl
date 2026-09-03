@@ -1,0 +1,61 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "bracket",
+    "tier": 1,
+    "description": "Bracket pattern: gate pre-validates, bracketed prompt generates within contract, claim-gate adjudicates evidence. Prompt replaced by deterministic pipeline to stay CLI-castable (no Llm cap).",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "pipeline",
+        "instruction": "[WORK SLOT] Replace 'bracket-prompt' pipeline with your bracketed generation nodes (tier 2 + bracket.contract when using real prompt with Llm cap). Adopter adds bracket contract to the prompt node."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "gateA",
+      "type": "gate"
+    },
+    {
+      "id": "bracket-prompt",
+      "type": "pipeline",
+      "config": {}
+    },
+    {
+      "id": "claim",
+      "type": "claim-gate",
+      "config": {
+        "subject": "bracket.claim",
+        "preSource": {
+          "filePath": "src/bracket-output.json",
+          "payload": {
+            "note": "bracketed generation output written before the claim"
+          }
+        }
+      }
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "gateA",
+      "to": "bracket-prompt",
+      "via": "bracketSeed"
+    },
+    {
+      "from": "bracket-prompt",
+      "to": "claim",
+      "via": "promptOut"
+    },
+    {
+      "from": "claim",
+      "to": "sink",
+      "via": "claimOut"
+    }
+  ],
+  "vars": {}
+}

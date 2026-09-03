@@ -1,5 +1,5 @@
-// @ts-nocheck
-import { describe, it, expect } from "@effect/vitest"
+import { describe, it as itOrig, expect } from "@effect/vitest"
+const it: any = itOrig
 import { Effect, Layer } from "effect"
 import * as fs from "node:fs"
 import * as path from "node:path"

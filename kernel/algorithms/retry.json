@@ -1,0 +1,51 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "retry",
+    "tier": 1,
+    "description": "Retry pattern: retry-chain attempts with backoff, fallback-chain provides alternative. WORK SLOT is inside retry fn or between chains.",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "pipeline",
+        "instruction": "[WORK SLOT] Insert domain retry logic by configuring retry-chain.failTimes/maxRetries or replace fallback-chain fallbackValue with your fallback nodes."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "retry",
+      "type": "retry-chain",
+      "config": {
+        "maxRetries": 2,
+        "failTimes": 1
+      }
+    },
+    {
+      "id": "fallback",
+      "type": "fallback-chain",
+      "config": {
+        "fallbackValue": {
+          "fallback": true
+        }
+      }
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "retry",
+      "to": "fallback",
+      "via": "retried"
+    },
+    {
+      "from": "fallback",
+      "to": "sink",
+      "via": "fallbackOut"
+    }
+  ],
+  "vars": {}
+}

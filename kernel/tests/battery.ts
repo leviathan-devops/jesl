@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Effect, Ref, Clock, Layer, Context } from "effect"
 import * as Fs from "node:fs"
 import * as Path from "node:path"
@@ -124,7 +123,7 @@ async function scenarioS4(): Promise<BatteryRow> {
   const passToken = "sha chain diff EMPTY + resume"
   const failToken = "hash mismatch"
   try {
-    const eff = Effect.gen(function* () {
+    const eff = Effect.gen(function* (): any {
       const row1: any = { seq: 0, run: "run-det", node: "A", kind: "verdict", verdict: "PASS", evidence: { pattern: "p", state: "s", anchor: "a:1" }, source: "workflow/wf/A", prev: "genesis" }
       const serA = canonicalSerializeExport({ ...row1, ts: 1000 } as any)
       const serB = canonicalSerializeExport({ ...row1, ts: 2000 } as any)
@@ -142,7 +141,7 @@ async function scenarioS4(): Promise<BatteryRow> {
       const seed = "det-seed-001"
       const counter = yield* Ref.make(0)
       const counted: NodeHandle = {
-        invoke: () => Effect.gen(function* () { yield* Ref.update(counter, (n) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: "PASS" as const, evidence: { pattern: "det", state: "PASS", anchor: "A:1" }, timing: { startMs: s, endMs: s } } })
+        invoke: () => Effect.gen(function* (): any { yield* Ref.update(counter, (n) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: "PASS" as const, evidence: { pattern: "det", state: "PASS", anchor: "A:1" }, timing: { startMs: s, endMs: s } } })
       }
       const handles: Record<string, NodeHandle> = { A: counted, B: counted }
       const base: Omit<RunContext, "runId" | "journal"> & { runId?: string } = { doc, caps: Context.empty() as any, clock: Clock as any, budget: { startedAt: Date.now(), deadlineMs: 600000, maxNodesFiring: 15 }, vars: {}, nodeHandles: handles as any, boundCaps: new Set() as any } as any
@@ -172,7 +171,7 @@ async function scenarioS4(): Promise<BatteryRow> {
       yield* partialJournal.append({ run: killRunId, node: "A", kind: "verdict", verdict: "PASS", source: `workflow/kill-resume-fixture/A`, evidence: { pattern: "gate", state: "PASS", anchor: "A:1" }, ts: now + 1 } as any).pipe(Effect.provide(partialLayer) as any)
       const counter2 = yield* Ref.make(0)
       const counted2: NodeHandle = {
-        invoke: () => Effect.gen(function* () { yield* Ref.update(counter2, (n) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: "PASS" as const, evidence: { pattern: "kill", state: "PASS", anchor: "K:1" }, timing: { startMs: s, endMs: s }, outputs: { ch1: { ok: 1 }, ch2: { ok: 1 }, ch3: { ok: 1 } } } })
+        invoke: () => Effect.gen(function* (): any { yield* Ref.update(counter2, (n) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: "PASS" as const, evidence: { pattern: "kill", state: "PASS", anchor: "K:1" }, timing: { startMs: s, endMs: s }, outputs: { ch1: { ok: 1 }, ch2: { ok: 1 }, ch3: { ok: 1 } } } })
       }
       const handles2: Record<string, NodeHandle> = { A: counted2, B: counted2, C: counted2, D: counted2 }
       const base2: Omit<RunContext, "runId" | "journal"> & { runId?: string } = { doc: killDoc, caps: Context.empty() as any, clock: Clock as any, budget: { startedAt: Date.now(), deadlineMs: 600000, maxNodesFiring: 15 }, vars: {}, nodeHandles: handles2 as any, boundCaps: new Set() as any } as any
@@ -277,7 +276,7 @@ async function scenarioS7(): Promise<BatteryRow> {
     const badUnbracketed = await Effect.runPromise(handleValidate({ command: "validate", docPath: Path.join(FIXTURES, "bad-unbracketed.json"), raw: [] } as any))
     const hasTier = badTier.stderr.includes("[JESL TIER-VIOLATION]") && badTier.code !== 0
     const hasUnbracketed = badUnbracketed.stderr.includes("[JESL UNBRACKETED-GENERATION]") && badUnbracketed.code !== 0
-    const roundtrip = await Effect.runPromise(Effect.gen(function* () {
+    const roundtrip = await Effect.runPromise(Effect.gen(function* (): any {
       const journal = yield* makeJournal
       const layer = Layer.succeed(Journal, journal) as any
       const runId = "run-ask-s7"
@@ -331,7 +330,7 @@ async function scenarioS9(): Promise<BatteryRow> {
   const passToken = "invoke count 0 + identical chain"
   const failToken = "re-exec"
   try {
-    const eff = Effect.gen(function* () {
+    const eff = Effect.gen(function* (): any {
       const journal = yield* makeJournal
       const layer = Layer.succeed(Journal, journal) as any
       const doc: WorkflowDoc = {
@@ -343,7 +342,7 @@ async function scenarioS9(): Promise<BatteryRow> {
       const docHash = "s9-hash-001"
       const seed = "s9-seed-001"
       const c1 = yield* Ref.make(0)
-      const h: NodeHandle = { invoke: () => Effect.gen(function* () { yield* Ref.update(c1, (n) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: "PASS" as const, evidence: { pattern: "s9", state: "PASS", anchor: "A:1" }, timing: { startMs: s, endMs: s } } }) }
+      const h: NodeHandle = { invoke: () => Effect.gen(function* (): any { yield* Ref.update(c1, (n) => n + 1); const s = yield* Clock.currentTimeMillis; return { verdict: "PASS" as const, evidence: { pattern: "s9", state: "PASS", anchor: "A:1" }, timing: { startMs: s, endMs: s } } }) }
       const handles: Record<string, NodeHandle> = { A: h, B: h }
       const base: Omit<RunContext, "runId" | "journal"> & { runId?: string } = { doc, caps: Context.empty() as any, clock: Clock as any, budget: { startedAt: Date.now(), deadlineMs: 600000, maxNodesFiring: 15 }, vars: {}, nodeHandles: handles as any, boundCaps: new Set() as any } as any
       const first = yield* runJeslWorkflow(docHash, seed, doc, base).pipe(Effect.provide(layer) as any)
@@ -404,7 +403,7 @@ async function scenarioA2(): Promise<BatteryRow> {
   const passToken = "pba.family.hit then pta.intercept, bash never ran"
   const failToken = "bash executed"
   try {
-    const eff = Effect.gen(function* () {
+    const eff = Effect.gen(function* (): any {
       const bus = yield* makeBus
       yield* attachPbaScanner.pipe(Effect.provideService(Bus, bus))
       yield* attachPtaScanner().pipe(Effect.provideService(Bus, bus))

@@ -1,0 +1,45 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "ask",
+    "tier": 1,
+    "description": "Ask pattern: durable ask via prompt ask-launcher, journal-sink persists the question/answer. CLI-castable stand-in uses pipeline for the ask (no Llm cap).",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "pipeline",
+        "instruction": "[WORK SLOT] Replace 'ask-launcher' pipeline with your ask logic. For real durable ask, use prompt mode=ask-launcher with tier 2 + bracket + Llm cap and wire to journal."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "seed",
+      "type": "gate"
+    },
+    {
+      "id": "ask-launcher",
+      "type": "pipeline",
+      "config": {}
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "seed",
+      "to": "ask-launcher",
+      "via": "askSeed"
+    },
+    {
+      "from": "ask-launcher",
+      "to": "sink",
+      "via": "askOut"
+    }
+  ],
+  "vars": {
+    "question": "what is the next step?"
+  }
+}

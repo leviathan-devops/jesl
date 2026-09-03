@@ -1,0 +1,43 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "chain",
+    "tier": 1,
+    "description": "Replay-chain pattern: seed validation, a replay/work stage, then journal the outcome. Ships CLI-castable with a pipeline work slot.",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "pipeline",
+        "instruction": "[WORK SLOT] Replace 'work-slot' (pipeline) with a replay-source node (config: {runId: \"<your-run-id>\"}) to replay a previous run's journaled rows. The CLI run's own journal only carries the current run, so replay needs an existing runId from an earlier cast."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "seed",
+      "type": "gate"
+    },
+    {
+      "id": "work-slot",
+      "type": "pipeline",
+      "config": {}
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "seed",
+      "to": "work-slot",
+      "via": "chainSeed"
+    },
+    {
+      "from": "work-slot",
+      "to": "sink",
+      "via": "chainOut"
+    }
+  ],
+  "vars": {}
+}

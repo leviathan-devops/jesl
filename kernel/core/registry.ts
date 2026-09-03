@@ -111,6 +111,12 @@ export const replaceStubSync = (kind: string, impl: NodeImpl): void => {
 export const replaceStub = (kind: string, impl: NodeImpl): Effect.Effect<void, Error, NodeRegistry> =>
   Effect.flatMap(NodeRegistry, (r) => (r as any).replaceStub(kind, impl))
 
+/** Sync accessor over the global registry store — the SINGLE SOURCE OF TRUTH for kind→impl
+ *  resolution (the CLI handle-builder consumes this; a hardcoded kind map here would fork the
+ *  registry and silently PASS-stub kinds that have real implementations — the mock-split class).
+ *  Returns the registered impl (real or seeded stub) or undefined for unknown kinds. */
+export const getRegisteredImplSync = (kind: string): NodeImpl | undefined => globalRegistryStore.get(kind)
+
 export const makeRegistry = Effect.gen(function* () {
   const map = yield* Ref.make(new Map<string, NodeImpl>())
   const meta = yield* Ref.make(new Map<string, RegistryRow>())

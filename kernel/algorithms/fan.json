@@ -1,0 +1,58 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "fan",
+    "tier": 1,
+    "description": "Fan pattern: parallel fans out items, gate asserts all branches PASS. Adopter replaces parallel items with real work and gate asserts with domain checks.",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "parallel",
+        "instruction": "[WORK SLOT] Replace parallel node 'fan-out' items with your domain tasks. Keep gate asserting count/results."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "fan-out",
+      "type": "parallel",
+      "config": {
+        "items": [
+          "task-a",
+          "task-b",
+          "task-c"
+        ]
+      }
+    },
+    {
+      "id": "gate",
+      "type": "gate",
+      "config": {
+        "asserts": [
+          {
+            "path": "$.count",
+            "op": "ge",
+            "value": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "fan-out",
+      "to": "gate",
+      "via": "count"
+    },
+    {
+      "from": "gate",
+      "to": "sink",
+      "via": "fanGateOut"
+    }
+  ],
+  "vars": {}
+}

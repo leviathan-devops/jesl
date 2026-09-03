@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Effect, Clock, Context } from "effect"
 import * as Fs from "node:fs"
 import * as Path from "node:path"
@@ -120,7 +119,7 @@ const runDryRun = (
   kernel: Record<string, any>,
   runId: string
 ): Effect.Effect<Record<string, RunSummary>, JeslError> =>
-  Effect.gen(function* (): Generator<any, Record<string, RunSummary>, any> {
+  (Effect.gen(function* (): Generator<any, Record<string, RunSummary>, any> {
     const out: Record<string, RunSummary> = {}
     for (const [kid, proto] of Object.entries(kernel)) {
       const wfRaw = (proto as any).workflow as unknown
@@ -166,12 +165,12 @@ const runDryRun = (
       out[kid] = summary
     }
     return out
-  })
+  }) as unknown as Effect.Effect<Record<string, RunSummary>, JeslError>)
 
 export const specToKernels = (
   input: SpecToKernelsInput
 ): Effect.Effect<SpecToKernelsOutput, JeslError, Journal> =>
-  Effect.gen(function* (): Generator<any, SpecToKernelsOutput, any> {
+  (Effect.gen(function* (): Generator<any, SpecToKernelsOutput, any> {
     const specPath = input.specPath
     if (!specPath || typeof specPath !== "string") {
       return yield* Effect.fail(
@@ -267,7 +266,7 @@ export const specToKernels = (
       runId,
       journalTail: tail
     } as SpecToKernelsOutput
-  })
+  }) as unknown as Effect.Effect<SpecToKernelsOutput, JeslError, Journal>)
 
 export const runSpecToKernels = (
   specPath: string,

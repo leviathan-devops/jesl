@@ -5,23 +5,13 @@ import { decodeDoc, validateDoc } from "../core/schema"
 import { JESL_TOKENS } from "../core/errors"
 import { verifyChain } from "../core/journal"
 import { runProgram, type RunContext, type NodeHandle } from "../core/executor"
-import { Shell, Llm } from "../core/caps"
-import { gateNode } from "../nodes/gate"
-import { eventFilterNode } from "../nodes/event-filter"
-import { captureEngineNode } from "../nodes/capture-engine"
-import { pipelineNode } from "../nodes/pipeline"
-import { parallelNode } from "../nodes/parallel"
-import { retryChainNode } from "../nodes/retry-chain"
-import { fallbackChainNode } from "../nodes/fallback-chain"
-import { journalSinkNode } from "../nodes/journal-sink"
-import { tripletWriterNode } from "../nodes/triplet-writer"
-import { stateMachineNode } from "../nodes/state-machine"
-import { mathEvalNode } from "../nodes/math-eval"
-import { shellExecNode } from "../nodes/shell-exec"
-import { pythonExecNode } from "../nodes/python-exec"
-import { httpRequestNode } from "../nodes/http-request"
-import { fileIoNode } from "../nodes/file-io"
-import { promptNode } from "../nodes/prompt"
+import { Shell } from "../core/caps"
+import { getRegisteredImplSync } from "../core/registry"
+// Importing nodes/index triggers every node module's replaceStubSync registration —
+// the registry is the SINGLE SOURCE OF TRUTH for kind→impl resolution. The CLI must
+// resolve handles from the registry, never from a local kind map: a forked map is the
+// mock-split defect (real impls on the test path, silent PASS-stubs on the live path).
+import "../nodes/index"
 import { helpText, type ParsedArgs } from "./args"
 
 export interface HandlerResult {
@@ -85,52 +75,21 @@ function checkUnbracketed(doc: any): any | null {
 function buildNodeHandles(doc: any): { handles: Record<string, NodeHandle>, capsRequirements: Record<string, string[]>, boundCapsFor: (driver: string) => Set<string> } {
   const handles: Record<string, NodeHandle> = {}
   const capsReq: Record<string, string[]> = {}
-  const passHandle = (pattern: string): any => ({
-    kind: pattern,
-    family: "deterministic" as any,
-    requiredCaps: [],
-    invoke: () => Effect.succeed({ verdict: "PASS" as const, evidence: { pattern, state: "PASS", anchor: pattern + ":1" }, timing: { startMs: 0, endMs: 0 }, outputs: { [pattern]: true } } as any)
-  })
-  const map: Record<string, any> = {
-    // The REAL node implementations — the CLI runs the actual kernel nodes, never stand-ins (the audit law: a fitted pass is a defect).
-    "gate": gateNode,
-    "event-filter": eventFilterNode,
-    "capture-engine": captureEngineNode,
-    "pipeline": pipelineNode,
-    "parallel": parallelNode,
-    "retry-chain": retryChainNode,
-    "fallback-chain": fallbackChainNode,
-    "journal-sink": journalSinkNode,
-    "triplet-writer": tripletWriterNode,
-    "state-machine": stateMachineNode,
-    "math-eval": mathEvalNode,
-    "shell-exec": shellExecNode,
-    "python-exec": pythonExecNode,
-    "http-request": httpRequestNode,
-    "file-io": fileIoNode,
-  }
   for (const n of doc.nodes) {
-    const impl: any = map[n.type]
-    if (impl) {
-      handles[n.id] = impl as NodeHandle
-      capsReq[n.id] = (impl.requiredCaps ?? []) as string[]
-    } else if (n.type === "prompt") {
-      handles[n.id] = promptNode as unknown as NodeHandle
-      capsReq[n.id] = (promptNode.requiredCaps ?? ["llm"]) as string[]
-    } else if (n.type === "shadow-agent" || n.type === "subagent-dispatch") {
-      const capName = n.type === "shadow-agent" ? "subagent" : "subagent"
-      const h: NodeHandle = {
-        requiredCaps: [capName],
-        invoke: (_input: any, _ctx: any) => Effect.succeed({ verdict: "PASS" as const, evidence: { pattern: `${n.type}.stub`, state: "PASS", anchor: `${n.id}:1` }, timing: { startMs: 0, endMs: 0 } } as any)
-      }
-      handles[n.id] = h
-      capsReq[n.id] = [capName]
-    } else {
-      handles[n.id] = {
-        invoke: () => Effect.succeed({ verdict: "PASS" as const, evidence: { pattern: `${n.type}.stub`, state: "PASS", anchor: `${n.id}:1` }, timing: { startMs: 0, endMs: 0 } } as any)
-      } as NodeHandle
-      capsReq[n.id] = []
+    const impl = getRegisteredImplSync(n.type)
+    if (!impl) {
+      // Unknown kind reaching handle-build = the schema validator's known-set drifted from
+      // the registry. LOUD fail with the frozen token — a silent PASS-stub here is a lie.
+      const err: any = new Error(JESL_TOKENS.UNKNOWN_NODE)
+      err.code = JESL_TOKENS.UNKNOWN_NODE
+      err.node = n.id
+      err.field = "type"
+      err.actual = n.type
+      err.remedy = "use a kind from core/registry.ts ALL_KINDS"
+      throw err
     }
+    handles[n.id] = impl as unknown as NodeHandle
+    capsReq[n.id] = (impl.requiredCaps ?? []) as string[]
   }
   const boundCapsFor = (driver: string): Set<string> => {
     if (driver === "cli") return new Set(["Shell", "Fs", "Http"])
