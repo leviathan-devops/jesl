@@ -10,6 +10,11 @@ export { journalSinkNode } from "./journal-sink"
 export { tripletWriterNode } from "./triplet-writer"
 export { stateMachineNode } from "./state-machine"
 export { mathEvalNode, MathExprService } from "./math-eval"
+export { circuitBreakerNode, _circuitStore, _resetCircuit } from "./circuit-breaker"
+export { cronTriggerNode, _cronStore, _resetCron } from "./cron-trigger"
+export { eventReactivateNode, _reactivateMap, _reactivateLog, _resetReactivate, reactivateWait } from "./event-reactivate"
+export { configLockNode, _configLockStore, _resetConfigLock } from "./config-lock"
+export { layerLoaderNode, _layerStore, _knownLayers, _resetLayers } from "./layer-loader"
 export { stubNodes } from "./stubs"
 import { gateNode } from "./gate"
 import { eventFilterNode } from "./event-filter"
@@ -23,6 +28,15 @@ import { journalSinkNode } from "./journal-sink"
 import { tripletWriterNode } from "./triplet-writer"
 import { stateMachineNode } from "./state-machine"
 import { mathEvalNode } from "./math-eval"
+import { circuitBreakerNode } from "./circuit-breaker"
+import { cronTriggerNode } from "./cron-trigger"
+import { eventReactivateNode } from "./event-reactivate"
+import { configLockNode } from "./config-lock"
+import { layerLoaderNode } from "./layer-loader"
 import { stubNodes } from "./stubs"
-export const allFullNodes = [gateNode, eventFilterNode, captureEngineNode, pipelineNode, parallelNode, retryChainNode, fallbackChainNode, pauseNode, journalSinkNode, tripletWriterNode, stateMachineNode, mathEvalNode]
-export const allNodes = [...allFullNodes, ...stubNodes]
+import { replaceStubSync } from "../core/registry"
+for (const [k, impl] of [["circuit-breaker", circuitBreakerNode],["cron-trigger", cronTriggerNode],["event-reactivate", eventReactivateNode],["config-lock", configLockNode],["layer-loader", layerLoaderNode]] as const) {
+  try { replaceStubSync(k, impl as any) } catch (err) { const _ = err; void _ }
+}
+export const allFullNodes = [gateNode, eventFilterNode, captureEngineNode, pipelineNode, parallelNode, retryChainNode, fallbackChainNode, pauseNode, journalSinkNode, tripletWriterNode, stateMachineNode, mathEvalNode, circuitBreakerNode, cronTriggerNode, eventReactivateNode, configLockNode, layerLoaderNode]
+export const allNodes = [...allFullNodes, ...stubNodes.filter(s => !["circuit-breaker","cron-trigger","event-reactivate","config-lock","layer-loader"].includes(s.kind))]

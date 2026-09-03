@@ -35,7 +35,7 @@ export interface BatterySummary {
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = Path.dirname(__filename)
-const ROOT = Path.resolve(__dirname, "..")
+const ROOT = Path.resolve(__dirname, "../..")
 const FIXTURES = Path.join(ROOT, "jesl/fixtures")
 const JESL_ROOT = Path.join(ROOT, "jesl")
 const CORE_DIR = Path.join(JESL_ROOT, "core")

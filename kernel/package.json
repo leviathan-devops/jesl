@@ -16,12 +16,14 @@
     "@effect/platform-node": "^0.108.1",
     "@effect/vitest": "^0.24.1",
     "@effect/workflow": "^0.19.1",
+    "better-sqlite3": "^13.0.3",
     "effect": "^3.22.1"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/bun": "^1.2.0",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.7",
-    "@types/bun": "^1.2.0"
+    "vitest": "^3.2.7"
   },
   "bin": {
     "jesl": "./cli/main.ts"
