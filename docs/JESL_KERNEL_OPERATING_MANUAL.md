@@ -7,9 +7,9 @@
 
 ## THE ONE-LINE MODEL
 
-**You write a JSON pipeline document. The kernel validates it, builds the dependency graph, fires the nodes in readiness order on Effect-TS fibers (capped at 15 concurrent), journals every step to a sha256-chained evidence log, and returns a verdict.**
+Write a JSON file with your pipeline steps. The kernel validates it, runs each step on Effect-TS in dependency order, logs every result to a tamper-proof journal, and returns PASS or FAIL.
 
-The JSON document IS the program. The kernel IS the runtime. The journal IS the proof.
+
 
 The canon line (bible 2E.0 :289): *JESL authors the graph. Effect runs the graph. Activities journal the world. Paragon polices think and do. Effect LSP polices files. There is no other runtime.*
 

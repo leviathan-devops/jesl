@@ -4,7 +4,7 @@
 
 ## THE ONE-LINE MODEL
 
-You write a JSON file describing a pipeline of operations (nodes connected by edges). The kernel validates it, computes the execution order from the dependencies, runs the operations on Effect-TS fibers (capped at 15 concurrent), journals every step to a sha256-chained tamper-proof log, and returns a verdict.
+Write a JSON file with your pipeline steps. The kernel validates it, runs each step on Effect-TS in dependency order, logs every result to a tamper-proof journal, and returns PASS or FAIL.
 
 ## QUICK START
 
