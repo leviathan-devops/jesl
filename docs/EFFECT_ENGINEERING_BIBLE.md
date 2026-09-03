@@ -1,4 +1,4 @@
-# EFFECT SPELLCASTING BIBLE — THE SHARED MACRO MECHANICS OF MAGIC
+# EFFECT ENGINEERING BIBLE — THE SHARED MACRO MECHANICS OF MAGIC
 
 > **TRIGGER:** Any agent building spell-like executable artifacts (JESL Effect Spells, Skill Rockets) or analyzing how magic systems actually compute casting. NOT a lore document — zero world-building, only the mechanics of idea/cause → effect → experienced effect.
 > **DUTY:** Read fully. Then operate. This bible extracts the SHARED patterns every canonical system uses to script magic, then compiles them onto JESL + TDM.
@@ -262,7 +262,7 @@ Read the compile: stage 1-3 = meta+nodes (the IDEA bound as name/seed, the EFFEC
 **BYPASS CLOSURE:** every anti-pattern above has a schema-level tripwire — the 5 refusals catch P4-1/P4-3 at decode; the tier gate catches P4-2's unbracketed generation; the journal + covers catches P4-5/P4-7 (an unnarrated run cannot produce a verified replay); the dataflow readiness catches P4-6 at graph build; the oracle cards + strike path catch P4-8; the pre-flight budget catches P4-10. No pattern is caught by prose — all are caught by mechanics.
 
 
-## PART 5 — THE EFFECT SPELLCASTING SCHEMA (compiled onto JESL + TDM)
+## PART 5 — THE EFFECT ENGINEERING SCHEMA (compiled onto JESL + TDM)
 
 ### 5.1 THE TRIAD MAPPING
 
@@ -451,7 +451,7 @@ launch: jesl run payload/workflow.json --in payload/ctx.json
 ```
 JESL kernel      .../Effect_Runtime_Kernels/jesl/           (109 files; runner: npx vitest run)
 TDM spec         .../v4.4.3/TRIDENT_DECISION_MAKING_TOOL_SPEC.md  (1,525L)
-this bible       .../KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_SPELLCASTING_BIBLE.md
+this bible       .../KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_ENGINEERING_BIBLE.md
 boilerplate      .../KNOWLEDGE_LIBRARY/agent_plugin_boilerplates/JESL-Kernel-Edition-v1.0/
 ```
 
@@ -468,7 +468,7 @@ bun run cli/main.ts validate fixtures/bad-unknown-kind.json 2>&1 | grep -o 'JESL
 bun run cli/main.ts run fixtures/mech-gate.json > /tmp/j.json && bun run cli/main.ts replay /tmp/j.json | grep verified
 
 # the doc's own floor
-wc -l KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_SPELLCASTING_BIBLE.md   # ≥ 300 (discipline bible)
+wc -l KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_ENGINEERING_BIBLE.md   # ≥ 300 (discipline bible)
 ```
 
 Fresh-agent check: could you author, cast, verify, and rocket a spell from Parts 1-6 alone, with no other context? If any step is unclear, the gap is in this bible — fix the bible, not the reader.

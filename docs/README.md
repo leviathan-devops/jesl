@@ -9,8 +9,8 @@
 
 | # | Doc | Lines | Role |
 |---|---|---|---|
-| 1 | **JESL_SPELLCASTING_LIBRARY.md** | 915 | THE KNOWLEDGE LIBRARY — cards, rolodex, compiler machines, kernels (4 machine types), rockets, the 5-stage spellcasting pipeline, TDM framework map, algorithms (active spells), build scenarios (God Loop / code-audit / container-test / firewall / ship / D3) |
-| 2 | **EFFECT_SPELLCASTING_BIBLE.md** | 492 | THE CANON MECHANICS — the shared physics of magic across Skyrim/Oblivion/Witcher/Eragon, extracted to the universal spell model (primitives, pricing, targeting, execution classes, resolution, stacking, the interface-compiler, the mastery ladder) + the 9-stage pipeline |
+| 1 | **JESL_EFFECT_ENGINEERING_LIBRARY.md** | 915 | THE KNOWLEDGE LIBRARY — cards, rolodex, compiler machines, kernels (4 machine types), rockets, the 5-stage Effect Engineering pipeline, TDM framework map, algorithms (active spells), build scenarios (God Loop / code-audit / container-test / firewall / ship / D3) |
+| 2 | **EFFECT_ENGINEERING_BIBLE.md** | 492 | THE CANON MECHANICS — the shared physics of magic across Skyrim/Oblivion/Witcher/Eragon, extracted to the universal spell model (primitives, pricing, targeting, execution classes, resolution, stacking, the interface-compiler, the mastery ladder) + the 9-stage pipeline |
 | 3 | **JESL_KERNEL_OPERATING_MANUAL.md** | 504 | THE OPERATING MANUAL — how to USE the kernel: author docs, cast via CLI, the programmatic API, packaging, the lifecycle kernels |
 | 4 | **JESL_KERNEL_ARCHITECTURE_BIBLE.md** | 1,786 | THE ARCHITECTURE — how to BUILD on the kernel: all 10 core modules deep-dived, the node system, drivers, scanners, MPSE bridge, lifecycle kernels, testing architecture (336-test ledger), the evidence chain |
 | 5 | **EFFECT_TS_RUNTIME_BIBLE.md** | 514 | THE EFFECT CANON — laws E1-E10, the kernel services map, node→Effect table, drivers=Layers, Workflow vs Fiber |

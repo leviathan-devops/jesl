@@ -125,11 +125,11 @@ The session-history ledger: what was accomplished (with evidence), the decisions
 - The Architecture Bible landed at 1,786L against the 3,000-4,000L skeleton target — the count is the honest zero-redundancy density: every remaining fact the primary holds is already carried once; inflating to a line target would violate the anti-padding law. The density standard (every section carries tables/anchors/code/contracts, no bullet-only prose) is met throughout.
 - battery.ts is 461L (the 448L canon number was stale); @ts-nocheck is on 4 files (the 3-test-file canon undercounted battery.ts itself).
 
-## [2026-09-03] — SESSION 5 (continued): the spellcasting research + the knowledge library + the overhaul planning
+## [2026-09-03] — SESSION 5 (continued): the Effect Engineering research + the knowledge library + the overhaul planning
 ### Accomplished (evidence)
-- THE SPELLCASTING RESEARCH: web-fetched UESP (Lore:Magic, Skyrim:Magic Overview, Oblivion:Spell Making), Witcher Wiki (Magic), Inheriwiki (Magic, Ancient Language) — extracted the shared macro mechanics of magic across canon systems
-- THE CANON BIBLE: EFFECT_SPELLCASTING_BIBLE.md v2.0 (492L) — the shared physics (primitives, pricing, targeting, execution classes, resolution, stacking, the interface-compiler, the mastery ladder), stripped of lore per operator correction
-- THE KNOWLEDGE LIBRARY: JESL_SPELLCASTING_LIBRARY.md (915L) — cards, rolodex, compiler machines, kernels (4 machine types), rockets, the 5-stage spellcasting pipeline, TDM framework map, algorithms (active spells), build scenarios (God Loop / code-audit / container-test / firewall / ship / D3)
+- THE ENGINEERING RESEARCH: web-fetched UESP (Lore:Magic, Skyrim:Magic Overview, Oblivion:Spell Making), Witcher Wiki (Magic), Inheriwiki (Magic, Ancient Language) — extracted the shared macro mechanics of magic across canon systems
+- THE CANON BIBLE: EFFECT_ENGINEERING_BIBLE.md v2.0 (492L) — the shared physics (primitives, pricing, targeting, execution classes, resolution, stacking, the interface-compiler, the mastery ladder), stripped of lore per operator correction
+- THE KNOWLEDGE LIBRARY: JESL_ENGINEERING_LIBRARY.md (915L) — cards, rolodex, compiler machines, kernels (4 machine types), rockets, the 5-stage Effect Engineering pipeline, TDM framework map, algorithms (active spells), build scenarios (God Loop / code-audit / container-test / firewall / ship / D3)
 - THE JESL FOLDER: consolidated all JESL docs into KNOWLEDGE_LIBRARY/Bibles/JESL/ — 7 docs (6,150L total) + README.md (the index) + archive/ (the executed Phase-2 spec)
 - THE OVERHAUL PLANNING: DPL1 spec (specs/JESL_FULL_FUNCTION_OVERHAUL_DPL1_SPEC.md) + wave plan (.trident/wave-plan.md, WAVES: 4) — 12 subagents across 4 waves to implement the 20 stubs + algorithm cards + lexicon + boilerplate cleanup
 - THE D26 RENAME: "JSON Event Scripting Library" → "JSON Effect Scripting Language" applied to jesl/cli/args.ts:52 + the boilerplate copy + BUILD_REPORT canon line
@@ -141,7 +141,7 @@ The session-history ledger: what was accomplished (with evidence), the decisions
 - "21 FUCKING STUBS IS NOT FULLY FUNCTIONAL" — the full-catalog mandate
 - "WITHOUT OVERENGINEERING OR COMPLICATING OR SLOPPING THIS" — the simplicity mandate
 ### Failures + root cause
-- The first spellcasting bible was lore-heavy → operator corrected → v2.0 stripped to mechanics-only
+- The first Effect Engineering bible was lore-heavy → operator corrected → v2.0 stripped to mechanics-only
 - The 5-stage pipeline explanation used ASCII diagrams with off-by-one borders → the ruler pass caught + fixed
 - The wave-spec's first generate was refused twice (template kinship filter + planningNote) → prose scrubbed, re-fired
 ### Honest disclosures

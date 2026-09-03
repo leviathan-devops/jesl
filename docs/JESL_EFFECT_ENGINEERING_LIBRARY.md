@@ -1,8 +1,8 @@
-# JESL SPELLCASTING KNOWLEDGE LIBRARY — THE FULL MACRO
+# JESL ENGINEERING KNOWLEDGE LIBRARY — THE FULL MACRO
 # Cards · Rolodex · Compiler Machines · Kernels · Rockets · TDM · Algorithms
 
 > **TRIGGER:** Any agent authoring JESL Cards, building Kernel machines, packaging Skill Rockets, or casting spells against real systems.
-> **DUTY:** Read fully. Then operate. This is the complete JESL knowledge library — the card system, the kernel mechanics, the spellcasting pipeline, the TDM frameworks, and the algorithm layer.
+> **DUTY:** Read fully. Then operate. This is the complete JESL knowledge library — the card system, the kernel mechanics, the Effect Engineering pipeline, the TDM frameworks, and the algorithm layer.
 > **PROTOCOL:** One-shot read. Then execute P3-1..P3-6.
 
 **THE SENTENCES OF DISCIPLINE:**
@@ -73,7 +73,7 @@ A **JESL Card** is one intended effect as a self-contained, executable artifact.
 
 The card is the atom of the entire system. A **spell** is a card (or a card chain). An **algorithm** is an active card chain. A **kernel machine** is an engine that executes cards. Master the card and the rest is composition.
 
-The card inherits directly from the canon mechanics (EFFECT_SPELLCASTING_BIBLE §2): its JSON graph is the altar composition (Oblivion — compose from known effects), its shell is the formula binding (Witcher — "The Power bound in spell formulae"), and its evidence contract is the journal law (Eragon — the process spell leaves evidence at every stop boundary).
+The card inherits directly from the canon mechanics (EFFECT_ENGINEERING_BIBLE §2): its JSON graph is the altar composition (Oblivion — compose from known effects), its shell is the formula binding (Witcher — "The Power bound in spell formulae"), and its evidence contract is the journal law (Eragon — the process spell leaves evidence at every stop boundary).
 
 ### 2B — THE CARD ANATOMY (a real card, annotated)
 
@@ -437,12 +437,12 @@ The rocket stages (the spell's lifecycle after packaging):
 
 Rules: the launch line is `SKILL_LAUNCH_LINE` byte-exact (asserted by packager.test). All three emitters re-validate the doc first (criterion 9 — a rocket ships only valid cards). The card inside the rocket is byte-preserved via `canonicalJson` (stable 2-space ordering).
 
-## PART 5 — JESL SPELLCASTING A-Z: THE 5-STAGE PIPELINE
+## PART 5 — JESL ENGINEERING A-Z: THE 5-STAGE PIPELINE
 
 ### 5A — THE MASTER PIPELINE
 
 ```
-                THE FIVE-STAGE SPELLCASTING PIPELINE
+                THE FIVE-STAGE ENGINEERING PIPELINE
 
  ┌──────────────────────────────────────────────────────────┐
  │ STAGE 1 — WRITE THE SPELL                                │
@@ -577,7 +577,7 @@ The Trident Decision-Making engine (v4.4.3, 5 layers, 20 frameworks) is the spel
 
 The TDM constants as spell constants: `MAX_DECISION_TIME_REVERSIBLE 120s` (the canned tier — cast now), `MIN_DELIBERATION_IRREVERSIBLE 60s` (the binding tier — oaths hold), `CONSEQUENCE_CASCADE_DEPTH 3` (3rd-order foresight before an irreversible cast), `OPTION_EXHAUSTION_MINIMUM 3` (never a binary spell — Eragon's success-or-death law), `SNIFF_TEST_CONFIDENCE 0.85`, `FRAMEWORK_COMPOSITION_MAX 5` (working memory per decision).
 
-The 5 TDM layers mapped to the spellcasting loop:
+The 5 TDM layers mapped to the Effect Engineering loop:
 
 | TDM Layer | When | Spell equivalent |
 |---|---|---|
@@ -897,8 +897,8 @@ launch: jesl run payload/workflow.json --in payload/ctx.json
 ```
 JESL kernel    .../Effect_Runtime_Kernels/jesl/          (109 files; npx vitest run)
 TDM spec       .../v4.4.3/TRIDENT_DECISION_MAKING_TOOL_SPEC.md (1,525L)
-this bible     .../KNOWLEDGE_LIBRARY/Bibles/JESL/JESL_SPELLCASTING_LIBRARY.md
-canon bible    .../KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_SPELLCASTING_BIBLE.md (492L)
+this bible     .../KNOWLEDGE_LIBRARY/Bibles/JESL/JESL_EFFECT_ENGINEERING_LIBRARY.md
+canon bible    .../KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_ENGINEERING_BIBLE.md (492L)
 boilerplate    .../KNOWLEDGE_LIBRARY/agent_plugin_boilerplates/JESL-Kernel-Edition-v1.0/
 ```
 
