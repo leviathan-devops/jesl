@@ -1,0 +1,1 @@
+Build a mechanically intelligent code review tool that audits TypeScript projects across 18 layers (R0-R16 + preflight), emits a CODE_REVIEW artifact with file:line findings, and is mechanically intelligent — regex is the detector, never the decision. The tool must be Effect-native, journal every step via sha256 chain, and gate on schema decode before any fiber runs.

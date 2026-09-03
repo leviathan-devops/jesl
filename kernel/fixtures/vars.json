@@ -1,0 +1,1 @@
+{ "x": 5, "event": { "type": "tool.call.bash", "payload": { "cmd": "ls" } } }

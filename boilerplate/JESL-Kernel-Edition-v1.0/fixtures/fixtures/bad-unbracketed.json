@@ -1,0 +1,6 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "bad-unbracketed", "tier": 2 },
+  "nodes": [{ "id": "gen1", "type": "shadow-agent", "class": "generation" }],
+  "edges": []
+}

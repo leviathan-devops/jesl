@@ -1,0 +1,20 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "spec-to-kernels", "tier": 1, "description": "W8 #3 THE INSERTION — fenced-math parse → oracle compile → decomposition → stub emission → D17 → TestLive dry-run → journal — the MPSE bridge composition" },
+  "nodes": [
+    { "id": "spec-parse", "type": "mpse-discharge", "class": "evidence", "config": { "phase": "fenced-math parse (D13)" } },
+    { "id": "calibrate", "type": "evidence-gate", "class": "evidence", "config": { "phase": "D17 calibrate — EXCLUDED ≠ FAIL" } },
+    { "id": "decompose", "type": "gate", "class": "evidence", "config": { "phase": "FR→workflow decomposition + stub emission" } },
+    { "id": "dry-run", "type": "gate", "class": "execution", "config": { "phase": "TestLive dry-run — emitted kernel executes headless" } },
+    { "id": "journal-sink", "type": "journal-sink", "class": "evidence" }
+  ],
+  "edges": [
+    { "from": "spec-parse", "to": "calibrate", "via": "cards" },
+    { "from": "calibrate", "to": "decompose", "via": "report" },
+    { "from": "decompose", "to": "dry-run", "via": "kernel" },
+    { "from": "dry-run", "to": "journal-sink", "via": "dryRun" }
+  ],
+  "vars": { "outputDir": "dist/kernels" },
+  "journal": { "path": ".trident/spec-to-kernels.jsonl", "durable": false },
+  "gates": []
+}

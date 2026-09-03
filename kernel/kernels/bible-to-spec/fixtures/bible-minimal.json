@@ -1,0 +1,9 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "bible-minimal", "tier": 1 },
+  "nodes": [
+    { "id": "a", "type": "gate" }
+  ],
+  "edges": [],
+  "vars": { "bible": "minimal" }
+}

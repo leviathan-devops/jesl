@@ -1,0 +1,1 @@
+jesl ship kernel sample artifact C — plain text for hash-verify coverage

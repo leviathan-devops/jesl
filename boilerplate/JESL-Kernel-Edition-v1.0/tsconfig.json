@@ -1,0 +1,59 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "core",
+    "nodes",
+    "drivers",
+    "profiles",
+    "tests/bible-to-spec.test.ts",
+    "tests/bus.test.ts",
+    "tests/caps.test.ts",
+    "tests/channels.test.ts",
+    "tests/cli.test.ts",
+    "tests/driver.test.ts",
+    "tests/errors.test.ts",
+    "tests/evidence.test.ts",
+    "tests/execution.test.ts",
+    "tests/executor.test.ts",
+    "tests/graph.test.ts",
+    "tests/journal.test.ts",
+    "tests/mpse-parser.test.ts",
+    "tests/nodes.test.ts",
+    "tests/schema.test.ts",
+    "tests/profiles.test.ts",
+    "cli",
+    "fixtures",
+    "scanners",
+    "workflow",
+    "packager",
+    "wraps",
+    "mpse",
+    "kernels/bible-to-spec",
+    "kernels/ship",
+    "kernels/verify",
+    "bindings",
+    "boilerplate",
+    "tests/bindings.test.ts",
+    "tests/boilerplate.test.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests/battery.ts",
+    "tests/battery.test.ts",
+    "tests/fixtures-kill-resume.json"
+  ]
+}

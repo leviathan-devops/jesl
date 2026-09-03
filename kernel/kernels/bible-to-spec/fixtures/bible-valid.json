@@ -1,0 +1,14 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "bible-valid", "tier": 1, "description": "bible fixture — valid bible with math contract" },
+  "nodes": [
+    { "id": "intro", "type": "gate", "config": { "title": "Introduction", "description": "System overview and goals" } },
+    { "id": "auth", "type": "gate", "config": { "title": "Auth module", "description": "Authentication and session handling", "math": "x + y * 2" } },
+    { "id": "billing", "type": "gate", "config": { "title": "Billing gate", "description": "Gate for billing verification" } }
+  ],
+  "edges": [
+    { "from": "intro", "to": "auth", "via": "ch1" },
+    { "from": "auth", "to": "billing", "via": "ch2" }
+  ],
+  "vars": { "bible": "valid" }
+}

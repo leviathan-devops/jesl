@@ -1,0 +1,16 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "mech-gate", "tier": 1 },
+  "nodes": [
+    { "id": "gateA", "type": "gate" },
+    { "id": "triplet", "type": "triplet-writer", "config": { "triplet": { "pattern": "mech.gate", "state": "PASS", "anchor": "mech-gate:1" } } },
+    { "id": "gateB", "type": "gate", "config": { "asserts": [ { "path": "$.triplet.state", "op": "eq", "value": "PASS" } ] } },
+    { "id": "sink", "type": "journal-sink" }
+  ],
+  "edges": [
+    { "from": "gateA", "to": "triplet", "via": "seed" },
+    { "from": "triplet", "to": "gateB", "via": "triplet" },
+    { "from": "gateB", "to": "sink", "via": "data" }
+  ],
+  "vars": { "event": "seed" }
+}

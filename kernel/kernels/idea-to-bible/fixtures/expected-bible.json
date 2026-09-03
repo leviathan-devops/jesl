@@ -1,0 +1,15 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "bible-from-idea", "tier": 1, "description": "bible synthesized from raw idea via parallel explore + merge + schema-gate" },
+  "nodes": [
+    { "id": "explore-domain", "type": "gate", "class": "evidence" },
+    { "id": "explore-constraints", "type": "gate", "class": "evidence" },
+    { "id": "explore-value", "type": "gate", "class": "evidence" },
+    { "id": "bible-synthesis", "type": "gate", "class": "decision" }
+  ],
+  "edges": [
+    { "from": "explore-domain", "to": "bible-synthesis", "via": "domainFindings" },
+    { "from": "explore-constraints", "to": "bible-synthesis", "via": "constraintFindings" },
+    { "from": "explore-value", "to": "bible-synthesis", "via": "valueFindings" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "bad-cycle", "tier": 1 },
+  "nodes": [
+    { "id": "a", "type": "gate" },
+    { "id": "b", "type": "gate" },
+    { "id": "c", "type": "gate" }
+  ],
+  "edges": [
+    { "from": "a", "to": "b", "via": "ch1" },
+    { "from": "b", "to": "c", "via": "ch2" },
+    { "from": "c", "to": "a", "via": "ch3" }
+  ]
+}

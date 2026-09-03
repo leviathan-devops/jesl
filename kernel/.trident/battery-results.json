@@ -1,0 +1,110 @@
+{
+  "rows": [
+    {
+      "scenario": "S1",
+      "passToken": "\"verdict\":\"PASS\" + exit 0",
+      "passTokenMatch": true,
+      "failToken": "any traceback",
+      "failTokenAbsent": true,
+      "toolResultContext": "code:0 stdout:{\n  \"verdict\": \"PASS\",\n  \"results\": {\n    \"gateA\": {\n      \"verdict\": \"PASS\",\n      \"evidence\": {\n        \"pattern\": \"gate.assert\",\n        \"state\": \"PASS\",\n        \"anchor\": \"gateA:0\"\n      },\n      ",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "S2",
+      "passToken": "each matching [JESL ...] in stderr + exit 2",
+      "passTokenMatch": true,
+      "failToken": "exit 0 on any",
+      "failTokenAbsent": true,
+      "toolResultContext": "bad-unknown-kind.json:code=2 hasToken=true | bad-cycle.json:code=2 hasToken=true | bad-tier.json:code=2 hasToken=true | bad-unbracketed.json:code=2 hasToken=true",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "S3",
+      "passToken": "[JESL CAP-UNBOUND] llm + NO artifact",
+      "passTokenMatch": true,
+      "failToken": "any fabricated artifact",
+      "failTokenAbsent": true,
+      "toolResultContext": "code:2 stderr:[JESL CAP-UNBOUND] node=llm1 field=caps actual=Llm remedy=run under a driver that binds the cap, or drop the node\n[JESL CAP-UNBOUND] noArtifact:true",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "S4",
+      "passToken": "sha chain diff EMPTY + resume",
+      "passTokenMatch": true,
+      "failToken": "hash mismatch",
+      "failTokenAbsent": true,
+      "toolResultContext": "tsLeaks:false field:none chainsIdentical:true secondInvokedZero:true killInvoked:0 rows:2",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "S5",
+      "passToken": "overlapCount ≥ 1 + all 5 rows",
+      "passTokenMatch": true,
+      "failToken": "sequential or missing",
+      "failTokenAbsent": true,
+      "toolResultContext": "overlap:10 batches:[[\"b1\",\"b2\",\"b3\",\"b4\",\"b5\"]] rows:10 code:1",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "S6",
+      "passToken": "exit 0 + artifact on disk",
+      "passTokenMatch": false,
+      "failToken": "missing or non-zero",
+      "failTokenAbsent": true,
+      "toolResultContext": "packager/ not yet landed (parallel W5-packager race) — no emitSkill artifacts at /home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/Effect_Runtime_Kernels/.opencode/skills/jesl-fixture/workflow.json nor /home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/Effect_Runtime_Kernels/jesl/packager",
+      "verdict": "BLOCKED",
+      "blockedReason": "packager/ not yet landed"
+    },
+    {
+      "scenario": "S7",
+      "passToken": "both tokens + the roundtrip journal row",
+      "passTokenMatch": true,
+      "failToken": "clean validate",
+      "failTokenAbsent": true,
+      "toolResultContext": "tier:true unbracketed:true roundtrip:true ans:42",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "S8",
+      "passToken": "zero banned hits + diagnostics exit 0",
+      "passTokenMatch": true,
+      "failToken": "any hit",
+      "failTokenAbsent": true,
+      "toolResultContext": "hits:[none] lsp:available-state",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "S9",
+      "passToken": "invoke count 0 + identical chain",
+      "passTokenMatch": true,
+      "failToken": "re-exec",
+      "failTokenAbsent": true,
+      "toolResultContext": "firstInvoked:2 secondInvoked:0 identical:true",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "A1",
+      "passToken": "each named token, never a hang",
+      "passTokenMatch": true,
+      "failToken": "accepted-invalid-input",
+      "failTokenAbsent": true,
+      "toolResultContext": "bad-unknown-kind.json:token=true code=2 | bad-cycle.json:token=true code=2 | bad-tier.json:token=true code=2 | bad-unbracketed.json:token=true code=2",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "A2",
+      "passToken": "pba.family.hit then pta.intercept, bash never ran",
+      "passTokenMatch": true,
+      "failToken": "bash executed",
+      "failTokenAbsent": true,
+      "toolResultContext": "order:pba->pta pba:true pta:true",
+      "verdict": "PASS"
+    }
+  ],
+  "summary": {
+    "pass": 10,
+    "fail": 0,
+    "blocked": 1,
+    "total": 11
+  }
+}

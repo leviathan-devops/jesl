@@ -1,0 +1,225 @@
+{
+  "wave": "W3",
+  "checkpoint": "[CT] first container checkpoint \u2014 COMPLETED",
+  "overallVerdict": "PASS \u2014 10/10 scenarios in the clean container",
+  "container": "shark-effect-kernels-w3b",
+  "image": "runtime-grade-container-sandbox:master",
+  "deployedTarballSha": "235a08d24742dffac96eed9bcb1f9660de6a42d8578ebed267a092bdc1d90fe3",
+  "treeDigest": "c154678b (the fix included: the replay loud-fail exit)",
+  "deployShape": "tarball (jesl/ with node_modules + dist/index.js marker) extracted to /root/OPENCODE_WORKSPACE/ by the setup's tar branch",
+  "toolchainInContainer": "bun 1.3.14 \u00b7 node v20.20.2 \u00b7 npx \u00b7 vitest (node_modules/.bin)",
+  "scenarios": [
+    {
+      "scenario": "T1 full-battery",
+      "passToken": "164 passed",
+      "passTokenMatch": true,
+      "failToken": "failed",
+      "failTokenAbsent": true,
+      "toolResultContext": "Tests 164 passed (164) / Duration 4.82s / exit 0",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "T2 mech-gate",
+      "passToken": "verdict PASS exit 0",
+      "passTokenMatch": true,
+      "failToken": "FAIL verdict",
+      "failTokenAbsent": true,
+      "toolResultContext": "T2_EXIT:0 \"verdict\": \"PASS\"",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "T3 refusals x4",
+      "passToken": "the 4 exact tokens each exit 2",
+      "passTokenMatch": true,
+      "failToken": "exit 0 on any",
+      "failTokenAbsent": true,
+      "toolResultContext": "bad-unknown-kind: 2 JESL UNKNOWN-NODE \u00b7 bad-cycle: 2 JESL CYCLE \u00b7 bad-tier: 2 JESL TIER-VIOLATION \u00b7 bad-unbracketed: 2 JESL UNBRACKETED-GENERATION",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "T4 cap-unbound",
+      "passToken": "JESL CAP-UNBOUND exit 2 no artifact",
+      "passTokenMatch": true,
+      "failToken": "exit 0 or artifact",
+      "failTokenAbsent": true,
+      "toolResultContext": "T4: 2 tok=2 art=0",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "T5 replay-clean",
+      "passToken": "verified true exit 0",
+      "passTokenMatch": true,
+      "failToken": "verified false",
+      "failTokenAbsent": true,
+      "toolResultContext": "T5: 0 \"verified\": true",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "T6 roundtrip-criterion11",
+      "passToken": "12 passed",
+      "passTokenMatch": true,
+      "failToken": "failed",
+      "failTokenAbsent": true,
+      "toolResultContext": "tests/driver.test.ts Tests 12 passed (12)",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "T7 scanners",
+      "passToken": "23 passed",
+      "passTokenMatch": true,
+      "failToken": "failed",
+      "failTokenAbsent": true,
+      "toolResultContext": "23 passed (23) across scanners-pba-pta + scanners-lsp-audit",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "A1 corrupted-journal",
+      "passToken": "verified false AND exit non-zero",
+      "passTokenMatch": true,
+      "failToken": "verified true on the corrupted file",
+      "failTokenAbsent": true,
+      "toolResultContext": "A1_EXIT:1 \"verified\": false (both arrays' row0.self = DEADBEEFcorrupted)",
+      "verdict": "PASS",
+      "note": "round 1 probe errors (a stale hash in the sed pattern; the rows-before-journal key precedence) adjudicated Side-A; the true corruption is caught; the Law-7 exit-code fix (replay code = verified ? 0 : 1) landed and is proven here"
+    },
+    {
+      "scenario": "A2 empty-doc",
+      "passToken": "non-zero exit + an error line",
+      "passTokenMatch": true,
+      "failToken": "exit 0 or a hang",
+      "failTokenAbsent": true,
+      "toolResultContext": "A2_EXIT:1 JSON Parse error: Unterminated string",
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "A3 usage-token-hygiene",
+      "passToken": "exit 2 zero [JESL occurrences",
+      "passTokenMatch": true,
+      "failToken": "any [JESL occurrence",
+      "failTokenAbsent": true,
+      "toolResultContext": "A3_EXIT:2 JESL=0 \u2014 error: missing doc path \u2014 usage: jesl validate <doc.json>",
+      "verdict": "PASS"
+    }
+  ],
+  "hostEvidenceNote": "the earlier host-side runs (tsc 0 \u00b7 164/164 \u00b7 the same token/exit suite) remain supporting evidence; the container rows above are the checkpoint's primary proof",
+  "waves": {
+    "W5": {
+      "checkpoint": "[CT] second container checkpoint \u2014 COMPLETED",
+      "overallVerdict": "PASS \u2014 211/211 vitest + 11/11 battery rows in the clean container",
+      "container": "shark-effect-kernels-w5",
+      "image": "runtime-grade-container-sandbox:master",
+      "tarballSha": "aab3746378ba74fc32c834bb575f47f996238020cde036c87dd49c3da256ac2a",
+      "scenarios": [
+        {
+          "scenario": "T1 full-battery",
+          "verdict": "PASS",
+          "toolResultContext": "Tests 211 passed (211)"
+        },
+        {
+          "scenario": "T2 the-11-row-battery",
+          "verdict": "PASS",
+          "toolResultContext": "pass:11 fail:0 blocked:0 \u2014 S1-S9+A1-A2 all PASS (S6 emits the rocket via the real packager, exit 0)"
+        },
+        {
+          "scenario": "T3 mech-gate",
+          "verdict": "PASS",
+          "toolResultContext": "exit 0 PASS verdict"
+        },
+        {
+          "scenario": "T4 refusals",
+          "verdict": "PASS",
+          "toolResultContext": "4 fixtures exit 2 exact tokens"
+        },
+        {
+          "scenario": "A1 corrupted-journal",
+          "verdict": "PASS",
+          "toolResultContext": "verified:false + exit 1"
+        },
+        {
+          "scenario": "A2 usage-token-hygiene",
+          "verdict": "PASS",
+          "toolResultContext": "exit 2 zero [JESL"
+        }
+      ],
+      "integrationFixes": "the audit fixed the W5 cross-agent seam: battery S6 now emits via the real emitSkill (parsed doc, string paths) and runs the emitted payload \u2014 the two parallel agents' halves are integrated"
+    },
+    "W6": {
+      "checkpoint": "[CT] third container checkpoint \u2014 COMPLETED",
+      "overallVerdict": "PASS \u2014 233/233 vitest + 11/11 battery + adversarials in the clean container",
+      "container": "shark-effect-kernels-w6",
+      "tarballSha": "dcabd97cab9cf2f42929bf0a5d21b47a5fcba9b2de4f04ee4b1b6d79bb301a54",
+      "scenarios": [
+        {
+          "scenario": "T1 full-battery",
+          "verdict": "PASS",
+          "toolResultContext": "Tests 233 passed (233)"
+        },
+        {
+          "scenario": "T2 the-11-row-battery",
+          "verdict": "PASS",
+          "toolResultContext": "pass:11 fail:0 blocked:0 \u2014 S1-S9+A1-A2 all PASS"
+        },
+        {
+          "scenario": "T3 mech-gate",
+          "verdict": "PASS",
+          "toolResultContext": "exit 0"
+        },
+        {
+          "scenario": "T4 pre-arm-chain",
+          "verdict": "PASS",
+          "toolResultContext": "tests/wraps.test.ts 12 passed \u2014 TEST_EVASION pre-arm deny"
+        },
+        {
+          "scenario": "A1 corrupted-journal",
+          "verdict": "PASS",
+          "toolResultContext": "A1_EXIT:1 verified:false"
+        },
+        {
+          "scenario": "A2 usage-token-hygiene",
+          "verdict": "PASS",
+          "toolResultContext": "A2_EXIT:2 JESL=0"
+        }
+      ]
+    },
+    "W10_FINAL": {
+      "checkpoint": "[CT] FINAL container checkpoint \u2014 COMPLETED \u2014 THE SHIP GATE IS GREEN",
+      "overallVerdict": "PASS \u2014 336/336 vitest + 11/11 battery + all adversarials + the boilerplate extraction \u2014 in the clean container",
+      "container": "shark-effect-kernels-w10",
+      "image": "runtime-grade-container-sandbox:master",
+      "tarballSha": "30fa9ec4c12b4ce9f2c049f5d233428d52836e81bff53d4a125ebfcd34b29573",
+      "treeDigest": "681bf8696924a040 (109 .ts files)",
+      "scenarios": [
+        {
+          "scenario": "T1 full-battery",
+          "verdict": "PASS",
+          "toolResultContext": "Tests 336 passed (336) \u2014 exit 0"
+        },
+        {
+          "scenario": "T2 the-11-row-battery",
+          "verdict": "PASS",
+          "toolResultContext": "pass:11 fail:0 blocked:0 \u2014 S1-S9+A1-A2 all PASS"
+        },
+        {
+          "scenario": "T3 mech-gate",
+          "verdict": "PASS",
+          "toolResultContext": "exit 0"
+        },
+        {
+          "scenario": "T4 boilerplate-extraction",
+          "verdict": "PASS",
+          "toolResultContext": "Tests 6 passed (6) \u2014 the copy-and-customize proof"
+        },
+        {
+          "scenario": "A1 corrupted-journal",
+          "verdict": "PASS",
+          "toolResultContext": "A1:1 verified:false \u2014 the corruption caught loudly"
+        },
+        {
+          "scenario": "A2 usage-token-hygiene",
+          "verdict": "PASS",
+          "toolResultContext": "A2:2 JESL=0 \u2014 zero bracketed tokens in usage errors"
+        }
+      ]
+    }
+  }
+}

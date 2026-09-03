@@ -1,0 +1,6 @@
+{
+  "stubs": [
+    { "id": "stub-a", "kind": "math-eval", "expr": { "_tag": "literal", "value": 42 }, "expected": 42, "oracleRef": "stub-a" },
+    { "id": "stub-b", "kind": "math-eval", "expr": { "_tag": "literal", "value": 0.6 }, "expected": 0.6, "tolerance": 0.05, "oracleRef": "stub-b" }
+  ]
+}

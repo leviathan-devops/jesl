@@ -1,0 +1,25 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "ship",
+    "tier": 1,
+    "description": "K15 ship — manifest → copy → docs → audit gate chain — the terminal lifecycle kernel producing the shippable artifact",
+    "seed": { "channel": "verifiedArtifacts" }
+  },
+  "nodes": [
+    { "id": "manifest-build", "type": "gate", "class": "evidence", "config": { "step": "manifest-build", "op": "sha256-manifest" } },
+    { "id": "copy", "type": "gate", "class": "execution", "config": { "step": "copy", "op": "atomic-copy", "writer": "injected" } },
+    { "id": "docs-generate", "type": "gate", "class": "evidence", "config": { "step": "docs-generate", "op": "readme+manifest-doc" } },
+    { "id": "audit-gate", "type": "gate", "class": "decision", "config": { "step": "audit-gate", "op": "schema-gate+hash-verify" } },
+    { "id": "journal-sink", "type": "journal-sink", "class": "evidence" }
+  ],
+  "edges": [
+    { "from": "manifest-build", "to": "copy", "via": "manifest" },
+    { "from": "copy", "to": "docs-generate", "via": "copies" },
+    { "from": "docs-generate", "to": "audit-gate", "via": "docs" },
+    { "from": "audit-gate", "to": "journal-sink", "via": "audit" }
+  ],
+  "vars": { "outputDir": "dist/ship" },
+  "journal": { "path": ".trident/ship.jsonl", "durable": false },
+  "gates": []
+}

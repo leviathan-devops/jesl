@@ -1,0 +1,59 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "bible-to-spec",
+    "tier": 1,
+    "description": "bible-to-spec kernel: digest → FR extraction → math-contract lint → DPL1 template gate → journal"
+  },
+  "nodes": [
+    {
+      "id": "digest",
+      "type": "gate",
+      "config": {
+        "step": "digest",
+        "description": "hash + structural inventory of bible doc"
+      }
+    },
+    {
+      "id": "fr-extract",
+      "type": "gate",
+      "config": {
+        "step": "fr-extract",
+        "description": "FR extraction from node configs — stub-mode deterministic, Llm cap for structured FRs"
+      }
+    },
+    {
+      "id": "math-lint",
+      "type": "gate",
+      "config": {
+        "step": "math-lint",
+        "description": "math-contract lint via mpse/parser parseMathExpr for any node config with math"
+      }
+    },
+    {
+      "id": "template-gate",
+      "type": "gate",
+      "config": {
+        "step": "template-gate",
+        "description": "DPL1 template gate — output validates against WorkflowDoc schema"
+      }
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink",
+      "config": {
+        "step": "sink"
+      }
+    }
+  ],
+  "edges": [
+    { "from": "digest", "to": "fr-extract", "via": "digest" },
+    { "from": "fr-extract", "to": "math-lint", "via": "frs" },
+    { "from": "math-lint", "to": "template-gate", "via": "lint" },
+    { "from": "template-gate", "to": "sink", "via": "spec" }
+  ],
+  "vars": {
+    "kernel": "bible-to-spec",
+    "version": "1.0.0"
+  }
+}

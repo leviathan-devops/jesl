@@ -1,0 +1,12 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "bible-math-bad", "tier": 1, "description": "bible with broken math contract — lint must catch" },
+  "nodes": [
+    { "id": "intro", "type": "gate", "config": { "title": "Intro", "description": "ok" } },
+    { "id": "broken", "type": "gate", "config": { "title": "Broken math", "description": "bad expr", "math": "@@@invalid math ((" } }
+  ],
+  "edges": [
+    { "from": "intro", "to": "broken", "via": "ch1" }
+  ],
+  "vars": { "bible": "math-bad" }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "parallel-5", "tier": 1 },
+  "nodes": [
+    { "id": "b1", "type": "gate" },
+    { "id": "b2", "type": "gate" },
+    { "id": "b3", "type": "gate", "config": { "asserts": [{ "path": "$.x", "op": "eq", "value": 999 }] } },
+    { "id": "b4", "type": "gate" },
+    { "id": "b5", "type": "gate" }
+  ],
+  "edges": []
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "bad-unknown-kind", "tier": 1 },
+  "nodes": [{ "id": "n1", "type": "print" }],
+  "edges": []
+}

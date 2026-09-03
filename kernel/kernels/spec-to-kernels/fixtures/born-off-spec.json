@@ -1,0 +1,13 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "born-off-spec", "tier": 1 },
+  "nodes": [
+    { "id": "ok", "type": "math-eval", "config": { "math": "2+2=4", "expr": { "_tag": "add", "left": { "_tag": "literal", "value": 2 }, "right": { "_tag": "literal", "value": 2 } }, "expected": 4 } },
+    { "id": "bornOff", "type": "math-eval", "config": { "math": "2+2=5 [born-off]", "expr": { "_tag": "add", "left": { "_tag": "literal", "value": 2 }, "right": { "_tag": "literal", "value": 2 } }, "expected": 5, "actual": 4, "bornOff": true } },
+    { "id": "sink", "type": "journal-sink" }
+  ],
+  "edges": [
+    { "from": "ok", "to": "bornOff", "via": "ch1" },
+    { "from": "bornOff", "to": "sink", "via": "ch2" }
+  ]
+}

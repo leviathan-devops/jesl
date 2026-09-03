@@ -1,0 +1,15 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "kernels-to-code", "tier": 2, "description": "stub inventory -> bracketed subagent-dispatch -> per-stub oracle-gate -> journal — W8 K15 F19 #4" },
+  "nodes": [
+    { "id": "k2c-inventory", "type": "pipeline", "class": "orchestration" },
+    { "id": "k2c-dispatch", "type": "subagent-dispatch", "class": "generation", "bracket": { "contract": "code-spec", "repair": { "target": "k2c-oracle-gate", "max": 2 }, "confidenceFloor": 0.55 } },
+    { "id": "k2c-oracle-gate", "type": "oracle-gate", "class": "evidence" },
+    { "id": "k2c-journal", "type": "journal-sink", "class": "evidence" }
+  ],
+  "edges": [
+    { "from": "k2c-inventory", "to": "k2c-dispatch", "via": "stubs" },
+    { "from": "k2c-dispatch", "to": "k2c-oracle-gate", "via": "code" },
+    { "from": "k2c-oracle-gate", "to": "k2c-journal", "via": "verified" }
+  ]
+}

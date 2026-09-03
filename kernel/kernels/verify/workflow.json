@@ -1,0 +1,19 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "verify", "tier": 1 },
+  "nodes": [
+    { "id": "verify-collect", "type": "gate" },
+    { "id": "verify-S1", "type": "gate" },
+    { "id": "verify-S2", "type": "gate" },
+    { "id": "verify-S3", "type": "gate" },
+    { "id": "verify-report", "type": "journal-sink" }
+  ],
+  "edges": [
+    { "from": "verify-collect", "to": "verify-S1", "via": "artifacts" },
+    { "from": "verify-collect", "to": "verify-S2", "via": "artifacts" },
+    { "from": "verify-collect", "to": "verify-S3", "via": "artifacts" },
+    { "from": "verify-S1", "to": "verify-report", "via": "rS1" },
+    { "from": "verify-S2", "to": "verify-report", "via": "rS2" },
+    { "from": "verify-S3", "to": "verify-report", "via": "rS3" }
+  ]
+}

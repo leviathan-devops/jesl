@@ -1,0 +1,58 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "mpse-demo", "tier": 1 },
+  "nodes": [
+    {
+      "id": "arith",
+      "type": "math-eval",
+      "config": {
+        "math": "```math\n2 + 3 = 5\n```",
+        "expr": { "_tag": "add", "left": { "_tag": "literal", "value": 2 }, "right": { "_tag": "literal", "value": 3 } },
+        "expected": 5,
+        "kind": "arithmetic"
+      }
+    },
+    {
+      "id": "compare",
+      "type": "gate",
+      "config": {
+        "math": "```math\n5 >= 3 = true\n```",
+        "expr": { "_tag": "ge", "left": { "_tag": "literal", "value": 5 }, "right": { "_tag": "literal", "value": 3 } },
+        "expected": true,
+        "kind": "comparison"
+      }
+    },
+    {
+      "id": "rule",
+      "type": "math-eval",
+      "config": {
+        "math": "```math\n7 * 6 = 42\n```",
+        "expr": { "_tag": "mul", "left": { "_tag": "literal", "value": 7 }, "right": { "_tag": "literal", "value": 6 } },
+        "expected": 42,
+        "kind": "rule",
+        "oracle": "OR-1"
+      }
+    },
+    {
+      "id": "bornOff",
+      "type": "math-eval",
+      "config": {
+        "math": "```math\n2 + 2 = 5 [born-off]\n```",
+        "expr": { "_tag": "add", "left": { "_tag": "literal", "value": 2 }, "right": { "_tag": "literal", "value": 2 } },
+        "expected": 5,
+        "actual": 4,
+        "kind": "rule",
+        "oracle": "OR-2",
+        "bornOff": true
+      }
+    },
+    { "id": "sink", "type": "journal-sink" }
+  ],
+  "edges": [
+    { "from": "arith", "to": "compare", "via": "arithOut" },
+    { "from": "compare", "to": "rule", "via": "cmpOut" },
+    { "from": "rule", "to": "bornOff", "via": "ruleOut" },
+    { "from": "bornOff", "to": "sink", "via": "final" }
+  ],
+  "vars": { "demo": "mpse-gate" }
+}

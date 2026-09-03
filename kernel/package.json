@@ -1,0 +1,29 @@
+{
+  "name": "@jesl/kernel",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fixtures": "echo fixtures ok",
+    "prepare": "effect-language-service patch || true"
+  },
+  "dependencies": {
+    "@effect/ai": "^0.37.0",
+    "@effect/language-service": "^0.87.2",
+    "@effect/platform": "^0.84.0",
+    "@effect/platform-node": "^0.108.1",
+    "@effect/vitest": "^0.24.1",
+    "@effect/workflow": "^0.19.1",
+    "effect": "^3.22.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7",
+    "@types/bun": "^1.2.0"
+  },
+  "bin": {
+    "jesl": "./cli/main.ts"
+  }
+}

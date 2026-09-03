@@ -1,0 +1,23 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "idea-to-bible", "tier": 2, "description": "raw idea -> parallel(explore) -> merge -> schema-gate -> journal — W8 K15 F19 #1" },
+  "nodes": [
+    { "id": "validate-idea", "type": "gate", "class": "evidence" },
+    { "id": "explore-a", "type": "prompt", "class": "generation", "bracket": { "contract": "json" } },
+    { "id": "explore-b", "type": "prompt", "class": "generation", "bracket": { "contract": "json" } },
+    { "id": "explore-c", "type": "prompt", "class": "generation", "bracket": { "contract": "json" } },
+    { "id": "merge-bible", "type": "gate", "class": "decision" },
+    { "id": "schema-gate", "type": "gate", "class": "evidence" },
+    { "id": "journal-sink", "type": "journal-sink", "class": "evidence" }
+  ],
+  "edges": [
+    { "from": "validate-idea", "to": "explore-a", "via": "idea" },
+    { "from": "validate-idea", "to": "explore-b", "via": "idea" },
+    { "from": "validate-idea", "to": "explore-c", "via": "idea" },
+    { "from": "explore-a", "to": "merge-bible", "via": "expA" },
+    { "from": "explore-b", "to": "merge-bible", "via": "expB" },
+    { "from": "explore-c", "to": "merge-bible", "via": "expC" },
+    { "from": "merge-bible", "to": "schema-gate", "via": "bible" },
+    { "from": "schema-gate", "to": "journal-sink", "via": "bible" }
+  ]
+}

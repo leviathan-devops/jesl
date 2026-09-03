@@ -1,0 +1,11 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "bad-spec", "tier": 1 },
+  "nodes": [
+    { "id": "a", "type": "math-eval", "config": { "math": "1+1=2", "expr": { "_tag": "add", "left": { "_tag": "literal", "value": 1 }, "right": { "_tag": "literal", "value": 1 } }, "expected": 2 } },
+    { "id": "b", "type": "unknown-kind-xyz", "config": { "math": "bad" } }
+  ],
+  "edges": [
+    { "from": "a", "to": "b", "via": "ch" }
+  ]
+}

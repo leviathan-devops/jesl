@@ -1,0 +1,7 @@
+{
+  "name": "kernels-to-code-output",
+  "files": ["src/index.ts", "src/core/executor.ts", "dist/index.js"],
+  "outDir": "dist",
+  "hash": "sha256:demo-verify-artifacts",
+  "emittedAt": "2026-09-03T00:00:00Z"
+}
