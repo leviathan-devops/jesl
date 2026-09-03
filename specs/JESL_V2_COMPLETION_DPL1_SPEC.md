@@ -10,7 +10,7 @@
 
 ## §1 PROBLEM STATEMENT
 
-The JESL kernel (MacroKernel_Edition-v1.0) completed W0→W10 with 336/336 tests green, 4 container checkpoints passed, and zero spec drift (`f77b448f`). However, the kernel ships with **21 of 37 node kinds returning INCONCLUSIVE stubs** — 58% of the catalog does nothing when cast. The Llm capability interface has **no real model binding** (the `@effect/ai` package is pinned but never imported). The tsconfig uses **per-directory explicit includes** with `@ts-nocheck` on 8 files. The boilerplate extraction produces a **double-nested `src/<dir>/<dir>/` layout** that will confuse every adopter. The spellcasting intelligence layer (card rolodex, algorithm packager, L4 feedback loop) is **documented but not implemented**.
+The JESL kernel (MacroKernel_Edition-v1.0) completed W0→W10 with 336/336 tests green, 4 container checkpoints passed, and zero spec drift (`f77b448f`). However, the kernel ships with **21 of 37 node kinds returning INCONCLUSIVE stubs** — 58% of the catalog does nothing when cast. The Llm capability interface has **no real model binding** (the `@effect/ai` package is pinned but never imported). The tsconfig uses **per-directory explicit includes** with `@ts-nocheck` on 8 files. The boilerplate extraction produces a **double-nested `src/<dir>/<dir>/` layout** that will confuse every adopter. The effect engineering intelligence layer (card rolodex, algorithm packager, L4 feedback loop) is **documented but not implemented**.
 
 **The gap:** the kernel is production-grade as an execution engine (the journal, the schema gate, the pricing model, the packaging pipeline are all battle-tested) but the node coverage (42%), the intelligence layer (20%), and the adoption surface (60%) are below the 1.0 bar. A v2 completion wave must close these gaps without breaking the existing 336 tests, the frozen token vocabulary, or the append-only registry contract.
 
@@ -43,7 +43,7 @@ The kernel architecture is FIXED (L2 §2.5): core/ is pure (zero host imports), 
 
 ## §4 CORE INSIGHT
 
-**The kernel must complete its node coverage and wire its intelligence layer to become a real spellcasting runtime — not just a well-tested execution engine.**
+**The kernel must complete its node coverage and wire its intelligence layer to become a real effect engineering runtime — not just a well-tested execution engine.**
 
 The governing non-negotiables:
 1. **Error handling on every path**: every stub implementation must fail LOUD (a frozen token or a FAIL verdict), never silently return wrong data.

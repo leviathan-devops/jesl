@@ -60,7 +60,7 @@ canon/            the session state ledger (12 canon docs)
 
 These are string-frozen. No 9th code may ever be invented. The fixtures are the tripwire.
 
-## THE 5-STAGE SPELLCASTING PIPELINE
+## THE 5-STAGE EFFECT ENGINEERING PIPELINE
 
 ```
 Stage 1: WRITE THE CARD (the JSON document — idea + effect + evidence contract)

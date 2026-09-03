@@ -17,7 +17,7 @@ The JESL kernel v1.0 is battle-tested: 336/336 tests, tsc 0, 4 container checkpo
 
 **GAP 2 — NO REAL LLM BINDING:** the prompt node's llm mode (nodes/prompt.ts:87-223) requires the Llm cap, but no production LlmLive exists. @effect/ai 0.37.0 installed, never imported. Tier-2 spells cannot generate.
 
-**GAP 3 — NO CARD ROLODEX:** the spellcasting knowledge library documents cards, a rolodex, lexicon families, and composition tooling — none exists as code. Authoring requires hand-writing JSON with deep registry knowledge.
+**GAP 3 — NO CARD ROLODEX:** the effect engineering knowledge library documents cards, a rolodex, lexicon families, and composition tooling — none exists as code. Authoring requires hand-writing JSON with deep registry knowledge.
 
 **Mission:** close all three gaps. JESL 2.0 = all 37 kinds working + real model binding + card rolodex + algorithm packager + flat boilerplate.
 
