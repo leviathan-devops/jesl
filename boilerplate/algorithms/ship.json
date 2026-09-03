@@ -1,0 +1,70 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "ship",
+    "tier": 1,
+    "description": "Ship pattern: pipeline prepares artifact, file-io writes it, audit-registry records the shipment. WORK SLOT is the pipeline transform and file path.",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "pipeline",
+        "instruction": "[WORK SLOT] Replace pipeline transform and file-io path/body with your ship artifact. Audit-registry subject is your release id."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "seed",
+      "type": "gate"
+    },
+    {
+      "id": "prepare",
+      "type": "pipeline",
+      "config": {}
+    },
+    {
+      "id": "write",
+      "type": "file-io",
+      "config": {
+        "op": "write",
+        "path": "/tmp/jesl-ship-artifact.txt",
+        "body": "ship-ok: pipeline artifact written"
+      }
+    },
+    {
+      "id": "audit",
+      "type": "audit-registry",
+      "config": {
+        "subject": "ship.release",
+        "message": "ship artifact written and audited"
+      }
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "seed",
+      "to": "prepare",
+      "via": "shipSeed"
+    },
+    {
+      "from": "prepare",
+      "to": "write",
+      "via": "prepared"
+    },
+    {
+      "from": "write",
+      "to": "audit",
+      "via": "written"
+    },
+    {
+      "from": "audit",
+      "to": "sink",
+      "via": "audited"
+    }
+  ],
+  "vars": {}
+}

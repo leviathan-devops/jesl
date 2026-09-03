@@ -1,0 +1,16 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": { "name": "kill-resume", "tier": 1 },
+  "nodes": [
+    { "id": "K1", "type": "gate" },
+    { "id": "K2", "type": "gate" },
+    { "id": "K3", "type": "gate" },
+    { "id": "K4", "type": "gate" }
+  ],
+  "edges": [
+    { "from": "K1", "to": "K2", "via": "ch1" },
+    { "from": "K2", "to": "K3", "via": "ch2" },
+    { "from": "K3", "to": "K4", "via": "ch3" }
+  ],
+  "vars": { "seed": "init" }
+}

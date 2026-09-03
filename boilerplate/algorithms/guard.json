@@ -1,0 +1,61 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "guard",
+    "tier": 1,
+    "description": "Guard pattern: pre-gate validates input, WORK SLOT is adopter domain logic, triplet-writer emits MPSE triplet. Replace work-slot pipeline with your domain nodes.",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "pipeline",
+        "instruction": "[WORK SLOT] Replace node 'work-slot' (pipeline) with your domain nodes. Keep edges gateA->work-slot and work-slot->triplet intact."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "gateA",
+      "type": "gate"
+    },
+    {
+      "id": "work-slot",
+      "type": "pipeline",
+      "config": {}
+    },
+    {
+      "id": "triplet",
+      "type": "triplet-writer",
+      "config": {
+        "triplet": {
+          "pattern": "guard.work",
+          "state": "PASS",
+          "anchor": "guard:1"
+        }
+      }
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "gateA",
+      "to": "work-slot",
+      "via": "seed"
+    },
+    {
+      "from": "work-slot",
+      "to": "triplet",
+      "via": "workOut"
+    },
+    {
+      "from": "triplet",
+      "to": "sink",
+      "via": "triplet"
+    }
+  ],
+  "vars": {
+    "event": "seed"
+  }
+}

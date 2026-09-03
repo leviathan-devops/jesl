@@ -1,0 +1,59 @@
+{
+  "$schema": "trident-workflow-v1",
+  "meta": {
+    "name": "pre-arm",
+    "tier": 1,
+    "description": "Pre-arm pattern: ratio-classifier scores input, escalation-memory tracks repeats, gate enforces threshold. WORK SLOT is the classifier text and gate threshold.",
+    "slots": [
+      {
+        "id": "work-slot",
+        "kind": "gate",
+        "instruction": "[WORK SLOT] Replace gate asserts with your domain threshold; feed ratio-classifier via vars.text or inbound text."
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "classify",
+      "type": "ratio-classifier",
+      "config": {
+        "text": "escalate this critical issue"
+      }
+    },
+    {
+      "id": "memory",
+      "type": "escalation-memory",
+      "config": {
+        "family": "pre-arm-demo"
+      }
+    },
+    {
+      "id": "gate",
+      "type": "gate"
+    },
+    {
+      "id": "sink",
+      "type": "journal-sink"
+    }
+  ],
+  "edges": [
+    {
+      "from": "classify",
+      "to": "memory",
+      "via": "classOut"
+    },
+    {
+      "from": "memory",
+      "to": "gate",
+      "via": "memoryOut"
+    },
+    {
+      "from": "gate",
+      "to": "sink",
+      "via": "preArmGateOut"
+    }
+  ],
+  "vars": {
+    "text": "pre-arm check"
+  }
+}

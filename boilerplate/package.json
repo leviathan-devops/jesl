@@ -1,0 +1,47 @@
+{
+  "name": "JESL-Kernel-Edition-v1.0-kernel",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fixtures": "echo fixtures ok",
+    "prepare": "effect-language-service patch || true"
+  },
+  "dependencies": {
+    "@effect/ai": "^0.37.0",
+    "@effect/language-service": "^0.87.2",
+    "@effect/platform": "^0.84.0",
+    "@effect/platform-node": "^0.108.1",
+    "@effect/vitest": "^0.24.1",
+    "@effect/workflow": "^0.19.1",
+    "better-sqlite3": "^13.0.3",
+    "effect": "^3.22.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "bin": {
+    "jesl": "./cli/main.ts"
+  },
+  "jesl": {
+    "profile": "trident",
+    "caps": [
+      "jesl/Shell",
+      "jesl/Fs"
+    ],
+    "kinds": [
+      "shell-exec",
+      "file-io",
+      "mpse-discharge",
+      "evidence-machine",
+      "audit-registry"
+    ],
+    "tier": 1,
+    "brackets": {}
+  }
+}

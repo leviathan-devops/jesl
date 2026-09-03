@@ -1,0 +1,411 @@
+{
+  "kinds": [
+    {
+      "kind": "audit-registry",
+      "family": "evidence",
+      "cards": [
+        "ship"
+      ]
+    },
+    {
+      "kind": "capture-engine",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "circuit-breaker",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "claim-gate",
+      "family": "decision",
+      "cards": [
+        "bracket"
+      ]
+    },
+    {
+      "kind": "config-lock",
+      "family": "decision",
+      "cards": []
+    },
+    {
+      "kind": "cron-trigger",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "escalation-memory",
+      "family": "decision",
+      "cards": [
+        "pre-arm"
+      ]
+    },
+    {
+      "kind": "event-filter",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "event-reactivate",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "evidence-gate",
+      "family": "decision",
+      "cards": []
+    },
+    {
+      "kind": "evidence-machine",
+      "family": "evidence",
+      "cards": []
+    },
+    {
+      "kind": "fallback-chain",
+      "family": "deterministic",
+      "cards": [
+        "retry"
+      ]
+    },
+    {
+      "kind": "file-io",
+      "family": "execution",
+      "cards": [
+        "ship"
+      ]
+    },
+    {
+      "kind": "gate",
+      "family": "deterministic",
+      "cards": [
+        "ask",
+        "bad-cycle",
+        "bracket",
+        "chain",
+        "fan",
+        "guard",
+        "mech-gate",
+        "mpse-demo",
+        "oracle",
+        "parallel-5",
+        "pre-arm",
+        "ship",
+        "verify"
+      ]
+    },
+    {
+      "kind": "http-request",
+      "family": "execution",
+      "cards": []
+    },
+    {
+      "kind": "intent-classifier",
+      "family": "decision",
+      "cards": []
+    },
+    {
+      "kind": "journal-sink",
+      "family": "deterministic",
+      "cards": [
+        "ask",
+        "bracket",
+        "chain",
+        "fan",
+        "guard",
+        "mech-gate",
+        "mpse-demo",
+        "oracle",
+        "pre-arm",
+        "retry",
+        "ship",
+        "verify"
+      ]
+    },
+    {
+      "kind": "layer-loader",
+      "family": "decision",
+      "cards": []
+    },
+    {
+      "kind": "machine",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "math-eval",
+      "family": "decision",
+      "cards": [
+        "mpse-demo",
+        "oracle"
+      ]
+    },
+    {
+      "kind": "mpse-discharge",
+      "family": "decision",
+      "cards": []
+    },
+    {
+      "kind": "oracle-discharge",
+      "family": "decision",
+      "cards": []
+    },
+    {
+      "kind": "oracle-gate",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "parallel",
+      "family": "deterministic",
+      "cards": [
+        "fan",
+        "verify"
+      ]
+    },
+    {
+      "kind": "pause",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "pipeline",
+      "family": "deterministic",
+      "cards": [
+        "ask",
+        "bracket",
+        "chain",
+        "guard",
+        "ship"
+      ]
+    },
+    {
+      "kind": "prompt",
+      "family": "generation",
+      "cards": [
+        "bad-tier",
+        "needs-llm"
+      ]
+    },
+    {
+      "kind": "python-exec",
+      "family": "execution",
+      "cards": []
+    },
+    {
+      "kind": "ratio-classifier",
+      "family": "decision",
+      "cards": [
+        "pre-arm"
+      ]
+    },
+    {
+      "kind": "replay-source",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "retry-chain",
+      "family": "deterministic",
+      "cards": [
+        "retry"
+      ]
+    },
+    {
+      "kind": "shell-exec",
+      "family": "execution",
+      "cards": []
+    },
+    {
+      "kind": "sqlite-sink",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "state-machine",
+      "family": "deterministic",
+      "cards": []
+    },
+    {
+      "kind": "synapse",
+      "family": "decision",
+      "cards": []
+    },
+    {
+      "kind": "triplet-writer",
+      "family": "deterministic",
+      "cards": [
+        "guard",
+        "mech-gate"
+      ]
+    },
+    {
+      "kind": "workflow-machine",
+      "family": "decision",
+      "cards": []
+    }
+  ],
+  "cards": [
+    {
+      "name": "ask",
+      "path": "algorithms/ask.json",
+      "kinds": [
+        "gate",
+        "journal-sink",
+        "pipeline"
+      ]
+    },
+    {
+      "name": "bad-cycle",
+      "path": "fixtures/bad-cycle.json",
+      "kinds": [
+        "gate"
+      ]
+    },
+    {
+      "name": "bad-tier",
+      "path": "fixtures/bad-tier.json",
+      "kinds": [
+        "prompt"
+      ]
+    },
+    {
+      "name": "bad-unbracketed",
+      "path": "fixtures/bad-unbracketed.json",
+      "kinds": [
+        "shadow-agent"
+      ]
+    },
+    {
+      "name": "bad-unknown-kind",
+      "path": "fixtures/bad-unknown-kind.json",
+      "kinds": [
+        "print"
+      ]
+    },
+    {
+      "name": "bracket",
+      "path": "algorithms/bracket.json",
+      "kinds": [
+        "claim-gate",
+        "gate",
+        "journal-sink",
+        "pipeline"
+      ]
+    },
+    {
+      "name": "chain",
+      "path": "algorithms/chain.json",
+      "kinds": [
+        "gate",
+        "journal-sink",
+        "pipeline"
+      ]
+    },
+    {
+      "name": "fan",
+      "path": "algorithms/fan.json",
+      "kinds": [
+        "gate",
+        "journal-sink",
+        "parallel"
+      ]
+    },
+    {
+      "name": "guard",
+      "path": "algorithms/guard.json",
+      "kinds": [
+        "gate",
+        "journal-sink",
+        "pipeline",
+        "triplet-writer"
+      ]
+    },
+    {
+      "name": "mech-gate",
+      "path": "fixtures/mech-gate.json",
+      "kinds": [
+        "gate",
+        "journal-sink",
+        "triplet-writer"
+      ]
+    },
+    {
+      "name": "mpse-demo",
+      "path": "fixtures/mpse-demo.json",
+      "kinds": [
+        "gate",
+        "journal-sink",
+        "math-eval"
+      ]
+    },
+    {
+      "name": "needs-llm",
+      "path": "fixtures/needs-llm.json",
+      "kinds": [
+        "prompt"
+      ]
+    },
+    {
+      "name": "oracle",
+      "path": "algorithms/oracle.json",
+      "kinds": [
+        "gate",
+        "journal-sink",
+        "math-eval"
+      ]
+    },
+    {
+      "name": "parallel-5",
+      "path": "fixtures/parallel-5.json",
+      "kinds": [
+        "gate"
+      ]
+    },
+    {
+      "name": "pre-arm",
+      "path": "algorithms/pre-arm.json",
+      "kinds": [
+        "escalation-memory",
+        "gate",
+        "journal-sink",
+        "ratio-classifier"
+      ]
+    },
+    {
+      "name": "retry",
+      "path": "algorithms/retry.json",
+      "kinds": [
+        "fallback-chain",
+        "journal-sink",
+        "retry-chain"
+      ]
+    },
+    {
+      "name": "ship",
+      "path": "algorithms/ship.json",
+      "kinds": [
+        "audit-registry",
+        "file-io",
+        "gate",
+        "journal-sink",
+        "pipeline"
+      ]
+    },
+    {
+      "name": "vars",
+      "path": "fixtures/vars.json",
+      "kinds": []
+    },
+    {
+      "name": "verify",
+      "path": "algorithms/verify.json",
+      "kinds": [
+        "gate",
+        "journal-sink",
+        "parallel"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-03"
+}
