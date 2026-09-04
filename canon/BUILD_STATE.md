@@ -1,4 +1,4 @@
-# BUILD STATE — Effect_Runtime_Kernels (MacroKernel_Edition-v1.0)
+# BUILD STATE — JESL (MacroKernel_Edition-v1.0)
 
 ## Purpose
 The build ledger: the checkpoint tree, the SHA chain, the verified results, the module inventory, the build command, the frozen list. Overwritten per milestone EXCEPT the SHA chain (append-only).

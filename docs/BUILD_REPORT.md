@@ -1,4 +1,4 @@
-# BUILD REPORT — MacroKernel_Edition-v1.0 (Effect_Runtime_Kernels)
+# BUILD REPORT — MacroKernel_Edition-v1.0 (JESL)
 
 ## THE COMPLETION DECLARATION
 

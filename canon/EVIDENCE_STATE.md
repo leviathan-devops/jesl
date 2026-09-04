@@ -1,4 +1,4 @@
-# EVIDENCE STATE — Effect_Runtime_Kernels (MacroKernel_Edition-v1.0)
+# EVIDENCE STATE — JESL (MacroKernel_Edition-v1.0)
 
 ## Purpose
 The evidence ledger: the SHA chain, the behavioral passTokens, the audit findings, proven-vs-claimed, the container-run provenance. APPEND per evidence; the summary block overwrites.

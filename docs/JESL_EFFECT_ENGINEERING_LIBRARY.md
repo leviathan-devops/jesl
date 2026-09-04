@@ -895,7 +895,7 @@ launch: jesl run payload/workflow.json --in payload/ctx.json
 
 ### 12F — REAL PATHS
 ```
-JESL kernel    .../Effect_Runtime_Kernels/jesl/          (109 files; npx vitest run)
+JESL kernel    .../JESL/jesl/          (109 files; npx vitest run)
 TDM spec       .../v4.4.3/TRIDENT_DECISION_MAKING_TOOL_SPEC.md (1,525L)
 this bible     .../KNOWLEDGE_LIBRARY/Bibles/JESL/JESL_EFFECT_ENGINEERING_LIBRARY.md
 canon bible    .../KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_ENGINEERING_BIBLE.md (492L)

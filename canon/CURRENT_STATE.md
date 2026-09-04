@@ -1,4 +1,4 @@
-# CURRENT STATE — Effect_Runtime_Kernels (MacroKernel_Edition-v1.0)
+# CURRENT STATE — JESL (MacroKernel_Edition-v1.0)
 
 ## Purpose
 The per-module, per-artifact status board: what EXISTS, what is SOLID, what is OPEN — with the anchors. Overwritten per milestone. A fresh agent reads this to know exactly where the build stands without re-probing the tree.

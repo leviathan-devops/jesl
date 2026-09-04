@@ -6,7 +6,7 @@ steps. The kernel validates it, runs each step on Effect-TS in dependency order,
 logs every result to a tamper-proof journal, and returns PASS or FAIL.
 
 This tree is a COMPLETE, FUNCTIONAL kernel extracted from the production
-Effect_Runtime_Kernels build. It is not a skeleton, not a tutorial, and not a
+JESL build. It is not a skeleton, not a tutorial, and not a
 mock. All 37 node kinds return real verdicts. 424 tests pass out of the box.
 Zero `@ts-nocheck`. One 20-line tsconfig. No LLM wiring anywhere — the `Llm`
 capability is an interface; you plug in whatever model you want, or nothing.
@@ -183,7 +183,7 @@ code, zero API keys, zero network calls you did not author in a card.
 
 ## PROVENANCE
 
-Extracted from the production kernel (Effect_Runtime_Kernels/jesl) via
+Extracted from the production kernel (JESL/jesl) via
 `boilerplate/extraction.ts` — `boilerplate-manifest.json` records the source
 digest. Kernel state at extraction: 37/37 kinds functional, 424/424 tests,
 tsc 0, zero @ts-nocheck, spec manifest f77b448f (zero drift through 10 build

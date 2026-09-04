@@ -1,4 +1,4 @@
-# NEXT STEPS — Effect_Runtime_Kernels (MacroKernel_Edition-v1.0)
+# NEXT STEPS — JESL (MacroKernel_Edition-v1.0)
 
 ## Purpose
 The forward plan: the next wave(s), the files they touch, the done-when gates, the risks. Overwritten per milestone. THIS doc + WAVE_PLAN.md are the dispatch pair.

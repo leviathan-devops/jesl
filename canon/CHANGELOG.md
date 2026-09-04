@@ -1,4 +1,4 @@
-# CHANGELOG — Effect_Runtime_Kernels (MacroKernel_Edition-v1.0)
+# CHANGELOG — JESL (MacroKernel_Edition-v1.0)
 
 ## Purpose
 The session-history ledger: what was accomplished (with evidence), the decisions (verbatim), the failures + root causes, the honest disclosures. APPEND-ONLY — history accumulates.
@@ -48,7 +48,7 @@ The session-history ledger: what was accomplished (with evidence), the decisions
 ### Decisions (verbatim)
 - The insertion: "add the Macro Kernels Prototype Shells as a step between MPSE + Code specs. MPSE specs --> macro kernel prototyps --> code specs".
 - The rockets: "skills as the payload deliver for ephemeral-kernel-tools ('rockets' - one off execution) - skill rockets. kernel rockets."
-- The workspace: "use Active_Projects/Effect_Runtime_Kernels as the workspace move in all the specs and wave plans and setup canon docs per the skill".
+- The workspace: "use Active_Projects/JESL as the workspace move in all the specs and wave plans and setup canon docs per the skill".
 ### Failures + root cause
 - The DPL2's placeholder container plan (the generator's known failure class): root cause = single-round generation emits the template battery when the tail isn't anchored; fixed by the surgical replacement with the real 11-row battery (the skill's Phase-6 protocol worked as designed).
 ### Honest disclosures
@@ -105,7 +105,7 @@ The session-history ledger: what was accomplished (with evidence), the decisions
 8. "skills as the payload deliver for ephemeral-kernel-tools ('rockets' - one off execution) - skill rockets. kernel rockets."
 9. "engineer this based on the input pipeline laid out in [v4.4.4] and just add the Macro Kernels Prototype Shells as a step between MPSE + Code specs. MPSE specs --> macro kernel prototyps --> code specs"
 10. "where is the effect layered in here?" → the 4-layer answer
-11. "use Active_Projects/Effect_Runtime_Kernels as the workspace move in all the specs and wave plans and setup canon docs per the skill"
+11. "use Active_Projects/JESL as the workspace move in all the specs and wave plans and setup canon docs per the skill"
 
 ## [2026-09-03] — SESSION 5: the post-build documentation
 ### Accomplished (evidence)

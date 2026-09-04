@@ -1,5 +1,5 @@
 # BUILD SPEC ARTIFACT — JESL FULL-FUNCTION OVERHAUL
-**Target:** `Effect_Runtime_Kernels/jesl/`
+**Target:** `JESL/jesl/`
 **Generated:** 2026-09-03
 **Trident Version:** v4.4.3
 **Status:** PLANNING

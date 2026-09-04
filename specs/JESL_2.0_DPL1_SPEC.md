@@ -1,6 +1,6 @@
 # BUILD SPEC ARTIFACT — JESL 2.0 (MacroKernel Edition v2.0)
 
-**Target:** `Effect_Runtime_Kernels/jesl/` → shipped as `JESL-Kernel-Edition-2.0`
+**Target:** `JESL/jesl/` → shipped as `JESL-Kernel-Edition-2.0`
 **Generated:** 2026-09-03T16:00+04
 **Trident Version:** v4.4.3
 **Status:** PLANNING

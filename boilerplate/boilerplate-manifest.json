@@ -1,5 +1,5 @@
 {
-  "sourceDir": "/home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/Effect_Runtime_Kernels/jesl",
+  "sourceDir": "/home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/JESL/jesl",
   "targetDir": "/home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/KNOWLEDGE_LIBRARY/agent_plugin_boilerplates/JESL-Kernel-Edition-v1.0",
   "profile": "trident",
   "targetName": "JESL-Kernel-Edition-v1.0-kernel",

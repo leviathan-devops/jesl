@@ -449,7 +449,7 @@ launch: jesl run payload/workflow.json --in payload/ctx.json
 
 ### 8E — real paths
 ```
-JESL kernel      .../Effect_Runtime_Kernels/jesl/           (109 files; runner: npx vitest run)
+JESL kernel      .../JESL/jesl/           (109 files; runner: npx vitest run)
 TDM spec         .../v4.4.3/TRIDENT_DECISION_MAKING_TOOL_SPEC.md  (1,525L)
 this bible       .../KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_ENGINEERING_BIBLE.md
 boilerplate      .../KNOWLEDGE_LIBRARY/agent_plugin_boilerplates/JESL-Kernel-Edition-v1.0/

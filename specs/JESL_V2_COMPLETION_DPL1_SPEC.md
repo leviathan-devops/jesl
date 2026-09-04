@@ -1,5 +1,5 @@
 # BUILD SPEC ARTIFACT — JESL V2: THE COMPLETION WAVE
-**Target:** `Effect_Runtime_Kernels/jesl/` (109 .ts files, 336 tests, digest `681bf869`)
+**Target:** `JESL/jesl/` (109 .ts files, 336 tests, digest `681bf869`)
 **Generated:** 2026-09-03
 **Trident Version:** v4.4.3
 **Status:** PLANNING

@@ -1,4 +1,4 @@
-# DECISION CHAIN — Effect_Runtime_Kernels (MacroKernel_Edition-v1.0)
+# DECISION CHAIN — JESL (MacroKernel_Edition-v1.0)
 
 ## Purpose
 The ruling ledger: every load-bearing decision as a verbatim statement + context + rationale + alternatives rejected + implications. APPEND-ONLY. When a law in COMPACTION_SURVIVAL conflicts with a newer ruling HERE, the newer ruling wins and the law updates at the next milestone.
@@ -50,7 +50,7 @@ The ruling ledger: every load-bearing decision as a verbatim statement + context
 - IMPLICATIONS: the v4.4.4 slotting (Layer-0 internals / 2 / 3; the shell immutable); DD13's projector pattern.
 
 ### D6 — THE WORKSPACE (2026-09-03, the operator)
-- RULING: "use Active_Projects/Effect_Runtime_Kernels as the workspace move in all the specs and wave plans and setup canon docs per the skill".
+- RULING: "use Active_Projects/JESL as the workspace move in all the specs and wave plans and setup canon docs per the skill".
 - IMPLICATIONS: the 4 specs moved in (the bible stays external canon — the pointer in the manifest); WAVE_PLAN.md; this scaffold.
 
 ### D7–D21 — the engineering decision set (2026-09-01→03, carried verbatim from the L2's designDecisions input: DD1–DD24)

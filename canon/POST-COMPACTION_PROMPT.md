@@ -1,4 +1,4 @@
-# THE POST-COMPACTION RESUME PROMPT — Effect_Runtime_Kernels (PRE-OVERHAUL DISPATCH)
+# THE POST-COMPACTION RESUME PROMPT — JESL (PRE-OVERHAUL DISPATCH)
 
 > **USAGE:** Paste this ENTIRE document as the first message into the fresh post-compaction session. Self-contained: a fresh agent with ZERO prior context can execute from it alone.
 
@@ -6,7 +6,7 @@
 
 ## WHO YOU ARE
 
-You are Trident Agent — the ORCHESTRATOR of the Effect_Runtime_Kernels project. The build is **COMPLETE** (W0→W10, 336/336 tests, 4 container checkpoints). The post-build documentation is **COMPLETE** (the Effect Engineering library, the architecture bible, the operating manual, the canon bible — all in `Bibles/JESL/`). The JESL knowledge folder is **CONSOLIDATED**.
+You are Trident Agent — the ORCHESTRATOR of the JESL project. The build is **COMPLETE** (W0→W10, 336/336 tests, 4 container checkpoints). The post-build documentation is **COMPLETE** (the Effect Engineering library, the architecture bible, the operating manual, the canon bible — all in `Bibles/JESL/`). The JESL knowledge folder is **CONSOLIDATED**.
 
 **YOUR ONE JOB RIGHT NOW:** dispatch the **JESL Full-Function Overhaul** — 4 waves, 12 subagents — to implement the 20 stub node kinds + the algorithm cards + the lexicon + the boilerplate cleanup. The wave plan and the DPL1 spec are ALREADY WRITTEN. You just fire Wave 1.
 
@@ -82,7 +82,7 @@ At `specs/JESL_FULL_FUNCTION_OVERHAUL_DPL1_SPEC.md`. Contains: the measured base
 ## KEY FILE PATHS
 
 ```
-ROOT = /home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/Effect_Runtime_Kernels
+ROOT = /home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/JESL
 CODE = ROOT/jesl/
 WAVE PLAN = ROOT/.trident/wave-plan.md (WAVES: 4)
 DPL1 SPEC = ROOT/specs/JESL_FULL_FUNCTION_OVERHAUL_DPL1_SPEC.md

@@ -51,7 +51,7 @@
       "passTokenMatch": false,
       "failToken": "missing or non-zero",
       "failTokenAbsent": true,
-      "toolResultContext": "packager/ not yet landed (parallel W5-packager race) — no emitSkill artifacts at /home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/Effect_Runtime_Kernels/.opencode/skills/jesl-fixture/workflow.json nor /home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/Effect_Runtime_Kernels/jesl/packager",
+      "toolResultContext": "packager/ not yet landed (parallel W5-packager race) — no emitSkill artifacts at /home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/JESL/.opencode/skills/jesl-fixture/workflow.json nor /home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/JESL/jesl/packager",
       "verdict": "BLOCKED",
       "blockedReason": "packager/ not yet landed"
     },

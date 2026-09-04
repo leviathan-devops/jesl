@@ -1,7 +1,7 @@
-# CANON MANIFEST — Effect_Runtime_Kernels
+# CANON MANIFEST — JESL
 
 ## Project Identity
-- Project root: `/home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/Effect_Runtime_Kernels`
+- Project root: `/home/leviathan/OPENCODE_WORKSPACE/Shared Workspace Context/Trident_Agent/Active_Projects/JESL`
 - Agent: trident (the v4.4.2-paragon-wave-manager lineage, dist head 14e45a5e)
 - Model/Provider: the session's current model
 - Created: 2026-09-03 (scaffolded by canon-doc-setup)

@@ -1,7 +1,7 @@
 # THE JESL KNOWLEDGE FOLDER — INDEX
 
 > **WHAT THIS IS:** the consolidated JESL document library. Every JESL-relevant bible, manual, and canon lives here. Anything superseded or executed is in `archive/`.
-> **CODE:** the kernel source lives at `Effect_Runtime_Kernels/jesl/` (109 .ts files · runner `npx vitest run` · 336 tests green).
+> **CODE:** the kernel source lives at `JESL/jesl/` (109 .ts files · runner `npx vitest run` · 336 tests green).
 
 ---
 
@@ -22,7 +22,7 @@
 
 | Doc | Why archived |
 |---|---|
-| `archive/JESL_EFFECT_PHASE2_DPL1_SPEC.md` | the Phase-2 docs-wave instruction — EXECUTED at W0 (its content is absorbed into JSON_EVENT_SCRIPTING_BIBLE v1.2 PART 2E + the DPL1 v1.1-E §2.9/§5.2). The live authority copy is pinned at `Effect_Runtime_Kernels/specs/` in the manifest `f77b448f` |
+| `archive/JESL_EFFECT_PHASE2_DPL1_SPEC.md` | the Phase-2 docs-wave instruction — EXECUTED at W0 (its content is absorbed into JSON_EVENT_SCRIPTING_BIBLE v1.2 PART 2E + the DPL1 v1.1-E §2.9/§5.2). The live authority copy is pinned at `JESL/specs/` in the manifest `f77b448f` |
 
 ---
 
@@ -32,14 +32,14 @@ These are the READ-ONLY implementation authorities, pinned by the spec manifest 
 
 | Spec | Path | Lines |
 |---|---|---|
-| THE L2 (implementation authority) | `Effect_Runtime_Kernels/specs/MACRO_KERNEL_BOILERPLATE_L2_SPEC.md` | 5,290 |
-| THE LIBRARY DPL1 (v1.1-E) | `Effect_Runtime_Kernels/specs/JESL_LIBRARY_DPL1_SPEC.md` | 477 |
-| THE PHASE-2 SPEC (executed) | `Effect_Runtime_Kernels/specs/JESL_EFFECT_PHASE2_DPL1_SPEC.md` | 284 |
+| THE L2 (implementation authority) | `JESL/specs/MACRO_KERNEL_BOILERPLATE_L2_SPEC.md` | 5,290 |
+| THE LIBRARY DPL1 (v1.1-E) | `JESL/specs/JESL_LIBRARY_DPL1_SPEC.md` | 477 |
+| THE PHASE-2 SPEC (executed) | `JESL/specs/JESL_EFFECT_PHASE2_DPL1_SPEC.md` | 284 |
 | THE TDM SPEC | `Trident_Agent/Active_Projects/v4.4.3/TRIDENT_DECISION_MAKING_TOOL_SPEC.md` | 1,525 |
 
 Manifest recompute:
 ```bash
-cd Effect_Runtime_Kernels/specs && cat MACRO_KERNEL_BOILERPLATE_L2_SPEC.md <(printf '\0') \
+cd JESL/specs && cat MACRO_KERNEL_BOILERPLATE_L2_SPEC.md <(printf '\0') \
   JESL_LIBRARY_DPL1_SPEC.md <(printf '\0') EFFECT_TS_RUNTIME_BIBLE.md <(printf '\0') \
   JESL_EFFECT_PHASE2_DPL1_SPEC.md | sha256sum
 # expect f77b448fff1ea3f38524949c09c3b0d89657e5cc90131f990b32d574f8a8ff1c
@@ -53,8 +53,8 @@ NOTE: EFFECT_TS_RUNTIME_BIBLE.md lives in BOTH places — this folder (moved 202
 
 | Doc | Path | Relevance |
 |---|---|---|
-| BUILD_REPORT | `Effect_Runtime_Kernels/BUILD_REPORT.md` (597L) | the wave-by-wave build evidence |
-| CANON (12 docs) | `Effect_Runtime_Kernels/context_management/` | the live state ledger |
-| WAVE AUDITS | `Effect_Runtime_Kernels/.trident/wave-audit/w0-w9.md` | per-wave verdicts |
-| CONTAINER ARTIFACT | `Effect_Runtime_Kernels/.trident/container-test-results.json` | 28 runtime rows, 4 checkpoints |
+| BUILD_REPORT | `JESL/BUILD_REPORT.md` (597L) | the wave-by-wave build evidence |
+| CANON (12 docs) | `JESL/context_management/` | the live state ledger |
+| WAVE AUDITS | `JESL/.trident/wave-audit/w0-w9.md` | per-wave verdicts |
+| CONTAINER ARTIFACT | `JESL/.trident/container-test-results.json` | 28 runtime rows, 4 checkpoints |
 | TDM v4.4.3 TRUTH CONTEXT | `trident-tmp/ctx-c-v443-truth.md` + `trident-tmp/ms-decision.md` | the v4.4.3 decision-engine working context |

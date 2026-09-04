@@ -1,4 +1,4 @@
-# COMPACTION SURVIVAL — Effect_Runtime_Kernels (MacroKernel_Edition-v1.0)
+# COMPACTION SURVIVAL — JESL (MacroKernel_Edition-v1.0)
 
 ## Purpose
 The doc a POST-COMPACTION agent reads FIRST to regain full operating awareness without re-deriving anything. Everything needed to resume: the laws, the doctrine, the state pointer, the entry sequence.

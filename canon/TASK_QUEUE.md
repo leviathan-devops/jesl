@@ -1,4 +1,4 @@
-# TASK QUEUE — Effect_Runtime_Kernels (MacroKernel_Edition-v1.0)
+# TASK QUEUE — JESL (MacroKernel_Edition-v1.0)
 
 ## Purpose
 The live queue: the gates, the active tasks, the completed-with-evidence, the backlog, the blocked. Overwritten per milestone. The dispatch source of truth alongside WAVE_PLAN.md.
