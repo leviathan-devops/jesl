@@ -1,492 +1,509 @@
-# EFFECT ENGINEERING BIBLE — THE SHARED MACRO MECHANICS OF MAGIC
+# THE EFFECT ENGINEERING BIBLE v3.0 — IDEA → RUNTIME REALITY
+**THE OPERATIONAL METHOD**: how to engineer any idea into a running JESL card + a production kernel — following the shared macro principles every canonical effect system computes.
 
-> **TRIGGER:** Any agent building spell-like executable artifacts (JESL Effect Spells, Skill Rockets) or analyzing how magic systems actually compute casting. NOT a lore document — zero world-building, only the mechanics of idea/cause → effect → experienced effect.
-> **DUTY:** Read fully. Then operate. This bible extracts the SHARED patterns every canonical system uses to script magic, then compiles them onto JESL + TDM.
-> **PROTOCOL:** One-shot read, then execute P3-1..P3-5.
-> **SOURCES (mechanics only):** UESP Lore:Magic + Skyrim:Magic Overview + Oblivion:Spell Making · Witcher Wiki: Magic · Inheriwiki: Magic + Ancient Language (used ONLY as the Effect-Scripting language reference) · TRIDENT_DECISION_MAKING_TOOL_SPEC.md (v4.4.3, 1,525L) · the JESL kernel (jesl/, 109 files).
+**TRIGGER:** you have an idea for an effect — something that should HAPPEN in a runtime — and you want it running as code that provably produces exactly that idea.
+**DUTY:** the idea → runtime compilation method: intent capture → effect decomposition → pipeline authoring → pricing → pre-flight → release → render → settle → record. Then permanence: the production kernel, then the skill rocket.
+**PROTOCOL:** Read fully once. Then for every new effect: Part 2 (the method) → Part 4 (a worked example nearest your idea) → cast. The lore that VALIDATES this method is compressed in Part 8 — the canon systems are the evidence the method is universal, not the subject.
+
+> **THE THESIS IN ONE LINE:** an effect is not a wish — it is a PRICED, VALIDATED, ORDERED PIPELINE of parameterized primitives, journaled end to end, whose experienced result is computed from what actually fired. JESL compiles exactly that. This bible teaches the compilation by hand.
 
 **THE THREE SENTENCES OF DISCIPLINE:**
-1. Every magic system computes the same triad — IDEA (structured intent) → EFFECT (a priced, validated pipeline of parameterized effect primitives) → EXPERIENCED EFFECT (a rendered, observable world-state change) — and differs only in its compiler and cost model.
-2. Every spell in every system decomposes to the same primitive shape: `{effect-type, magnitude, duration, area, targeting}` composed in ordered pipelines with explicit stacking rules — the systems are all the same DSL with different syntax.
-3. The experienced effect must be computed from what actually fired, never from what was intended — evidence over narration is the one law no system can skip.
+1. IDEA → EFFECT → EXPERIENCED EFFECT: three bound stages, never merged — the intent documents what should happen, the nodes encode what CAN happen, the journal proves what DID happen.
+2. Every effect decomposes to the same primitive shape — `{effect-class, scale, duration, scope, targeting}` — mapped onto node kinds, configs, channels; every "named spell" is a saved composition.
+3. The experienced effect is computed from execution evidence, never from the idea's claims — the journal is the render.
 
 ---
 
-## PART 1 — CRITICAL RULES (the shared mechanics law)
+<!-- ═══════════ PART 0: THE PROOF (compressed — why this method is universal) ═══════════ -->
 
-### 1A — THE TRIAD LAW
-1. ALWAYS structure casting as three bound stages: IDEA → EFFECT → EXPERIENCED EFFECT. All analyzed systems separate acquire → structure → price → release → render → settle → record; none merge them.
-2. NEVER let the intent stage write the experience stage. Mis-focus is the canonical failure: Eragon's non-verbal caster holding "burn that door" burns whatever the mind drifts to — the render follows the held structure, not the wish.
-3. MUST compute the experienced effect from execution evidence. JESL: verdicts FROM journal rows (workflow/jesl-run.ts:46-64), never from the doc's claims.
+## PART 0 — THE PROOF
 
-### 1B — THE PRICING LAW (every system has a cost function)
-1. ALWAYS price a cast with an explicit function over the spell's parameters. Three canonical cost models: TES — `cost = B × M^1.28 × D × A` (+skill/perk/equipment multipliers, §2.1); Eragon — `cost = mundane effort of the task` (exact energy equivalence); Witcher — elemental draw + essence burn (fire empowers and marks the caster).
-2. NEVER release without a capacity check. TES: pool < cost = fizzle, no cast. Eragon: overrun = death, limit = blackout — which forces the cancellable-process formulation. JESL: cap pre-flight aborts with CAP-UNBOUND and zero rows (executor.ts:159-178).
-3. MUST declare the energy source at authoring: pool, external draw, or delegation — each with its own failure surface. JESL: the driver binding IS the source declaration (§5.3).
+Four canonical effect systems — TES Oblivion/Skyrim, The Witcher, Eragon's Ancient Language — were decomposed node by node, and every one computes the SAME pipeline:
 
-### 1C — THE INTERFACE LAW (a compiler sits between intent and world)
-1. ALWAYS compile intent through an explicit structure: an altar composition (Oblivion), a formula (Witcher), a sentence in a binding language (Eragon), a gesture (Signs). The interface is the safety layer — Eragon's canon history is that unstructured thought-casting caused a near-catastrophe and the fix was binding language to magic.
-2. NEVER bypass the interface in production. The interface enforces: total semantics (in Eragon's language, spoken words are true — no lying to the compiler), known-vocabulary-only (Oblivion altars list only effects you know and can cast), and deterministic grammar.
-3. MUST keep the interface total and frozen: JESL's `$schema: trident-workflow-v1` + the 8 frozen `[JESL ...]` tokens ARE the interface — inventing vocabulary outside it is the recurring failure class.
+```
+IDEA ──► ACQUIRE vocabulary ──► STRUCTURE (compile intent to a castable form)
+     ──► PRICE (cost = f(shape); capacity check) ──► PRE-FLIGHT (refuse if unpayable)
+     ──► RELEASE (the ordered pipeline runs) ──► RENDER (world-state changes)
+     ──► SETTLE (costs land) ──► RECORD (the experienced effect, knowable + replayable)
+```
 
-### 1D — THE PRIMITIVE-COMPOSITION LAW (the shared physics)
-1. ALWAYS decompose spells into parameterized primitives: `{effect-type, magnitude, duration, area, targeting}`. TES effects, Witcher formulae, and Eragon's verb-target sentences all instantiate this exact shape.
-2. NEVER treat a named spell as atomic. Every named spell (Fireball, Alzur's Thunder) is a saved composition of primitives + parameters — the name is a pointer to a pipeline.
-3. MUST support composition: multi-primitive spells with ordering semantics (§3.3) — the composition surface (Oblivion's altar) is where power actually lives.
+The systems differ ONLY in syntax and cost curves. The shared invariants:
 
-### 1E — THE PROCESS LAW (cancellable execution)
-1. ALWAYS formulate spells as cancellable processes with checkpoints, not one-shot irrevocable effects. Eragon: released energy is unrecoverable, so a blocked binary spell kills its caster; processes that can stop mid-flight are the master's formulation.
-2. NEVER authorize an irrevocable release without a pre-flight and a stop boundary. JESL: the durable ask (suspend/answer/resume) and the gate-bracket (gate → generation → gate, repair ≤ 2) are the checkpoint mechanics.
-3. MUST journal mid-process so a stopped spell leaves evidence, not wreckage.
-
-### 1F — THE STACKING LAW (interaction rules are explicit)
-1. ALWAYS define how casts interact: same-identity replaces, distinct-identity stacks; amplifiers multiply subsequent effects but not same-cast effects; amplification of amplifiers compounds exponentially.
-2. NEVER assume recasting accumulates. Oblivion's measured ladder (§2.1) shows 1→4→16→49→144→400→1089 damage multipliers across an alternating prepare sequence.
-3. MUST make interaction rules part of the spell's contract, not the runtime's mood.
-
-### 1G — THE MASTERY LAW (composition beats repertoire)
-1. ALWAYS measure power by what the caster can COMPOSE, not what they can EQUIP: bought spells are standardized and weaker than theory-understood casts (TES); vocabulary size is the novice's misconception — inventiveness is the real bound (Eragon); Signs are the everyone-tier, formulae the trained-tier (Witcher).
-2. NEVER ship a system where the only path to power is acquiring canned assets.
-
----
-
-## PART 2 — THE SHARED PHYSICS (the universal spell model, pattern by pattern)
-
-### 2.1 PATTERN: THE EFFECT PRIMITIVE (all systems, one shape)
-
-| System | The primitive | Parameters | Composition surface |
-|---|---|---|---|
-| Oblivion altar | magic effect | range (self/touch/target), area, magnitude, duration | the altar: add effects one by one, name, save |
-| Skyrim | magic effect (fixed combos) | base cost, magnitude, duration, dual-cast flag | none removed in Skyrim — fixed spell tomes |
-| Witcher | formula / sign | gesture or ritual; power draw from element plane | witchers: 5 canned Signs; mages: authored formulae |
-| Eragon | verb phrase | the word(s), the held mental target, energy budget | the sentence in the binding language; process-formulation |
-
-THE PATTERN: a spell is never a thing — it is a parameterized function. The primitive shape `{type, magnitude, duration, area, targeting}` appears identically in all four. Magnitude^1.28 (Oblivion) is superlinear pricing on power; duration is priced linearly (making sustained effects cheaper per point than bursts — an explicit design incentive); area is priced at 0.15/point; targeted range costs ×1.5 (risk premium).
-
-### 2.2 PATTERN: THE COST FUNCTION (three pricing models, one law)
-
-| Model | Formula | Capacity check | Overrun outcome |
-|---|---|---|---|
-| TES pool | `Σ B·M^1.28·D·A ×(1.4−0.012·skill)` ×1.5 targeted | pool ≥ cost else fizzle | none (fail-safe) |
-| Eragon equivalence | `cost = energy of doing it mundanely` | strength ≥ cost | overrun = death; at-limit = blackout |
-| Witcher essence | elemental draw; fire = strongest + self-marking | talent/control (Sources flare untrained) | essence burn; caster takes on the element's vulnerability |
-
-Shared law: cost is a FUNCTION OF THE SPELL'S SHAPE (bigger/longer/wider = more), capacity is a CAST Property, and the capacity check runs BEFORE release. Oblivion adds skill-tier gating by total cost (<26 none / ≥26 skill 25 / ≥63 skill 50 / ≥150 skill 75 / ≥400 skill 100) — power gating by demonstrated competence, not just reserves.
-
-### 2.3 PATTERN: TARGETING & GEOMETRY (the universal range ladder)
-
-Every system grades targeting by risk/energy: SELF (cheapest, safe) → TOUCH (fast animation, low cost) → TARGET (projectile, ×1.5 cost, can miss) → AREA (most expensive, hits all in radius). Oblivion prices it explicitly (×1.5 targeted); Skyrim instantiates it as self-cast / touch / projectile / spray / ward / rune / master-area forms; Witcher Signs are self-centered gestures (Aard push, Quen shield) while mages hurl targeted formulae; Eragon requires the held image of the target (mental targeting — mis-focus = mis-render).
-
-### 2.4 PATTERN: EXECUTION CLASSES (how effects run over time)
-
-| Class | Mechanics | Examples |
+| shared mechanic | the proof in every system | the JESL compile |
 |---|---|---|
-| INSTANT | fire-and-forget; state change on hit | Oblivion burst heals; Eragon "Brisingr!" ignitions |
-| PROJECTILE | spawn → travel → impact-resolution | Skyrim Fireball/Firebolt; witcher bolts |
-| SUSTAINED | concentration-held; drains per-second; ends on break | Skyrim Flames/Sparks; Igni spray |
-| TIMED | apply state for N seconds, then expire (optionally tapered) | Oblivion Weakness 5s; Skyrim cloak spells |
-| TAPERED | magnitude decays by curve after expiry: `M·W·(1−t/TD)^TC`; negative curve = growth | Skyrim lingering effects |
-| PERSISTENT/ZONE | world-placed glyph/ward until triggered or expired | Skyrim runes; Yrden |
-| SUMMONED | spawn an autonomous entity for a duration | TES atronachs; witcher contracts' summonings |
-| PROCESS | multi-step, cancellable, state carried between steps | Eragon's formulated processes (the master tier) |
+| effects are parameterized primitives `{effect-class, scale, duration, scope, targeting}` — never atomic things | Oblivion altars compose `Fire Damage Npts` with range/area/duration; Witcher formulae; Eragon verb-phrases | node kinds + configs; the card IS the composition |
+| composition is ordered — amplifiers precede what they amplify; same-identity recasts replace | Oblivion's measured stacking ladder (1→4→16→…→1089×) | the edge graph IS the order; runIds replace, seeds diverge |
+| cost = f(shape), checked BEFORE release | magicka pools fizzle; Eragon's overrun kills; essence burns | the cap pre-flight refuses `[JESL CAP-UNBOUND]` before any fiber |
+| unstructured intent is the catastrophe | Eragon's wordless casting redirects to whatever the mind drifts to | decodeDoc → validateDoc → the refusals: nothing runs outside the schema |
+| the experienced effect is computed from execution, never narration | "the scar; the caster knows" | verdicts FROM journal rows (sha256-chained, replayable) |
+| processes beat one-shots at the mastery tier | multi-step cancellable formulations | pause + durable asks + gate-bracketed generation |
+| power = composition, not repertoire | bought spells are standardized and weak | cards are authored; the registry is the vocabulary; the rockets are the compositions |
 
-THE PATTERN: time is a first-class spell axis. Duration is priced, taper curves are defined (`magnitude(t) = M·W·(1−t/TD)^TC`, total ≈ `M·W·TD/(TC+1)`), and the PROCESS class — multi-step with carried state and cancellation points — is the advanced tier every system gates behind mastery.
-
-### 2.5 PATTERN: RESOLUTION (how the world computes the hit)
-
-1. Resistance/absorption stack with caps (TES magic resistance caps at 85%; absorption can negate + refund cost).
-2. Ordering rules bind the resolver: amplifiers must precede what they amplify; same-cast amplification is ignored (Oblivion Weakness does not boost Damage in the same cast); trap-effects must precede and outlast kill-effects.
-3. Dual-channel tradeoff: Skyrim dual-cast = 2.2× effect for 2.8× cost (2× base for two hands) — a net loss for most schools, a win where level-caps matter (Illusion) or stagger matters (Destruction's Impact).
-4. JESL resolution: the Effect "hits" when its nodes' verdicts are computed FROM journal rows; the resolve step is the journal write itself.
-
-### 2.6 PATTERN: INTERACTION & STACKING (the amplification algebra)
-
-Oblivion's measured stacking ladder (prepare = Weakness-to-Fire 100% + Weakness-to-Magic 100%, alternating names; fatality = Fire Damage 10×10s):
-
-| Sequence | total WtM | damage multiplier | total damage |
-|---|---|---|---|
-| Fatality alone | 0 | 1 | 100 |
-| P1, Fatality | 100 | 4 | 400 |
-| P1, P2, Fatality | 300 | 16 | 1,600 |
-| P1 P2 P1, Fatality | 600 | 49 | 4,900 |
-| +P2 | 1,100 | 144 | 14,400 |
-| +P1 | 1,900 | 400 | 40,000 |
-| +P2 | 3,200 | 1,089 | 108,900 |
-
-Laws: amplification is MULTIPLICATIVE and applies to everything after the amplifier (including other amplifiers) → exponential ladders; same-named casts replace (hence alternating names); magicka-refund loops (Fortify Magicka > spell cost, recast inside the window) exist inside the DSL. JESL equivalent: distinct runIds stack (covers(docHash, seed) replays only the identical cast — new seed = new chain).
-
-### 2.7 PATTERN: THE INTERFACE-COMPILER (the language layer — Eragon as the Effect-Scripting reference)
-
-Eragon's Ancient Language is the only canon system that EXPLICITY designs the compiler; extracted as language design (this is the Effect-Scripting reference):
-
-| Language feature | Mechanic | JESL/programming analogue |
-|---|---|---|
-| bound vocabulary | each act of magic is linked to a specific word | the node-kind registry (37 kinds, append-only) |
-| total semantics | spoken words are TRUE — the compiler forbids lying | the frozen 8-token refusal vocabulary; verdicts from evidence only |
-| true names | knowing a thing's name binds it | identifiers/capability tags — `jesl/Shell`, `jesl/Llm`; capability = the name |
-| meta-name | knowing the language's own name redefines its words | the schema/meta layer ($schema, meta.tier) — the level that changes the rules |
-| grammar | fixed word order; deterministic affixes shift meaning (äf- steal, eld- agent); no participles | the doc schema: nodes/edges/vars are positional; config shapes are closed |
-| non-verbal mode | masters may cast without words — BUT a wandering thought redirects the effect | driver-edge vs in-core execution: bypass the edge and the run is uncontrolled |
-| process formulation | spells as cancellable multi-step processes | the durable ask; journal checkpointing; gate-bracketed generation |
-| energy equivalence | cost = the mundane effort | budget model: deadlineMs, maxNodesFiring 15, cap pre-flight |
-| delegation | spirits execute the will; stronger spirits possess the caster | Subagent dispatch behind oracle gates + repair ≤ 2 + 3-strike FAIL |
-
-THE PATTERN: the language is not decoration — it is (a) the type system that makes intent unambiguous, (b) the total-semantics layer that makes execution predictable, (c) the authority model (names = power). Any Effect-Scripting schema needs exactly these four: bounded vocabulary, total semantics, identity/binding, and a meta-layer.
-
-### 2.8 PATTERN: THE MASTERY LADDER (canned → composed → meta)
-
-All systems grade the caster by pipeline control, not asset count:
-- **TIER 0 canned:** cast what exists (Skyrim tomes; witcher Signs; bought TES spells). Fast, safe, weak ceiling.
-- **TIER 1 composed:** build new from known primitives (Oblivion altar; mage formulae). The power tier — composition surface + cost mastery (duration-shaping, tri-type splitting, amplifier laddering).
-- **TIER 2 meta:** control the compiler itself (Eragon: wordless casting, the meta-name; TES: enchanting that zeroes costs; Witcher: Sources channeling raw Chaos). Full power, full danger — the tier where overrun kills and stray thoughts redirect.
+**The engineering reading:** these are not stories — they are DESIGN REVIEWS of four independent implementations of the same compiler spec, run for decades. The failures they record (mis-focus, overrun death, unpriced effects, narration-as-proof) are exactly the failure modes the JESL refusals, journal, and cap pre-flight make STRUCTURALLY IMPOSSIBLE. When this bible says "price before release," it is repeating the one law no surviving system skipped.
 
 ---
 
-## PART 3 — THE UNIVERSAL PIPELINE (the 9-stage macro process)
+<!-- ═══════════ PART 1: THE COMPILATION METHOD ═══════════ -->
 
-| Stage | Name | Mechanic (shared) | JESL compile |
+## PART 1 — THE COMPILATION METHOD (idea → runtime, stage by stage)
+
+### 1.1 — STAGE A: CAPTURE THE INTENT (idea → structured intent)
+
+Take the idea — in whatever words it arrived — and answer five questions IN WRITING. These become the card's contract; everything later is mechanical.
+
+| question | the answer's shape | example ("gate bad writes to the repo") |
+|---|---|---|
+| WHAT world-state change? | a verb + an object + a criterion | "deny any write containing secrets; allow the rest" |
+| WHAT does done mean? | the EVIDENCE that would prove it fired | "a journal row per write: allowed/denied + the reason" |
+| WHAT effect class? | instant / sustained / timed / process / reactive | reactive (fires on host write events) |
+| WHAT does it touch? | the scope + the caps it needs | the repo tree; Fs (watch) — no network |
+| WHAT breaks if it lies? | the failure you cannot tolerate | a secret slipping through silently |
+
+Rule: if question 2 (the evidence) cannot be answered, the idea is not yet an effect — it is a wish. Effects are provable by construction; that is the whole point of the journal.
+
+### 1.2 — STAGE B: DECOMPOSE INTO PRIMITIVES
+
+Every effect decomposes to the shared shape; map each axis onto the kernel:
+
+| primitive axis | ask | maps to |
+|---|---|---|
+| effect-class | detect / decide / generate / execute / orchestrate? | the node FAMILY (deterministic/decision/execution/generation) |
+| scale | how much, how many, how far? | config values (thresholds, counts, sizes) + budget (`deadlineMs`, `maxNodesFiring`) |
+| duration | instant / held / timed / recurring? | the effect class (Part 3) — instant nodes vs `pause`/`cron-trigger`/`retry` |
+| scope | what does it touch? | `requiredCaps` + the driver binding + fan-out (`parallel` items) |
+| targeting | what triggers it, on what input? | the seed (`vars`, events via `on:{event}`), the channels (via names) |
+
+Write the decomposition as a comment in the card's `meta.description` — the intent travels with the artifact.
+
+### 1.3 — STAGE C: AUTHOR THE PIPELINE (the 9 stages → the node graph)
+
+| physics stage | the node you author |
+|---|---|
+| 1 INTENT | `meta{name, tier, description}` + `vars` |
+| 2 ACQUISITION | nothing to author — the registry IS the vocabulary (37 kinds) |
+| 3 STRUCTURING | the `nodes[]` graph: one node per primitive step |
+| 4 PRICING | a `math-eval` node if the cost computes; else the caps + budget ARE the price |
+| 5 PRE-FLIGHT | leading `gate` nodes (the target-lock pattern) — refuse before doing |
+| 6 RELEASE | the execution/decision nodes, ordered by edges |
+| 7 RENDER | outputs flowing through channels (`via`) to downstream nodes |
+| 8 SETTLE | `retry`/`fallback` exhaust; budget consumed; failures land as FAIL verdicts |
+| 9 RECORD | a `triplet-writer` + `journal-sink` — the provable claim + the chain |
+
+The discipline: gates BRACKET the work (pre-flight before, verification after); every branch ends provable; nothing fires unjournaled.
+
+### 1.4 — STAGE D: PRICE IT (declare the energy source)
+
+1. List every node's `requiredCaps` (read the node file — never guess).
+2. Choose the driver that binds them — or author one (the CLI binds Shell/Fs/Http/Journal/HashCap; your driver adds Llm/oracle/whatever YOUR effect needs).
+3. Set the budget: `deadlineMs` (default 600s) + `maxNodesFiring` (15) — the pool. Exhaustion = a loud abort, by design (the fizzle).
+4. NEVER route around a missing cap (P2-8). `[JESL CAP-UNBOUND]` with zero rows is the system saving you from an effect you could not pay for.
+
+### 1.5 — STAGE E: PRE-FLIGHT (cast; read the refusals as compile errors)
+
+`bun run cli/main.ts run my-effect.json` — the refusal vocabulary IS the compiler diagnostics:
+
+| you see | it means | the fix |
+|---|---|---|
+| `[JESL CYCLE] node=a actual=cycle through [a→b→c]` | your graph loops | break with a gate or re-arm via `event-reactivate` |
+| `[JESL CHANNEL-UNSET] field=$.x actual=undefined` | an assert reads a channel no edge wrote | rename the via to the upstream output key |
+| `[JESL TIER-VIOLATION]` | generation in a tier-1 doc | tier 2 + bracket, or de-scope |
+| `[JESL UNBRACKETED-GENERATION]` | tier-2 prompt without a contract | add `bracket{contract,…}` |
+| `[JESL CAP-UNBOUND] actual=<cap>` | the driver doesn't bind it | bind it or drop the node |
+| `[JESL UNKNOWN-NODE] actual=<type>` | a kind outside ALL_KINDS | fix the typo or register the kind |
+
+Every refusal names `node`, `field`, `actual`, `remedy` and exits 2 with ZERO journal rows — nothing to clean up. Iterate until `"verdict":"PASS"` exit 0.
+
+### 1.6 — STAGE F: RELEASE → RENDER → SETTLE → RECORD (the cast + the proof)
+
+Cast. Read the run document top-down: `batches` (the order your decomposition produced), `results` (per-node verdict + `evidence{pattern,state,anchor}` + `outputs`), the journal tail (the chain). The experienced effect is THAT document — computed from what fired, not what you intended. If a node FAILed, its `outputs.reason` + `evidence.anchor` is the work order. If everything PASSed, the journal chain is your proof — replayable via `covers(docHash, seed)` forever, at zero cost.
+
+Then permanence: if the effect will fire again — Part 5 (the production kernel). If others will fire it — Part 6 (the skill rocket).
+
+---
+
+<!-- ═══════════ PART 2: THE PRIMITIVE CATALOG ═══════════ -->
+
+## PART 2 — THE PRIMITIVE CATALOG (effect-class → node pattern)
+
+The decision table from idea-verb to node pattern. Find the VERB in your intent; the row is your skeleton.
+
+| your idea says… | effect-class | the node skeleton | the reference card |
 |---|---|---|---|
-| 1 | INTENT | desired world-state forms | meta{name,tier} + vars seed |
-| 2 | ACQUISITION | effect vocabulary gained (buy/train/learn) | registry kinds; known-only at the altar |
-| 3 | STRUCTURING | intent compiled to a castable form | the doc: nodes+edges+configs |
-| 4 | PRICING | cost = f(shape); capacity check | cap pre-flight + budget |
-| 5 | PRE-FLIGHT | reserves/discipline validated | decodeDoc → validateDoc → the 5 refusals (before any fiber) |
-| 6 | RELEASE | the pipeline executes | runProgram: readiness batches, forEach(15) |
-| 7 | RENDER | world-state change manifests | node outputs → channels → downstream wake |
-| 8 | SETTLEMENT | costs/residues land | budget consumed; journal rows written |
-| 9 | RECORD | experienced effect knowable | verdicts FROM journal rows; bus events; replay via covers() |
+| "check / verify / assert X" | decide | `gate(asserts)` | mech-gate.json |
+| "compute / derive a value" | decide | `math-eval` → `gate(assert result)` | oracle.json |
+| "prove this happened" | evidence | `triplet-writer` → `journal-sink` | guard.json tail |
+| "run this command" | execute | `shell-exec` (+ `timeoutMs`) inside gates | ship.json |
+| "call an API" | execute | `http-request` (+ assert on response) | — |
+| "read/write files" | execute | `file-io` inside gates | ship.json |
+| "store structured results" | evidence | `sqlite-sink` | infra pattern |
+| "do N independent things" | orchestrate | `parallel(items)` → `gate(count join)` | fan.json |
+| "try, else fall back" | orchestrate | `retry-chain` → `fallback-chain` | retry.json |
+| "wait for a human/event" | orchestrate | `pause` (durable) / `event-reactivate` | ask.json shape |
+| "run on a schedule" | orchestrate | `cron-trigger` → work | — |
+| "replay what happened" | evidence | `replay-source(runId)` → summary | chain.json swap |
+| "classify / route / score" | decide | `ratio-classifier` / `intent-classifier` / `synapse` | pre-arm.json |
+| "remember escalations" | decide | `escalation-memory` | pre-arm.json |
+| "protect against cascades" | decide | `circuit-breaker` | — |
+| "enforce config immutability" | decide | `config-lock` | — |
+| "verify against expectations" | decide | `oracle-gate` / `oracle-discharge` / `claim-gate` | bracket.json (claim) |
+| "produce text/JSON from a model" | generate (TIER 2) | `prompt(bracket.contract)` + Llm-bound driver | bracket.json slot |
+| "watch and react" | reactive | `event-filter(on:{event})` → work | — |
+| "accumulate a stream" | reactive | `capture-engine` → decision | — |
+| "re-arm after completion" | reactive | `event-reactivate` | — |
+| "load config/extensions" | decide | `layer-loader` | — |
+| "lock validated config" | decide | `config-lock` | — |
+| "persist structured rows" | execute+evidence | `sqlite-sink` | — |
+| "orchestrate a sub-card" | orchestrate | `workflow-machine` | — |
+| "discharge an MPSE verdict" | decide | `mpse-discharge` | — |
 
-THE PATTERN: blur stage 3 (unstructured intent) = the stray-thought catastrophe; skip 4/5 = the overrun death; skip 9 = you cannot distinguish a cast spell from a claimed one. Every canonical failure mode is a skipped stage.
+Composition chains (stack these patterns): guard→work→prove (the default) · fan-out→join · try→recover · hold→resume · compute→discharge · generate→verify. All six are in `algorithms/` as working cards — start from the nearest, never from a blank file.
 
-### 3.5 THE WORKED REFERENCE — FIREBALL THROUGH EVERY SYSTEM (the mechanics only)
+---
 
-**The 9 stages for the fireball:**
+<!-- ═══════════ PART 3: THE EFFECT CLASSES ═══════════ -->
 
-| Stage | TES (Skyrim Fireball, Destruction/Adept) | Oblivion altar-authored | Witcher (Igni-tier vs formula) | Eragon process-spell |
-|---|---|---|---|---|
-| 1 INTENT | explosion at target | Fire Damage Npts × Ds, Targeted, Area A | gout of flame | "that target, engulfed" |
-| 2 ACQUISITION | tome (Adept = skill 50) | must KNOW a Fire Damage spell to compose with it | Signs = witcher training; formulae = mage academies | learn `brisingr`/`istalri` + binding grammar |
-| 3 STRUCTURING | fixed: projectile + impact AoE | altar: effect×params, named, saved | gesture (canned) vs formula (authored) | sentence + held image; process formulation |
-| 4 PRICING | base×mults (skill 1−(s/400)^0.65) | `B(0.75)·M^1.28·D·A×1.5×skillmult` | elemental draw (Fire = strongest, self-marking) | exact mundane burn-effort |
-| 5 PRE-FLIGHT | magicka ≥ cost else fizzle | cost tier gates skill (≥26→25 ...) | control vs Chaos | strength ≥ cost else death → cancellable check |
-| 6 RELEASE | charge-release projectile | cast: animation per range | gesture burst / formula rite | will drives energy through the held image |
-| 7 RENDER | impact blast + burn | per-effect ordered resolution | cone/burst render | the HELD target burns (mis-focus = wrong victim) |
-| 8 SETTLE | magicka drained; Destruction XP | magicka + gold (creation = 3× cast) | essence residue | energy unrecoverable; blackout risk |
-| 9 RECORD | implicit (felt/logged) | implicit | bestiary notes | the scar; the caster knows |
+## PART 3 — THE EFFECT CLASSES (how effects run over time — the card pattern per class)
 
-**The same fireball as a JESL Effect Spell (the compiled form):**
+Every effect runs over time in one of eight classes. Each has a card pattern; choose yours, copy the pattern.
 
-```json
+| class | runs like | the JESL pattern | watch for |
+|---|---|---|---|
+| **INSTANT** | fire-and-forget; state change on completion | `gate → shell-exec/file-io → gate(exitCode) → triplet-writer` | assert the exit; silence is not success |
+| **PROJECTILE** | spawn → travel → impact-resolution | `gate → http-request/shell-exec(async launcher) → gate(response) → record` | the impact assert is the resolution |
+| **SUSTAINED** | held while a condition lasts; ends on break | `capture-engine`/`event-filter` feeding a `gate` per tick; ends on the break event | duration costs per tick — budget it |
+| **TIMED** | apply state for N, then expire | `cron-trigger` or `pause` + downstream expiry gate | expiry is a node, not an assumption |
+| **TAPERED** | magnitude decays by curve | `math-eval` recurrence feeding gates (`aₙ₊₁ = f(aₙ)`) | the curve is data — assert it |
+| **PERSISTENT/ZONE** | placed; waits for trigger or expiry | `sqlite-sink`/`file-io` placement + `event-filter` trigger | the trigger must be journaled too |
+| **SUMMONED** | spawn an autonomous helper for a duration | tier-2 `prompt`/subagent dispatch behind oracle gates, repair ≤ 2 | delegation needs gates (unbound = possession) |
+| **PROCESS** | multi-step, cancellable, state carried between steps | the full grammar: `pause` + durable asks + journal checkpoints + gate brackets per step | THE mastery tier — every step journaled; cancellation leaves evidence |
+
+The PROCESS class is why the kernel has a journal, a pause, and durable asks: a blocked one-shot effect is a catastrophe in every canon system; a checkpointed process is the master's formulation. Engineer long effects AS processes from day one.
+
+---
+
+<!-- ═══════════ PART 4: WORKED ENGINEERING EXAMPLES ═══════════ -->
+
+## PART 4 — WORKED ENGINEERING WALKTHROUGHS (idea → card → cast → kernel)
+
+### 4.1 — IDEA: "No write containing secrets may land in the repo — and every write decision must be provable."
+
+**Stage A — intent:** reactive effect; evidence = a journal row per write (allowed/denied + reason); touches Fs (watch) — no network; the intolerable failure = a secret landing silently.
+
+**Stage B — decomposition:** event-filter (detect the write) → evidence-machine (ingest + adjudicate) → artifact-gate wrap (DENY on violation) → journal (the receipt per decision). Class: REACTIVE.
+
+**Stage C — the card:**
+
+```jsonc
 { "$schema": "trident-workflow-v1",
-  "meta": { "name": "fireball-spell", "tier": 1, "seed": { "channel": "target" } },
+  "meta": { "name": "secret-write-gate", "tier": 1,
+            "description": "Detect writes; adjudicate; deny secrets; journal every decision" },
   "nodes": [
-    { "id": "target-lock",  "type": "gate",
-      "config": { "asserts": [{ "path": "$.target.zone", "op": "contains", "value": "hostile" }] } },
-    { "id": "price",        "type": "math-eval",
-      "config": { "expr": { "_tag": "mul",
-        "left":  { "_tag": "literal", "value": 0.75 },
-        "right": { "_tag": "var", "name": "power" } } } },
-    { "id": "release",      "type": "shell-exec",
-      "config": { "cmd": "render_fireball --at ${target.zone} --power ${power}", "timeoutMs": 5000 } },
-    { "id": "resolve",      "type": "gate",
-      "config": { "asserts": [{ "path": "$.release.exitCode", "op": "eq", "value": 0 }] } },
-    { "id": "record",       "type": "triplet-writer",
-      "config": { "triplet": { "pattern": "spell.fireball", "state": "CAST",
-                               "anchor": "fireball:release:exitCode=0" } } }
-  ],
+    { "id": "watch",  "type": "event-filter", "on": { "event": "fs.write" } },
+    { "id": "scan",   "type": "evidence-machine", "config": { "ingest": "$.write" } },
+    { "id": "decide", "type": "gate",
+      "config": { "asserts": [{ "path": "$.verdict", "op": "eq", "value": "CLEAN" }] } },
+    { "id": "record", "type": "triplet-writer",
+      "config": { "triplet": { "pattern": "fs.write", "state": "ALLOWED", "anchor": "secret-gate:1" } } },
+    { "id": "sink",   "type": "journal-sink" } ],
   "edges": [
-    { "from": "target-lock", "to": "price",   "via": "target" },
-    { "from": "price",       "to": "release", "via": "power" },
-    { "from": "release",     "to": "resolve", "via": "release" },
-    { "from": "resolve",     "to": "record",  "via": "data" }
-  ],
-  "vars": { "target": "zone-A", "power": 10 }
-}
+    { "from": "watch", "to": "scan",   "via": "write" },
+    { "from": "scan",  "to": "decide", "via": "verdict" },
+    { "from": "decide","to": "record", "via": "decision" },
+    { "from": "record","to": "sink",   "via": "data" } ],
+  "vars": {} }
 ```
+The violation path: in the LIVE host, the artifact-gate wrap subscribes to the same bus and DENIES the write when the adjudication is not CLEAN (`EFFECT_ARTIFACT_GATE` + `pta.intercept` rows) — the card above is the PROVABLE SHADOW of that enforcement: every decision, allowed or denied, journals.
 
-Read the compile: stage 1-3 = meta+nodes (the IDEA bound as name/seed, the EFFECT as the ordered pipeline); stage 4 = the `price` math-eval node (the cost function IS a node); stage 5 = `target-lock` + `resolve` gates (the pre-flight brackets); stage 6 = `release` (the cap-bound shell-exec — the Effect fires); stage 7 = outputs flowing `via` channels (the render wakes downstream); stage 8 = budget consumed; stage 9 = `record` triplet + the journal chain (the EXPERIENCED EFFECT, replayable via covers at zero cost).
+**Stage D-E-F:** cast — `bun run cli/main.ts run secret-write-gate.json` (the seed write in vars demonstrates both paths). The journal now carries one row per decision. This card graduated into the kernel's `wraps/artifact-gate.ts` — the card was the spec; the wrap is the daemon.
 
+### 4.2 — IDEA: "Ship only what the test battery proves — zero unverified artifacts."
 
-## PART 4 — CORRECT / WRONG PAIRS
+**Stage A:** process effect; evidence = the battery's own counts + a verify receipt; touches Shell (tests) + Fs; the intolerable failure = shipping unverified code.
 
-### P4-1 — UNSTRUCTURED INTENT
-- **WRONG:** cast from raw intention, no compiled structure → the render follows whatever the executor holds mid-flight (the mis-focus failure).
-- **CORRECT:** compile to the doc first (decodeDoc → validateDoc → the 5 refusals) — the interface is the safety layer.
-- **FIX:** author the workflow.json; never run outside the schema.
+**Stage B:** shell-exec (run the battery) → gate (assert the counts) → triplet-writer (the receipt) → file-io (stamp the artifact) → audit-registry (the ship's row). Class: PROCESS (verify → stamp → ship, checkpoints between).
 
-### P4-2 — THE IRREVOCABLE ONE-SHOT
-- **WRONG:** a binary succeed-or-perish spell — a blocked stronger adversary kills the caster.
-- **CORRECT:** the cancellable process: checkpoints, durable ask, gate-bracket with repair ≤ 2.
-- **FIX:** re-author with stop boundaries; assert cancellation safety in fixtures.
+**Stage C — the card:**
 
-### P4-3 — UNPRICED EFFECT
-- **WRONG:** an effect with no declared cost or source.
-- **CORRECT:** cost = f(shape) declared at authoring; capacity checked pre-flight (CAP-UNBOUND with zero rows).
-- **FIX:** bind the driver or drop the node.
-
-### P4-4 — REPERTOIRE-AS-POWER
-- **WRONG:** buying every canned spell and calling it mastery.
-- **CORRECT:** the composition tier is where power lives (altar/formula/sentence); run the lifecycle kernels to author, not acquire.
-- **FIX:** author the next spell through P3-1..P3-5.
-
-### P4-5 — SAME-NAME STACKING
-- **WRONG:** recasting an identical cast expecting accumulation.
-- **CORRECT:** same identity replaces; distinct identities stack; reseed for a fresh chain.
-- **FIX:** new runId/seed; verify chains-identical, never assume.
-
-### P4-6 — ORDER-BLIND COMPOSITION
-- **WRONG:** arbitrary effect order in one cast (amplifier after its target; trap after kill).
-- **CORRECT:** order = the dataflow graph; amplifier-first, trap-outlasts-kill.
-- **FIX:** re-derive order from channels; assert with the diamond fixture.
-
-### P4-7 — THE NARRATED RENDER
-- **WRONG:** "it worked because I said the words."
-- **CORRECT:** the experienced effect is computed from execution evidence (journal rows, bus events, passTokens IN tool output).
-- **FIX:** run, read rows, then claim.
-
-### P4-8 — UNBOUND DELEGATION
-- **WRONG:** delegating execution to an unbound stronger agent.
-- **CORRECT:** delegate behind an oracle gate + repair bound + 3-strike failure + authority chain.
-- **FIX:** gate before delegate; journal causation; test the strike path.
-
-### P4-9 — THE META-TIER WITHOUT DISCIPLINE
-- **WRONG:** stepping to the meta tier (wordless casting / raw-Chaos channeling / schema-bypassing) without the discipline the tier demands. Canon: Sources flare untrained; non-verbal drifts mid-cast.
-- **CORRECT:** the meta tier is EARNED through the composed tier: journal discipline, oracle cards, sniff-test habit — then the shorthand becomes safe.
-- **FIX:** drop back to composed casting until the evidence habit is mechanical.
-
-### P4-10 — THE ZERO-COST ILLUSION
-- **WRONG:** reading an enchanted zero-cost build as "the spell is free" — the cost was paid at enchant time (soul magnitude bounds the charge; the gear holds it).
-- **CORRECT:** cost is conserved and relocated, never deleted: JESL budgets live on the run; a fast driver just moves where the price lands.
-- **FIX:** account the cost where it is paid; assert the budget in fixtures.
-
-**BYPASS CLOSURE:** every anti-pattern above has a schema-level tripwire — the 5 refusals catch P4-1/P4-3 at decode; the tier gate catches P4-2's unbracketed generation; the journal + covers catches P4-5/P4-7 (an unnarrated run cannot produce a verified replay); the dataflow readiness catches P4-6 at graph build; the oracle cards + strike path catch P4-8; the pre-flight budget catches P4-10. No pattern is caught by prose — all are caught by mechanics.
-
-
-## PART 5 — THE EFFECT ENGINEERING SCHEMA (compiled onto JESL + TDM)
-
-### 5.1 THE TRIAD MAPPING
-
-```
- CANON STAGE        TDM (v4.4.3)                     JESL COMPILE
- IDEA (1-3)    ──►  L0 ProblemSpaceAssessment   ──►  meta + vars + the authored node set
-                    L1 invariant/pathPhases/options
- EFFECT (4-6)  ──►  L2 DecisionContext:         ──►  cap pre-flight (pricing) → readiness
-                    consequence cascade 1/2/3,       batches (release) → per-node invoke;
-                    reversibility window,            journal invoke+verdict rows
-                    recommendation (confidence)
- EXPERIENCED   ──►  L3 trap detection (=        ──►  verdict FROM journal rows + bus events
- EFFECT (7-9)       mis-focus detection) +           (trace.timeline) + RunSummary +
-                    L4 Completion Intelligence       covers() replay (the reusable record)
-```
-
-TDM constants as spell constants: DECISION_TIME_REVERSIBLE 120s (the canned tier — decide now) vs MIN_DELIBERATION_IRREVERSIBLE 60s (the meta tier — oaths bind); CONSEQUENCE_CASCADE_DEPTH 3 (3rd-order foresight before an irreversible cast — the amplification ladder read forward); OPTION_EXHAUSTION_MINIMUM 3 (never a binary spell); SNIFF_TEST_CONFIDENCE 0.85 (the render-verification bar); FRAMEWORK_COMPOSITION_MAX 5 (working memory per decision).
-
-### 5.2 THE FIVE-STAGE PIPELINE (the operator's 5 steps)
-
-**STAGE 1 — WRITE THE SPELL (idea → effect → experienced as one document).** Author the JESL workflow.json: meta+vars bind the IDEA; nodes+edges bind the EFFECT (composed from registry primitives — the altar surface); the journal/verdict contract binds the EXPERIENCED EFFECT (what will count as evidence). Deterministic kinds are the vocabulary; bracketed generation is the inventive composition; edges are the grammar.
-
-**STAGE 2 — CONVERT THE SPELL TO TDM FRAMEWORKS.** L0: classify (type/complexity/tier). L1: the invariant (what must hold: "damage accrues at the target zone"), pathPhases (structure→price→release→render), option space ≥3. L2 per phase: ≤5 frameworks — PREMORTEM (what blocks the cast?), CONSEQUENCE_CASCADE (2nd-order residue, 3rd-order spread), BLAST_RADIUS (what else is in range), ASSUMPTION_AUDIT (oracle cards), SNIFF_TEST 0.85 (render-check before declaring castable). L3 velocity: tier-1 → decide now; tier-2 → deliberate.
-
-**STAGE 3 — CONVERT THE TDM FRAMEWORKS TO JESL SCRIPTS.** Each framework compiles to structure: CONSEQUENCE_CASCADE → the edge graph (each `via` channel = a consequence flowing forward); ASSUMPTION_AUDIT → oracle-gate rule cards (expected values mandatory — mpse/rule-cards.ts:27-71); REVERSIBILITY → pause node + journal checkpoints; PREMORTEM → fallback-chain + the bad-fixture set; SNIFF_TEST → the verify kernel's passToken-in-tool-output check; BLAST_RADIUS → evidence machine + audit scanner.
-
-**STAGE 4 — THE JESL KERNEL (the real-time Experienced-Effect renderer).** Package the script as `jesl/kernels/<spell>/` (activities.ts + workflow.json + SKILL.md + fixtures/). runProgram executes the Effect in real time; the journal records the Experienced Effect as evidence while it happens; bus streams the render; covers() makes the experience replayable at zero cost. The kernel is the injection point where a scripted spell becomes a living render in a runtime space.
-
-**STAGE 5 — THE SKILL ROCKET (the self-contained castable spell).** `emitSkill(doc, outDir, writer)` (packager/skill.ts:53-78) emits: SKILL.md (the fuse + launch line `jesl run payload/workflow.json --in payload/ctx.json`), payload/workflow.json (the byte-preserved spell), ctx.json (vars/seed), mission.md (objective), anti-patterns.json (misfire table). A named, owned, packaged formula — castable by anyone with the kernel, journaled, replayable.
-
-### 5.3 ENERGY SOURCES = DRIVER BINDINGS
-
-| Canon model | JESL binding | Price |
-|---|---|---|
-| resource pool (TES magicka) | budget: deadlineMs 600s, maxNodesFiring 15 | exhaustion = deadline hit |
-| exact-effort equivalence (Eragon) | cap pre-flight: unbound = refusal, zero rows | overrun = loud CAP-UNBOUND |
-| elemental essence (Witcher) | the driver's own failure surface (CliLive real I/O vs TestLive memory) | the bound environment shapes the run |
-| delegation (spirits) | Subagent behind oracle gate + 3-strike | possession = the strike path |
-| the binding language itself | `$schema: trident-workflow-v1` — nothing runs outside it | the 8 frozen refusals |
-
-### 5.4 THE FULL TDM → JESL FRAMEWORK MAP (all 20, the compile table)
-
-| TDM framework | Spell-domain reading | JESL compile (nodes / fixtures) |
-|---|---|---|
-| F1 FIRST_PRINCIPLES | decompose the spell to its irreducible primitives | the primitive set `{type,M,D,A,target}`; math-eval nodes for the cost terms |
-| F2 REVERSIBILITY | is the cast one-way? (Eragon's law) | pause node / durable ask; the cancellable-process gate bracket |
-| F3 CONSEQUENCE_CASCADE | 1st/2nd/3rd-order world effects | the edge graph depth; each `via` channel = one order |
-| F4 OPTION_EXHAUSTION | ≥3 cast formulations before choosing | ≥3 candidate docs; fixtures per candidate |
-| F5 ASSUMPTION_AUDIT | every rule card carries its expected value | oracle-gate + mpse rule-cards (expected mandatory) |
-| F6 CRITICAL_PATH | the minimal node chain for the Effect | the readiness-batch order (graph.ts) |
-| F7 ELIMINATION | fewest nodes that satisfy (lowest tier wins) | tier-1 deterministic kinds before any generation |
-| F8 MINIMUM_VIABLE_PATH | the shortest castable doc | the diamond fixture (2 batches) |
-| F9 PARALLEL_TRACKS | independent sub-effects run concurrently | parallel node / ready-set overlap (c=15) |
-| F10 MENTAL_SIMULATION | the held-image render check | TestLive dry-run (spec-to-kernels) before real cast |
-| F11 INFLECTION_DETECTION | stall = the approach is invalidated | the run loop's ready=∅ break; kernel retry budget |
-| F12 BLAST_RADIUS | what else the Effect touches | evidence machine + audit scanner scope |
-| F13 PREMORTEM | the misfire table before casting | fallback-chain + anti-patterns.json in the rocket |
-| F14 COGNITIVE_MODEL | which thinking mode this spell needs | thinkingMode in DecisionContext → tier choice |
-| F15 DEPTH_CALIBRATION | how deep to analyze before casting | CONSEQUENCE_CASCADE_DEPTH 3 |
-| F16 DECISION_VELOCITY | canned tier: cast now; meta tier: deliberate | 120s reversible cap / 60s irreversible floor |
-| F17 DERIVATION_ENGINE | derive new spells from working ones | the lifecycle: spec-to-kernels from a proven spell |
-| F18 ENHANCEMENT_PROTOCOL | the 10x version (the stacking ladder) | the amplification algebra (§2.6) as authored prepares |
-| F19 CONVERGENCE_DETECTOR | the run settles at its attractor | the executor loop termination (completed = ∁ nodes) |
-| F20 SNIFF_TEST | would an adversarial reviewer accept the cast? | passToken IN tool output (verify kernel); 0.85 confidence |
-
-
-## PART 6 — PROCEDURES
-
-### P3-1 — AUTHOR A SPELL (Stages 1-3)
-```
-1. Write spell.json per the schema: $schema trident-workflow-v1 · meta{name,tier}
-   · nodes[{id,type,config}] · edges[{from,to,via}] · vars
-2. Compose from registry kinds only (37 known — the altar law)
-3. Order by the dataflow: a node fires when its inbound channels are written
-4. Price it: deterministic tier-1 = no caps; cap-bound = declare the driver;
-   generation = bracket{contract, repair≤2, confidenceFloor}
-5. Gate: cd jesl && bunx tsc --noEmit && npx vitest run (runner is vitest, never bun test)
-6. Dry-cast: bun run cli/main.ts validate spell.json   # the 5 refusals or "ok"
-```
-
-### P3-2 — CAST (Stage 4-6)
-```
-bun run cli/main.ts run spell.json [--in vars.json] [--driver cli|test]
-  → stdout: {"verdict": "PASS"|"FAIL"|"INCONCLUSIVE", results, batches, rows}
-  → exit 0 pass · 1 fail/inconclusive · 2 refusal
-refusal surface (stderr, the 8 frozen tokens):
-  [JESL UNKNOWN-NODE] [JESL CYCLE] [JESL TIER-VIOLATION]
-  [JESL UNBRACKETED-GENERATION] [JESL CAP-UNBOUND]
-  [JESL ORACLE-MISSING] [JESL CHANNEL-UNSET] [JESL NO-SEED]
-```
-
-### P3-3 — READ THE EXPERIENCED EFFECT (Stages 7-9)
-```
-bun run cli/main.ts run spell.json > run.json
-bun run cli/main.ts replay run.json     # → {"verified": true} + exit 0
-the rows ARE the experienced effect: per node, invoke+verdict, sha256-chained
-```
-
-### P3-4 — TDM CONVERSION (the mental pass between 1 and the kernel)
-```
-L0: classify the spell (type/complexity/tier)
-L1: invariant + pathPhases (structure→price→release→render) + ≥3 options
-L2: ≤5 frameworks for the phase; cascade depth 3; sniff 0.85
-L3: velocity — tier-1 decide now; tier-2 deliberate
-compile each chosen framework into nodes/edges/fixtures (see §5.2 Stage 3 table)
-```
-
-### P3-5 — PACKAGE THE ROCKET
-```
-import { emitSkill } from "./packager/skill"
-yield* emitSkill(doc, ".opencode/skills/", writer)
-→ <name>/SKILL.md + payload/{workflow.json, ctx.json, mission.md, anti-patterns.json}
-launch: jesl run payload/workflow.json --in payload/ctx.json
-```
-
-
-## PART 7 — TROUBLESHOOTING MATRIX
-
-| SYMPTOM | CAUSE (mechanic) | FIX |
-|---|---|---|
-| `[JESL UNKNOWN-NODE] field=type` | kind not in registry | fix the kind or append (append-only) |
-| `[JESL CYCLE]` | edge graph cyclic | break the cycle (gate/event-reactivate) |
-| `[JESL TIER-VIOLATION]` | tier-1 doc uses generation | raise meta.tier or replace the node |
-| `[JESL UNBRACKETED-GENERATION]` | tier-2 generation without bracket | declare bracket{contract,repair≤2,floor} |
-| `[JESL CAP-UNBOUND] <cap>` | driver lacks the bound | bind the Layer or drop the node |
-| `[JESL CHANNEL-UNSET]` | read of an unwritten channel | seed it (--in) or fix edge.via |
-| `[JESL NO-SEED]` | declared entry channel unseeded | seed vars or fix meta.seed |
-| `[JESL ORACLE-MISSING]` | rule card without expected | provide the oracle value |
-| replay `"verified": false` | chain tampered/foreign writer | re-run; never hand-edit rows |
-| INCONCLUSIVE verdict | stub fired / confidence < floor / incomplete triplet | read evidence.anchor for which |
-| run hangs on pause | Deferred awaits resume | pauseResume(key,value) or inbound signal |
-| battery prints HANG | fixture exceeded the 2s race | the row is HANG — malformed fixture |
-| vitest fails under `bun test` | bun:test ≠ vitest (`onTestFinished`) | `npx vitest run` — the canon runner |
-| test hangs at 5000ms | TestClock never advances sleep | real-timer pattern in tests |
-| RegistryFrozenError on register | divergent re-register of existing kind | append-only: same family+caps only |
-| editor shows test-file errors | @ts-nocheck class + per-dir include | editor noise — the gate is tsc |
-| LSP gate denies a .ts write | error-severity diagnostics | fix floatingEffect/runEffectInsideEffect |
-| ORACLE_CONFLICT | duplicate oracleKey registration | dedupe the cards (first wins) |
-| DEPTH_EXCEEDED in parser | MathExpr nesting > 256 | flatten the expression |
-| FLOAT_EPSILON_MISSING | float oracle without tolerance | provide positive-finite tolerance |
-| EXCLUDED not FAIL on a sample | D17 born-off exclusion | correct behavior — counted under excluded |
-| dual-cast feels weaker | 2.2× effect for 2.8× cost | school-dependent; zero-cost builds aside |
-| same spell recast "didn't stack" | same identity replaces | distinct names/ids stack |
-| amplifier didn't boost same cast | same-cast amplification ignored | amplifier must precede (separate casts) |
-
-## PART 8 — QUICK REFERENCE
-
-### 8A — the universal spell shape
-```json
-{ "primitive": { "type": "fire-damage", "magnitude": 10, "duration": 6,
-                 "area": 0, "targeting": "touch" },
-  "cost": "B(0.75) × 10^1.28 × 6 × 1 × skill-mult",
-  "executionClass": "TIMED",
-  "stacking": "distinct-identity only",
-  "order": "amplifiers before targets; traps before kills" }
-```
-
-### 8B — the triad contract (a JESL spell binds all three)
-```json
+```jsonc
 { "$schema": "trident-workflow-v1",
-  "meta": { "name": "spell-name", "tier": 1 },
-  "idea":     "meta + vars — the structured intent",
-  "effect":   "nodes[] + edges[] — the priced pipeline",
-  "experienced": "journal rows + verdicts FROM rows + bus events" }
+  "meta": { "name": "verified-ship", "tier": 1 },
+  "nodes": [
+    { "id": "clean-tree", "type": "gate",
+      "config": { "asserts": [{ "path": "$.dirty", "op": "eq", "value": false }] } },
+    { "id": "tests",  "type": "shell-exec",
+      "config": { "cmd": "npx vitest run 2>&1 | tail -4", "timeoutMs": 120000 } },
+    { "id": "prove",  "type": "gate",
+      "config": { "asserts": [
+        { "path": "$.stdout", "op": "contains", "value": "424 passed" },
+        { "path": "$.exitCode", "op": "eq", "value": 0 } ] } },
+    { "id": "receipt", "type": "triplet-writer",
+      "config": { "triplet": { "pattern": "ship.verified", "state": "PASS", "anchor": "verified-ship:424" } } },
+    { "id": "stamp",  "type": "file-io",
+      "config": { "op": "write", "path": "payload/mission.md", "body": "verified 424/424" } },
+    { "id": "audit",  "type": "audit-registry", "config": { "audit": "ship.verified" } },
+    { "id": "sink",   "type": "journal-sink" } ],
+  "edges": [
+    { "from": "clean-tree", "to": "tests",   "via": "tree" },
+    { "from": "tests",      "to": "prove",   "via": "stdout" },
+    { "from": "prove",      "to": "receipt", "via": "proof" },
+    { "from": "receipt",    "to": "stamp",   "via": "data" },
+    { "from": "stamp",      "to": "audit",   "via": "written" },
+    { "from": "audit",      "to": "sink",    "via": "data" } ],
+  "vars": {} }
+```
+The MPSE law in the `prove` gate: the assert reads the COUNT (`424 passed`), never the prose. If the battery emits 421, the gate FAILs with the actual in evidence — the ship aborts at the checkpoint, nothing downstream runs.
+
+### 4.3 — IDEA: "Watch an API endpoint; classify every change; escalate on drift; remember the escalations."
+
+**Stage A:** sustained/reactive effect; evidence = a classification row per poll + escalation rows on drift; touches Http (poll) + Journal; the intolerable failure = drift landing unnoticed.
+
+**Stage B:** cron-trigger (the tick) → http-request (poll) → math-eval (the drift metric) → ratio-classifier (classify) → escalation-memory (remember) → gate (the policy) → journal-sink. Class: TIMED + RECURRING.
+
+**Stage C — the card:**
+
+```jsonc
+{ "$schema": "trident-workflow-v1",
+  "meta": { "name": "api-drift-watch", "tier": 1 },
+  "nodes": [
+    { "id": "tick",   "type": "cron-trigger", "config": { "schedule": "*/15 * * * *" } },
+    { "id": "poll",   "type": "http-request",
+      "config": { "url": "https://api.example.com/health", "method": "GET", "timeoutMs": 8000 } },
+    { "id": "metric", "type": "math-eval",
+      "config": { "expr": { "_tag": "var", "name": "driftScore" } } },
+    { "id": "classify", "type": "ratio-classifier",
+      "config": { "ratio": 0.8, "suppressBelow": true } },
+    { "id": "remember", "type": "escalation-memory", "config": { "window": 900000, "threshold": 2 } },
+    { "id": "policy", "type": "gate",
+      "config": { "asserts": [{ "path": "$.verdict", "op": "eq", "value": "STABLE" }] } },
+    { "id": "sink",   "type": "journal-sink" } ],
+  "edges": [
+    { "from": "tick",   "to": "poll",     "via": "tick" },
+    { "from": "poll",   "to": "metric",   "via": "response" },
+    { "from": "metric", "to": "classify", "via": "score" },
+    { "from": "classify","to": "remember","via": "class" },
+    { "from": "remember","to": "policy",  "via": "memory" },
+    { "from": "policy", "to": "sink",     "via": "data" } ],
+  "vars": {} }
+```
+The FAIL path IS the alert: a drift verdict FAILs the policy gate, journals the reason + the score, exits 1 — the host's monitoring picks up the exit. The memory node means repeated suppressions escalate: the third drift in the window is a DIFFERENT verdict than the first.
+
+### 4.4 — IDEA: "Ask the operator a question mid-run; continue with the answer — even across a restart."
+
+**Stage A:** process effect with a human checkpoint; evidence = the question + the answer, journaled; class: PROCESS (durable).
+
+**Stage B:** the durable-ask pattern — `prompt(mode:"ask-launcher")` (5K-8: `DurableDeferred`) in a Workflow-durable run. The question surfaces through the tool result; the launcher's answer completes the Deferred; a restart between question and answer loses NOTHING (the deferred + the journal are the resume anchor).
+
+**Stage C — the shape (the durable form; the card ships the pipeline stand-in per the slot convention):**
+
+```jsonc
+{ "id": "ask", "type": "prompt", "tier": 2,
+  "config": { "mode": "ask-launcher",
+              "template": "Deploy target confirmed? [yes/no]",
+              "bracket": { "contract": "json", "repair": 2, "confidenceFloor": 0.85 } } }
+```
+The lesson: the question SURVIVES the process. That is the difference between a pause node and a hope.
+
+### 4.5 — IDEA: "Generate a config file from a template — and PROVE the output is valid JSON before anything consumes it."
+
+**Stage A:** generate effect (tier 2); evidence = the bracket-validated output + the write receipt; needs Llm (the operator's seat); intolerable failure = an invalid config consumed downstream.
+
+**Stage B:** the generate→verify bracket: `gate` (pre-conditions) → `prompt(bracket.contract:"json")` → `gate` (parse + schema assert) → repair ≤ 2 → `file-io` write → `triplet-writer` proof. Class: PROCESS (generate → verify → commit).
+
+**Stage C — the card:**
+
+```jsonc
+{ "$schema": "trident-workflow-v1",
+  "meta": { "name": "config-gen", "tier": 2 },
+  "nodes": [
+    { "id": "preflight", "type": "gate",
+      "config": { "asserts": [{ "path": "$.spec", "op": "contains", "value": "services" }] } },
+    { "id": "gen", "type": "prompt", "tier": 2,
+      "config": { "mode": "llm", "template": "Emit the config JSON for: {{spec}}",
+                  "bracket": { "contract": "json", "repair": 2, "confidenceFloor": 0.85 } } },
+    { "id": "validate", "type": "gate",
+      "config": { "asserts": [{ "path": "$.services", "op": "contains", "value": "api" }] } },
+    { "id": "commit", "type": "file-io",
+      "config": { "op": "write", "path": "config/generated.json" } },
+    { "id": "proof", "type": "triplet-writer",
+      "config": { "triplet": { "pattern": "config.gen", "state": "WRITTEN", "anchor": "config-gen:1" } } },
+    { "id": "sink", "type": "journal-sink" } ],
+  "edges": [
+    { "from": "preflight", "to": "gen",     "via": "spec" },
+    { "from": "gen",       "to": "validate","via": "output" },
+    { "from": "validate",  "to": "commit",  "via": "valid" },
+    { "from": "commit",    "to": "proof",   "via": "written" },
+    { "from": "proof",     "to": "sink",    "via": "data" } ],
+  "vars": { "spec": "api + worker + queue" } }
+```
+The bracket mechanics: `checkContractViolation` (nodes/prompt.ts:69-84) parses the model's output against `contract:"json"` — a violation consumes a repair (≤ 2), then fails LOUD. The model cannot lie past the bracket.
+
+### 4.6 — THE PATTERN ACROSS ALL FIVE
+
+Every walkthrough followed the same six moves:
+
+```
+1. INTENT in writing (what + evidence + class + scope + the intolerable failure)
+2. DECOMPOSE into primitives (verb → node skeleton, Part 2 table)
+3. AUTHOR the graph (gates bracket the work; unique vias; journal at the end)
+4. PRICE (caps honest; budget set; never route around CAP-UNBOUND)
+5. CAST until PASS (refusals are compile errors — fix the card, never the refusal)
+6. PERMANENCE (kernel if it recurs — Part 5; rocket if it distributes — Part 6)
 ```
 
-### 8C — the shared-physics table
-| Axis | Values (shared across canon) | JESL compile |
+### 4.7 — IDEA: "Replay exactly what happened in run X — and prove nothing was tampered with."
+
+**Stage A:** evidence effect; evidence = the rebuilt summary + the chain verification; class: EVIDENCE/REPLAY.
+
+**Stage B:** `replay-source(runId)` pulls the journaled rows; `rebuildSummaryFromRows` reconstructs; `verifyChain` proves the chain; the rebuilt verdict IS the past verdict — recomputed, not remembered.
+
+**Stage C — the card:**
+
+```jsonc
+{ "$schema": "trident-workflow-v1",
+  "meta": { "name": "forensic-replay", "tier": 1 },
+  "nodes": [
+    { "id": "replay", "type": "replay-source",
+      "config": { "runId": "wf-1788450759873-k3j2x1" } },
+    { "id": "assert", "type": "gate",
+      "config": { "asserts": [{ "path": "$.verdict", "op": "eq", "value": "PASS" }] } },
+    { "id": "sink",   "type": "journal-sink" } ],
+  "edges": [
+    { "from": "replay", "to": "assert", "via": "replayed" },
+    { "from": "assert", "to": "sink",   "via": "data" } ],
+  "vars": {} }
+```
+The empty case: a runId with no rows returns INCONCLUSIVE/EMPTY — the honest answer. Never fabricate a PASS for missing history (P2-6).
+
+### 4.8 — IDEA: "If the API fails three times in five minutes, stop calling it entirely."
+
+**Stage A:** protective/reactive effect; evidence = the breaker state transitions; class: REACTIVE + STATEFUL.
+
+**Stage B:** `circuit-breaker(threshold: 3)` wrapping the call site; the breaker's Ref state persists across nodes in the run; OPEN state refuses invocations without executing them.
+
+**Stage C — the card:**
+
+```jsonc
+{ "id": "breaker", "type": "circuit-breaker", "config": { "threshold": 3, "window": 300000 } },
+{ "id": "call",    "type": "http-request",
+  "config": { "url": "https://api.example.com", "method": "GET", "timeoutMs": 8000 } }
+```
+Edge: `breaker → call`. After 3 failures in the window, the breaker OPENs: the call node is never invoked, the breaker emits a FAIL verdict with `outputs: {reason: "circuit OPEN"}` — the loud refusal that saves the upstream provider and your budget. The `_resetCircuit` export exists for test isolation only; production reset is a NEW RUN (the state is the point).
+
+### 4.9 — IDEA: "Lock the deployment config after validation — any later mutation is a defect."
+
+**Stage A:** protective/stateful effect; evidence = the lock state + the mutation rejection; class: STATEFUL.
+
+**Stage B:** `config-lock(keys: [budget, caps, targets])` — the first validation writes the keys into the Ref store; any later write to a locked key is a FAIL verdict naming the key and the two values.
+
+**Stage C — the lesson generalized:** the kernel's stateful nodes (circuit-breaker, config-lock, escalation-memory, evidence-machine) all share the same shape: a module-level Ref store, an admission path, and a LOUD rejection path. When you need "remember and refuse," compose these — do not build a side-channel store.
+
+### 4.10 — IDEA: "Run this same effect every time a specific event fires — forever."
+
+**Stage A:** reactive/perpetual effect; evidence = one journal chain per firing; class: REACTIVE/PERPETUAL.
+
+**Stage B:** `event-filter(on:{event: "deploy.complete"})` → the work → `journal-sink`. The event-filter's subscription survives the first firing — each subsequent event re-wakes the node (the graph stays a DAG; the BUS does the looping).
+
+**Stage C — the distinction that matters:** `cron-trigger` loops on TIME; `event-reactivate` loops on an EVENT after COMPLETION; `event-filter` never completes — it subscribes. Choosing wrong: cron for event-driven = missed firings between ticks; event-filter for scheduled = never fires without the event. Part 2's table maps the verb; this paragraph maps the TIME MODEL.
+
+---
+
+<!-- ═══════════ PART 5: PRODUCTION KERNELS ═══════════ -->
+
+## PART 5 — PRODUCTION KERNELS (when a card graduates)
+
+A card proves an effect ONCE. A production kernel makes it a PERMANENT, FIRST-CLASS citizen of the runtime — the effect others compose with.
+
+### 5.1 — When a card graduates
+
+Graduate when ALL of: (1) the card casts PASS repeatedly across real inputs; (2) the effect has a NAME others would use ("the secret gate", "verified ship"); (3) it needs domain logic a generic kind cannot express (custom thresholds, ingestion shapes); (4) its negative fixtures are known (what it must REFUSE).
+
+### 5.2 — The graduation procedure
+
+```bash
+mkdir -p jesl/kernels/my-effect/fixtures
+# 1. workflow.json  — the card, byte-preserved (the CONTRACT)
+# 2. activities.ts  — the stage's DOMAIN nodes if generic kinds cannot express the logic;
+#                     each: NodeImpl + replaceStubSync registration + ≥2 adversarial tests
+# 3. fixtures/      — positive inputs + one negative per refusal the stage must produce
+# 4. SKILL.md       — the operator card: what it takes in, what it produces, when to run
+```
+The stage joins the runtime by casting — `bun run cli/main.ts run kernels/my-effect/workflow.json` — no executor changes, no special cases (law 2O: rockets are ordinary nodes).
+
+### 5.3 — The graduation gate
+
+`bunx tsc --noEmit` → 0 · `npx vitest run` → green with the stage's new tests · the stage's negative fixtures refuse with the right tokens · the full battery still green (zero regressions). A kernel that cannot pass its own battery is a wish, not an effect.
+
+---
+
+<!-- ═══════════ PART 6: SKILL ROCKETS ═══════════ -->
+
+## PART 6 — SKILL ROCKETS (the effect, packaged)
+
+The skill rocket is the effect DISTRIBUTED: named, owned, packaged, castable by anyone with the kernel.
+
+```ts
+import { emitSkill } from "./packager/skill.ts"
+await emitSkill(doc, outDir, writer)
+```
+
+Emits (packager/skill.ts:53-78):
+
+| file | contents | role |
 |---|---|---|
-| targeting | self → touch → target → area | range in configs; edges as dataflow |
-| execution | instant / projectile / sustained / timed / tapered / zone / summoned / process | node kinds + budget + durable ask |
-| pricing | f(shape) with capacity pre-check | budget + cap pre-flight |
-| resolution | resistance caps · ordering rules · tradeoff multipliers | Exit capture → verdict map |
-| interaction | same-replaces / distinct-stacks / amplifiers-multiply | runIds + covers() + reruns |
-| mastery | canned → composed → meta | tier-1 kinds → authored docs → lifecycle kernels |
+| `SKILL.md` | the fuse + the launch line `jesl run payload/workflow.json --in payload/ctx.json` | the operator card |
+| `payload/workflow.json` | the spell, byte-preserved | THE artifact |
+| `payload/ctx.json` | vars/seed | the input binding |
+| `mission.md` | the objective | the intent, carried |
+| `anti-patterns.json` | the misfire table | what NOT to do |
 
-### 8D — doctrine (verbatim)
-- "Casting a spell with magic costs as much energy as would be lost to do the task by mundane means." — Inheriwiki: Magic
-- "formulat[e] spells as processes which could be cancelled at will" — Inheriwiki: Magic
-- "a badly put-together spell likely won't work at all, but alchemy gone wrong can be poison" — UESP Lore:Magic
-- "The Power bound in spell formulae" — Witcher Wiki glossary
-- "The order of different effects can be very important to the custom spells" — UESP Oblivion:Spell Making
-- "verdicts FROM journal rows, never prose" — the JESL canon line
+The rocket is DETERMINISTIC to produce (same doc + profile ⇒ byte-identical package) and DETERMINISTIC to run (journal `covers()` replays it exactly). Distribution without provenance is how effects lose their names — the manifest IS the name.
 
-### 8E — real paths
-```
-JESL kernel      .../JESL/jesl/           (109 files; runner: npx vitest run)
-TDM spec         .../v4.4.3/TRIDENT_DECISION_MAKING_TOOL_SPEC.md  (1,525L)
-this bible       .../KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_ENGINEERING_BIBLE.md
-boilerplate      .../KNOWLEDGE_LIBRARY/agent_plugin_boilerplates/JESL-Kernel-Edition-v1.0/
-```
+---
 
-## PART 9 — ZERO-TRUST VERIFICATION (the bible's own gate)
+<!-- ═══════════ PART 7: THE ADVANCED DEGREES ═══════════ -->
 
-```
-# the kernel the spells run on
-cd jesl && bunx tsc --noEmit && echo TSC:0          # expect 0
-cd jesl && npx vitest run 2>&1 | grep Tests         # expect 336 passed (34 files)
+## PART 7 — THE ADVANCED DEGREES (composition, processes, meta)
 
-# the spell host-gate (the happy cast + one refusal + the replay)
-bun run cli/main.ts run fixtures/mech-gate.json | head -2     # "verdict": "PASS"
-bun run cli/main.ts validate fixtures/bad-unknown-kind.json 2>&1 | grep -o 'JESL [A-Z-]*'
-bun run cli/main.ts run fixtures/mech-gate.json > /tmp/j.json && bun run cli/main.ts replay /tmp/j.json | grep verified
+### 7.1 — Composition (cards within cards)
 
-# the doc's own floor
-wc -l KNOWLEDGE_LIBRARY/Bibles/JESL/EFFECT_ENGINEERING_BIBLE.md   # ≥ 300 (discipline bible)
-```
+Three modes (§2E.4): CHAINING (A's outputs feed B's channels — the spell is the chain); NESTING (embed a proven card's graph as a phase — the lifecycle kernels do this); DISPATCH (spawn a sub-card at runtime behind oracle gates, repair ≤ 2, 3-strike FAIL — delegation with gates, never unbound).
 
-Fresh-agent check: could you author, cast, verify, and rocket a spell from Parts 1-6 alone, with no other context? If any step is unclear, the gap is in this bible — fix the bible, not the reader.
+### 7.2 — The stacking algebra (operational)
 
-## PART 10 — SELF-AUDIT FINDINGS (the zero-trust pass on this bible)
+Distinct runIds stack; same docHash+seed REPLAYS (never accumulates); amplifier-before-amplified is enforced by the EDGE ORDER (the dataflow is the only order); budget loops are legal but journaled (cost is conserved-and-relocated). When nesting, re-derive order from channels — there is no implicit sequence.
 
-| Sev | Finding | Disposition |
-|---|---|---|
-| LOW | TDM framework prompts (the spec's §framework-library detail) are summarized, not quoted — the spec at v4.4.3 is the authority for prompt text | pointer in §8E; spec is READ-ONLY authority |
-| LOW | Witcher game-level spell stats (per-sign stamina costs) not tabulated — the wiki source covers lore-tier mechanics; game wikis would add per-title tuning | the shared-physics table (§2) is the deliverable; per-title tuning is out of scope |
-| INFO | Eragon section is deliberately language-design only (per operator ruling) — no plot/world content | enforced: §2.7 |
-| INFO | the canon sources are web wikis (fetchable, re-fetchable) — anchors are by URL name, not line | listed in the header block |
+### 7.3 — Durable processes (the meta tier, earned)
 
-PASS: the bible meets the discipline floor, every rule carries a mechanism, every pair carries a fix, every troubleshooting row carries a cause, the procedures are copy-pasteable, and a fresh agent can operate from this alone.
+Any run containing `pause` or `ask-launcher` must be a Workflow-durable run (§2D.3): `Workflow.make` + per-node Activities + `DurableDeferred` for the asks. The payoff: kill -9 between steps, restart, and the run CONTINUES from the journal. The cost: every effectful node is an Activity (idempotency via docHash+seed). The rule: tier-2 generation and human checkpoints DEMAND durability; pure deterministic runs can stay ephemeral.
 
+### 7.4 — The meta tier (changing the compiler itself)
 
-## VERSION HISTORY
-| v | date | change |
-|---|---|---|
-| 1.0 | 2026-09-03 | first authoring (lore-heavy) |
-| 2.0 | 2026-09-03 | operator correction: lore stripped entirely; rewritten as SHARED-PHYSICS mechanics only — the universal spell model (§2.1-2.8: primitives, pricing, targeting, execution classes, resolution, stacking algebra, the interface-compiler, the mastery ladder) + the 9-stage universal pipeline (§3) + the JESL/TDM compile (§5); Eragon retained solely as the Effect-Scripting language reference (§2.7) |
+Adding a node kind (P3-3), a scanner family, a driver, or a profile IS the meta tier — you are editing the vocabulary future effects compose from. The discipline: the registry is append-only; the 8 tokens are frozen; the purity boundary holds; every new kind carries ≥2 adversarial tests. The canon warning applies literally: the meta tier without discipline is where overrun kills and stray thoughts redirect. Earn it through the composed tier.
+
+### 7.5 — Scaling the method itself
+
+The method (Part 1) scales from one card to systems: the 6-stage rocket chain IS the method applied recursively (idea→bible, bible→spec, spec→kernels, kernels→code, verify, ship — each stage a castable card consuming the previous stage's outputs). When an idea is too big for one card, it is not too big for the method — it is a CHAIN of effects, and the chain is itself a card at the next scale.
+
+---
+
+<!-- ═══════════ PART 8: THE VALIDATION LAYER ═══════════ -->
+
+## PART 8 — THE VALIDATION LAYER (the shared mechanics, compressed)
+
+The method's universality is not asserted — it was EVIDENCED by decomposing four independent, decades-surviving effect systems and finding the same compiler underneath (the full analysis lives in `archive/EFFECT_ENGINEERING_BIBLE.md` v2.0 — retained as the reference):
+
+- the effect primitive `{effect-class, scale, duration, scope, targeting}` appears identically in all four (Oblivion altars, Skyrim tomes, Witcher formulae, Eragon sentences);
+- the pricing law holds everywhere (TES `cost = B·M^1.28·D·A`, Eragon `cost = mundane effort`, Witcher essence draw) with the capacity check BEFORE release — JESL's cap pre-flight is the same law;
+- the stacking algebra (multiplicative, ordered, same-identity-replaces) is measured in Oblivion's ladder (1→4→…→1089×) and honored by JESL's runId/seed semantics;
+- the interface-compiler (bounded vocabulary, total semantics, deterministic grammar) is Eragon's Ancient Language design — and IS the JESL schema + registry + token set;
+- the 9-stage pipeline runs in all four, and every recorded catastrophe (mis-focus, overrun death, unpriced effects, narrated renders) is a SKIPPED STAGE.
+
+**The one-line summary:** four teams, four syntaxes, one spec. JESL is that spec, compiled. The canon systems are its design reviews; the kernel is its implementation; this bible is its user manual.
+
+---
+
+## PART 9 — VERSION HISTORY
+
+- v3.0 (2026-09-04): THE OPERATIONAL REWRITE (operator-directed). v2.0 analyzed the magic-system metaphor; v3.0 teaches the METHOD it proved: idea → intent capture → primitive decomposition → pipeline authoring → pricing → pre-flight → release → render → settle → record → production kernel → skill rocket. Seven complete worked walkthroughs (the secret-write gate, verified-ship, api-drift-watch, the durable ask, config-gen, forensic replay, circuit-breaker). The canon-systems material compressed into Part 0 (the proof) + Part 8 (the validation layer); the full v2.0 analysis retained in `archive/`.
+- v2.0 (2026-08): the shared macro mechanics analysis (the lore-adjacent version this rewrite supersedes).
+- Superseded by nothing; companion to `JESL_BIBLE.md` v3.0 (the master canon — architecture + reference). WHERE THEY OVERLAP, THE MASTER WINS on kernel facts; THIS document owns the engineering METHOD.
