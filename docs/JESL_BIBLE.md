@@ -321,7 +321,7 @@ INVARIANT across all drivers: real implementations ONLY here (purity law 2E); a 
 
 ## PART 2C — THE EFFECT ENGINEERING PHYSICS (why the kernel is shaped this way)
 
-The design lore, compiled from the canon systems' shared mechanics (full depth: `EFFECT_ENGINEERING_BIBLE.md` — the standalone physics bible). This is not decoration: every kernel law in Part 2 is the COMPILED FORM of a physics law here.
+The design lore, compiled from the canon systems' shared mechanics. The OPERATIONAL METHOD derived from it lives in `EFFECT_ENGINEERING_BIBLE.md` v3.0 (idea → runtime reality: intent capture, primitive decomposition, 7 worked walkthroughs, graduation to kernels + rockets) — read it as the engineering companion. This is not decoration: every kernel law in Part 2 is the COMPILED FORM of a physics law here.
 
 ### 2C.1 — The Triad Law
 
@@ -2085,7 +2085,7 @@ Every bracket.json cast walks this path. The epistemics is executed code (core/e
 
 | predecessor | absorbed into | archived |
 |---|---|---|
-| EFFECT_ENGINEERING_BIBLE.md (492L) | Part 2C (physics) + 6AC (algebra) | archive/ |
+| EFFECT_ENGINEERING_BIBLE.md (492L) | Part 2C (physics) + 6AC (algebra) | SUPERSEDED by v3.0 — the OPERATIONAL rewrite (idea → runtime reality); v2.0 analysis retained in archive/ |
 | JESL_EFFECT_ENGINEERING_LIBRARY.md (915L) | Part 2E (card theory) + 6M (TDM) + 4F (pipeline) | archive/ |
 | JESL_KERNEL_ARCHITECTURE_BIBLE.md (1,786L) | Part 2B + 2D-EXT (architecture + grammar) | archive/ |
 | JESL_KERNEL_OPERATING_MANUAL.md (504L) | Part 4E (operator procedures) | archive/ |
